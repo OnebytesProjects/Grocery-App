@@ -1,4 +1,5 @@
 import 'package:admin/Screens/Home/CouponScreen.dart';
+import 'package:admin/Screens/Home/CouponScreenMain.dart';
 import 'package:admin/Screens/Home/Location.dart';
 import 'package:admin/Screens/Home/Notification.dart';
 import 'package:admin/Services/sidebar.dart';
@@ -13,6 +14,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  var defaultscreen = '1';
 
 
   @override
@@ -37,7 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
               padding: const EdgeInsets.all(8.0),
               child: Card(
                 elevation: 10,
-                child: CouponScreen(),
+                child: CouponScreenMain(),
               ),
             ),
           ),
