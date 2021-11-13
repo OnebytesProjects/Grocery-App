@@ -6,13 +6,15 @@ class FirebaseServices {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   CollectionReference banners = FirebaseFirestore.instance.collection('slider');
   CollectionReference category =
-      FirebaseFirestore.instance.collection('category');
+  FirebaseFirestore.instance.collection('category');
   CollectionReference products =
-      FirebaseFirestore.instance.collection('products');
+  FirebaseFirestore.instance.collection('products');
   CollectionReference deliveryboy =
   FirebaseFirestore.instance.collection('deliveryBoy');
   FirebaseStorage storage = FirebaseStorage.instance;
   CollectionReference order = FirebaseFirestore.instance.collection('orders');
+  CollectionReference coupons = FirebaseFirestore.instance.collection('coupons');
+
 
   Future<QuerySnapshot> getAdminCredentials() {
     var result = FirebaseFirestore.instance.collection('Admin').get();
@@ -51,16 +53,16 @@ class FirebaseServices {
     return products
         .doc(id)
         .update({
-          'published': true,
-        });
+      'published': true,
+    });
   }
 
   Future<void> unPublishProduct({id}) {
     return products
         .doc(id)
         .update({
-          'published': false,
-        });
+      'published': false,
+    });
   }
 
   Future<void> deleteProduct({id}) {
@@ -140,5 +142,15 @@ class FirebaseServices {
       'orderStatus': orderstatus,
     });
     return result;
+  }
+
+  Future<void>saveCoupon({title,discountRate,expiry,details,active}) async {
+    return coupons.doc(title).set({
+      'title' : title,
+      'discountRate' : discountRate,
+      'Expiry' : expiry,
+      'details' : details,
+      'active' : active,
+    });
   }
 }

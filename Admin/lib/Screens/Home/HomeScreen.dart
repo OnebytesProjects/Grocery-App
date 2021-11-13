@@ -31,7 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: ListView(
         children: [
           Container(
-            height: 300,
+            height: 450,
             width: double.infinity,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
