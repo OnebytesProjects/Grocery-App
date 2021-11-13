@@ -1,11 +1,10 @@
-import 'dart:html';
-
-import 'package:admin/Screens/Home/CouponScreen.dart';
-import 'package:admin/Screens/Home/EditCoupon.dart';
+import 'package:admin/Screens/Home/Coupon/CouponScreen.dart';
 import 'package:admin/Services/Firebase_Services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
+import 'EditCoupon.dart';
 
 class CouponScreenMain extends StatefulWidget {
   @override
@@ -68,7 +67,7 @@ class _CouponScreenMainState extends State<CouponScreenMain> {
                           'Expiry Date',
                         ),
                         Text(
-                          'Info',
+                          'Options',
                         ),
                       ],
                     ),
@@ -118,36 +117,47 @@ class _CouponScreenMainState extends State<CouponScreenMain> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            Text(
-                              data['title'],
+                            Container(
+                              child: Text(
+                                data['title'],
+                              ),
                             ),
-                            Text(
-                              data['discountRate'],
+                            Container(
+                              child: Text(
+                                '₹ '+data['discountRate'],
+                              ),
                             ),
-                            Text(
-                              data['details'],
+                            Container(
+                              child: Text(
+                                data['details'],
+                              ),
                             ),
-                            Text(
-                              data['active'].toString(),
+                            Container(
+                              child: Text(
+                                data['active'].toString() == 'true'? 'Active':'Inactive',
+                              ),
                             ),
-                            Text(
-                              expiry.toString(),
+                            Container(
+                              child: Text(
+                                expiry.toString(),
+                              ),
                             ),
-                            IconButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => EditCoupon(
-                                            title:  data['title'],
-                                            discount: data['discountRate'],
-                                            coupondetail: data['details'],
-                                            expdate: expiry.toString(),
-                                            status: data['active'],
-                                            documentSnapshot: document,
-                                          )));
-                                },
-                                icon: Icon(Icons.info_outline)),
+                            // IconButton(
+                            //     onPressed: () {
+                            //       Navigator.push(
+                            //           context,
+                            //           MaterialPageRoute(
+                            //               builder: (context) => EditCoupon(
+                            //                 title:  data['title'],
+                            //                 discount: data['discountRate'],
+                            //                 coupondetail: data['details'],
+                            //                 expdate: expiry.toString(),
+                            //                 status: data['active'],
+                            //                 documentSnapshot: document,
+                            //               )));
+                            //     },
+                            //     icon: Icon(Icons.info_outline)),
+                            popUpButton(data,context,expiry),
                           ],
                         ),
                       ),
@@ -163,5 +173,40 @@ class _CouponScreenMainState extends State<CouponScreenMain> {
         );
       },
     ));
+  }
+  Widget popUpButton(data,BuildContext context,expiry){
+    FirebaseServices _services = FirebaseServices();
+    return PopupMenuButton<String>(
+        onSelected: (String value){
+          if(value == 'edit'){
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => EditCoupon(
+                      title:  data['title'],
+                      discount: data['discountRate'],
+                      coupondetail: data['details'],
+                      expdate: expiry.toString(),
+                      status: data['active'],
+                    )));
+          }
+          if(value == 'delete'){
+            _services.deleteCoupon(id: data['title']);
+          }
+        },
+        itemBuilder: (BuildContext context)=><PopupMenuEntry<String>>[
+          const PopupMenuItem(
+            value: 'edit',
+            child: ListTile(
+              leading: Icon(Icons.info_outline),
+              title: Text('Preview/Edit'),
+            ),),
+          const PopupMenuItem(
+            value: 'delete',
+            child: ListTile(
+              leading: Icon(Icons.delete_outlined),
+              title: Text('Delete Product'),
+            ),),
+        ]);
   }
 }

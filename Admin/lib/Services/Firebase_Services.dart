@@ -153,4 +153,20 @@ class FirebaseServices {
       'active' : active,
     });
   }
+
+  Future<void>updateCoupon({title,discountRate,expiry,details,active}) async {
+    return coupons.doc(title).update({
+      'title' : title,
+      'discountRate' : discountRate,
+      'Expiry' : expiry,
+      'details' : details,
+      'active' : active,
+    });
+  }
+
+  Future<void> deleteCoupon({id}) {
+    return coupons
+        .doc(id)
+        .delete();
+  }
 }

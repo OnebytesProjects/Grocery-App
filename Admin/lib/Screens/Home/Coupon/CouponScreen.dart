@@ -142,12 +142,7 @@ class _CouponScreenState extends State<CouponScreen> {
                               expiry: _selectedDate,
                               active: _active,
                             ).then((value) {
-                              setState(() {
-                                titleText.clear();
-                                discountRate.clear();
-                                detailsText.clear();
-                                _active = false;
-                              });
+                              Navigator.pop(context);
                               EasyLoading.showSuccess('Saved coupon Successfully');
                             });
                           }

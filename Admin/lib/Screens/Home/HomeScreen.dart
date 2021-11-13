@@ -1,7 +1,5 @@
-import 'package:admin/Screens/Home/CouponScreen.dart';
-import 'package:admin/Screens/Home/CouponScreenMain.dart';
-import 'package:admin/Screens/Home/Location.dart';
-import 'package:admin/Screens/Home/Notification.dart';
+import 'package:admin/Screens/Home/Coupon/CouponScreenMain.dart';
+import 'package:admin/Screens/Home/Location/LocationMain.dart';
 import 'package:admin/Services/sidebar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_admin_scaffold/admin_scaffold.dart';
@@ -51,7 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
               padding: const EdgeInsets.all(8.0),
               child: Card(
                 elevation: 10,
-                child: LocationScreen(),
+                child: LocationScreenMain(),
               ),
             ),
           ),

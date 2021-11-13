@@ -10,14 +10,13 @@ class EditCoupon extends StatefulWidget {
   String discount;
   String coupondetail;
   bool status;
-  DocumentSnapshot documentSnapshot;
 
   EditCoupon(
       {required this.title,
         required this.discount,
         required this.expdate,
         required this.coupondetail,
-      required this.status,required this.documentSnapshot});
+      required this.status});
 
   @override
   _EditCouponState createState() => _EditCouponState();
@@ -50,11 +49,11 @@ class _EditCouponState extends State<EditCoupon> {
 
   @override
   void initState() {
-    this.titleText = widget.documentSnapshot['title'];
-    // this.detailsText = widget.coupondetail;
-    // this.discountRate = widget.discount;
-    // this.dateText = widget.expdate;
-    //this._active = widget.status;
+    this.titleText.text = widget.title;
+    this.detailsText.text = widget.coupondetail;
+    this.discountRate.text = widget.discount;
+    this.dateText.text = widget.expdate;
+    this._active = widget.status;
     super.initState();
   }
 
@@ -72,6 +71,7 @@ class _EditCouponState extends State<EditCoupon> {
             child: Column(
               children: [
                 TextFormField(
+                  enabled: false,
                   controller: titleText,
                   validator: (value){
                     if(value!.isEmpty){
@@ -156,25 +156,20 @@ class _EditCouponState extends State<EditCoupon> {
                         onPressed: (){
                           if(_formKey.currentState!.validate()){
                             EasyLoading.show(status: 'Please wait..');
-                            _services.saveCoupon(
+                            _services.updateCoupon(
                               title: titleText.text.toUpperCase(),
                               details: detailsText.text,
                               discountRate: discountRate.text,
                               expiry: _selectedDate,
                               active: _active,
                             ).then((value) {
-                              setState(() {
-                                titleText.clear();
-                                discountRate.clear();
-                                detailsText.clear();
-                                _active = false;
-                              });
-                              EasyLoading.showSuccess('Saved coupon Successfully');
+                              EasyLoading.showSuccess('Updated coupon Successfully');
+                              Navigator.pop(context);
                             });
                           }
                         },
                         child: Text(
-                          'Submit',
+                          'Update',
                           style: TextStyle(
                               color: Colors.white,fontWeight: FontWeight.bold),
                         ),
