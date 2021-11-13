@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "271687998097",
+    "project_id": "application-1c3c2",
+    "storage_bucket": "application-1c3c2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:271687998097:android:5f5f941ae40c697d39fd30",
+        "android_client_info": {
+          "package_name": "com.example.milk"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "271687998097-ume0sttf711j42qeg94fttemgb61c4po.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCfxWSXatt_WO4b8zMW8Ot57UlbrVaFJ98"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "271687998097-ume0sttf711j42qeg94fttemgb61c4po.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
