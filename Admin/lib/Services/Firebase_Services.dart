@@ -1,0 +1,144 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
+
+class FirebaseServices {
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+  CollectionReference banners = FirebaseFirestore.instance.collection('slider');
+  CollectionReference category =
+      FirebaseFirestore.instance.collection('category');
+  CollectionReference products =
+      FirebaseFirestore.instance.collection('products');
+  CollectionReference deliveryboy =
+  FirebaseFirestore.instance.collection('deliveryBoy');
+  FirebaseStorage storage = FirebaseStorage.instance;
+  CollectionReference order = FirebaseFirestore.instance.collection('orders');
+
+  Future<QuerySnapshot> getAdminCredentials() {
+    var result = FirebaseFirestore.instance.collection('Admin').get();
+    return result;
+  }
+
+  //Banner
+  Future<String> uploadBannerImageToDb(url) async {
+    String downloadUrl = await storage.ref(url).getDownloadURL();
+    if (downloadUrl != null) {
+      firestore.collection('slider').add({
+        'image': downloadUrl,
+      });
+    }
+    return downloadUrl;
+  }
+
+  deleteBannerImageFrmDb(id) async {
+    firestore.collection('slider').doc(id).delete();
+  }
+  //category
+
+  Future<String> uploadCategoryImageToDb(url, catName) async {
+    String downloadUrl = await storage.ref(url).getDownloadURL();
+    if (downloadUrl != null) {
+      category.doc(catName).set({
+        'image': downloadUrl,
+        'name': catName,
+      });
+    }
+    return downloadUrl;
+  }
+
+  //Product settings
+  Future<void> publishProduct({id}) {
+    return products
+        .doc(id)
+        .update({
+          'published': true,
+        });
+  }
+
+  Future<void> unPublishProduct({id}) {
+    return products
+        .doc(id)
+        .update({
+          'published': false,
+        });
+  }
+
+  Future<void> deleteProduct({id}) {
+    return products
+        .doc(id)
+        .delete();
+  }
+
+  //services
+  Future<void> confirmDeleteDialog({title, message, context, id}) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text(message),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: const Text('Delete'),
+              onPressed: () {
+                deleteBannerImageFrmDb(id);
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> showMyDialog({title, message, context}) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text(message),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Ok'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void>selectDeliveryMan(orderId,name,number,orderstatus){
+    var result = order.doc(orderId).update({
+      'deliverBoy':{
+        'name' : name,
+        'phone' : number,
+      },
+      'orderStatus': orderstatus,
+    });
+    return result;
+  }
+}
