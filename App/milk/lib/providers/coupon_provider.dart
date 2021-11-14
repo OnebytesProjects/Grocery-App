@@ -27,7 +27,7 @@ class CouponProvider with ChangeNotifier{
     else{
       this.document = document;
       this.expired = false;
-      this.discountrate = document.data()['discountRate'];
+      this.discountrate = double.parse('${document.data()['discountRate']}');
       notifyListeners();
     }
   }
