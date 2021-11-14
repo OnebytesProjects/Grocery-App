@@ -83,17 +83,19 @@ class AuthProvider with ChangeNotifier {
                     final User user =
                         (await _auth.signInWithCredential(phoneAuthCredentials))
                             .user;
-                    _createUser(id: user.uid, number: user.phoneNumber);
+
                     if (user != null) {
+                      print('User Exist');
                       Navigator.of(context).pop();
                       Navigator.pushReplacementNamed(context, MainScreen.id);
                     } else {
-                      print('Login Failed');
+                      print('User Does not Exist');
+                      _createUser(id: user.uid, number: user.phoneNumber);
                     }
                   } catch (e) {
                     this.error = 'Invalid OTP';
                     notifyListeners();
-                    print(e.toString());
+                    print(error.toString());
                     Navigator.of(context).pop();
                   }
                 },
