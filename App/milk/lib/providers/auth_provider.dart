@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:milk/Screens/HomeScreen/Home/Mainscreen.dart';
-import 'package:milk/services/RegistrationCheck.dart';
+import 'package:milk/services/UserRegistration.dart';
 import 'package:milk/services/user_service.dart';
 
 class AuthProvider with ChangeNotifier {
@@ -12,7 +12,7 @@ class AuthProvider with ChangeNotifier {
   String VerificationId = '';
   String error = '';
   UserServices _userServices = UserServices();
-  //late DocumentSnapshot snapshot;
+  late DocumentSnapshot snapshot;
 
   Future<void> verifyPhone(BuildContext context, String number) async {
     final PhoneVerificationCompleted verificationCompleted =
@@ -121,15 +121,16 @@ class AuthProvider with ChangeNotifier {
     });
   }
 
-  // Future<DocumentSnapshot> getUserDetails() async {
-  //   var result = await FirebaseFirestore.instance
-  //       .collection('users')
-  //       .doc(_auth.currentUser.uid)
-  //       .get();
-  //
-  //   this.snapshot = result;
-  //   notifyListeners();
-  //
-  //   return result;
-  // }
+  Future<DocumentSnapshot> getUserDetails() async {
+    var result = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(_auth.currentUser.uid)
+        .get();
+
+    this.snapshot = result;
+    notifyListeners();
+
+    return result;
+  }
+
 }

@@ -9,18 +9,19 @@ import 'package:milk/Screens/HomeScreen/Screens/ClientFeeds/About_us.dart';
 import 'package:milk/Screens/HomeScreen/Screens/DrawerContent/Calendar.dart';
 import 'package:milk/Screens/HomeScreen/Cart/Cart.dart';
 import 'package:milk/Screens/HomeScreen/Home/Home.dart';
-import 'package:milk/Screens/HomeScreen/Screens/DrawerContent/Order_History.dart';
+import 'package:milk/Screens/HomeScreen/OrderHistory/Order_History.dart';
 import 'package:milk/Screens/HomeScreen/Screens/ClientFeeds/Cancelation_and_Refund.dart';
-import 'package:milk/Screens/HomeScreen/Screens/DrawerContent/Referal.dart';
+import 'package:milk/Screens/HomeScreen/Referal/Referal.dart';
 import 'package:milk/Screens/Notifications.dart';
 import 'package:milk/Screens/SplashScreen/WelcomeScreen.dart';
 import 'package:milk/models/product_model.dart';
 import 'package:milk/providers/auth_provider.dart';
+import 'package:milk/services/UserRegistration.dart';
 import 'package:provider/provider.dart';
 import 'package:search_page/search_page.dart';
 import '../Screens/ClientFeeds/Contact_us.dart';
 import '../Screens/ClientFeeds/Terms_of_use.dart';
-import '../Screens/DrawerContent/Preference.dart';
+import '../Preference/Preference.dart';
 import '../Screens/DrawerContent/Subscription.dart';
 
 class MainScreen extends StatefulWidget {
@@ -71,9 +72,11 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var userDetails = Provider.of<AuthProvider>(context);
+     userDetails.getUserDetails();
 
-    //_username = userDetails.snapshot.data()['name'];
-    _appbarname = 'Hi,$Username';
+    _username = userDetails.snapshot.data()['name'];
+    _appbarname = 'Hi,$_username';
 
     var container;
     if (currentPage == DrawerSection.HOME) {
@@ -100,7 +103,7 @@ class _MainScreenState extends State<MainScreen> {
       container = Profile();
     }
 
-    return SafeArea(
+    return _username == 'null'? UserRegistration() :SafeArea(
       child: Scaffold(
         appBar: AppBar(
           elevation: 1.5,
@@ -287,7 +290,7 @@ class _MainScreenState extends State<MainScreen> {
                           height: 20,
                         ),
                         Text(
-                          '$Username',
+                          '$_username',
                           style: TextStyle(
                               fontSize: 18,
                               color: Colors.white,

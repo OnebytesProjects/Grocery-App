@@ -1,29 +1,22 @@
 Bug and toDo List:
 
-1.Profile Page:
--profile page not opening
--first time login
--pincode
--malefemale
+1.Profile Page& RegistrationPage:
+-Pincode&gender dropdown bug
+-check referalcode
 
-2.Preferences:
--assign to db
+2.Carousel error and initial page error
 
-3.RegisterScreen
-
-4.Carousel error
-
-
-5.Cart:
+3.Cart:
 -product not deleting
 -convenience fee view
+-Deliveryman deliveryMode Update
 
-6.Coupon pricing not changing
+4.Coupon pricing not changing
 
-7.Volume:
+5.Volume:
 -visibility
 -pricing
 
-8.Milk:
+6.Milk:
 -Date
 

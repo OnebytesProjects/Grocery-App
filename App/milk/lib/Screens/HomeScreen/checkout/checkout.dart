@@ -32,6 +32,7 @@ class _CheckoutState extends State<Checkout> {
   String payment = 'GooglePay';
   SingingCharacter? _paymentmode = SingingCharacter.Googlepay;
   String _address = '';
+  String _deliverymode = '';
   String _name = '';
   String _number = '';
   var _couponText = TextEditingController();
@@ -49,6 +50,7 @@ class _CheckoutState extends State<Checkout> {
       if (documentSnapshot.exists) {
         setState(() {
           this._address = documentSnapshot.data()['address'];
+          this._deliverymode = documentSnapshot.data()['preference'];
           this._name = documentSnapshot.data()['name'];
           this._number = documentSnapshot.data()['number'];
           //name
@@ -254,6 +256,7 @@ class _CheckoutState extends State<Checkout> {
       'name':_name,
       'number':_number,
       'address':_address,
+      'deliveryMode': _deliverymode,
       'payment':payment,
       'timestamp': DateTime.now().toString(),
       'orderStatus':'Pending',

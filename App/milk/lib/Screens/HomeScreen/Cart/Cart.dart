@@ -15,7 +15,6 @@ class Cart extends StatefulWidget {
 class _CartState extends State<Cart> {
 
   late String _docId;
-  TextEditingController _coupon = TextEditingController();
   late double carttotal;
   late double deliverycharge;
   double discount = 0.0;
@@ -30,28 +29,26 @@ class _CartState extends State<Cart> {
     cartProvider.getCartTotal();
 
     setState(() {
-      this.carttotal = cartProvider.subTotal;
-      this.deliverycharge = cartProvider.deliverycharge;
+      carttotal = cartProvider.subTotal;
+      deliverycharge = cartProvider.deliverycharge;
     });
 
     return Scaffold(
         appBar: AppBar(
-          title: Text("Cart"),
+          title: const Text("Cart"),
           backgroundColor: Colors.grey[800],
         ),
-        body: Container(
-          child: GestureDetector(
-            onTap: () {
-              FocusScope.of(context).unfocus();
-            },
-            child: ListView(
-              children: [
-                SizedBox(
-                  height: 20,
-                ),
-                CartCard(),
-              ],
-            ),
+        body: GestureDetector(
+          onTap: () {
+            FocusScope.of(context).unfocus();
+          },
+          child: ListView(
+            children: [
+              SizedBox(
+                height: 20,
+              ),
+              CartCard(),
+            ],
           ),
         ),
       bottomSheet: BillDetails(),
@@ -66,16 +63,16 @@ class _CartState extends State<Cart> {
        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
 
          if (snapshot.hasError) {
-           return Text('Something went wrong');
+           return const Text('Something went wrong');
          }
 
          if(!snapshot.hasData){
-           return Center(child: Text('Cart is Empty. Continue Shopping?'),);
+           return const Center(child: Text('Cart is Empty. Continue Shopping?'),);
          }
          return ListView(
            shrinkWrap: true,
            children: snapshot.data!.docs.map((DocumentSnapshot document) {
-             Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
+             Map<String, dynamic> data = document.data()!;
 
              int cartvalue = data['qty'];
 
@@ -94,137 +91,133 @@ class _CartState extends State<Cart> {
              });
 
              return Container(
-               child: Container(
-                 padding: EdgeInsets.all(10),
-                 width: double.infinity,
-                 height: 100,
-                 child: Row(
-                   crossAxisAlignment: CrossAxisAlignment.center,
-                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                   children: <Widget>[
-                     Container(
-                       height: 100,
-                       width: 90,
-                       child: Image.network(data['productImage']),
-                     ),
-                     SizedBox(
-                       width: 10,
-                     ),
-                     Column(
-                       children: [
-                         Text(
-                           data['productName'],
-                           style: TextStyle(fontWeight: FontWeight.bold),
-                         ),
-                         SizedBox(
-                           height: 10,
-                         ),
-                         Text(data['productVolume']),
-                         SizedBox(
-                           height: 10,
-                         ),
-                         Text(
-                           '₹'+data['sellingPrice'].toString(),
-                           style: TextStyle(fontWeight: FontWeight.bold),
-                         ),
-                       ],
-                     ),
+               padding: const EdgeInsets.all(10),
+               width: double.infinity,
+               height: 100,
+               child: Row(
+                 crossAxisAlignment: CrossAxisAlignment.center,
+                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                 children: <Widget>[
+                   Container(
+                     height: 100,
+                     width: 90,
+                     child: Image.network(data['productImage']),
+                   ),
+                   SizedBox(
+                     width: 10,
+                   ),
+                   Column(
+                     children: [
+                       Text(
+                         data['productName'],
+                         style: TextStyle(fontWeight: FontWeight.bold),
+                       ),
+                       SizedBox(
+                         height: 10,
+                       ),
+                       Text(data['productVolume']),
+                       SizedBox(
+                         height: 10,
+                       ),
+                       Text(
+                         '₹'+data['sellingPrice'].toString(),
+                         style: TextStyle(fontWeight: FontWeight.bold),
+                       ),
+                     ],
+                   ),
 
-                     Column(
-                       children: [
-                         Container(
-                             padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                             child: Container(
-                               margin: EdgeInsets.only(left: 10, right: 10),
-                               height: 50,
-                               child: Padding(
-                                 padding: const EdgeInsets.all(10.0),
-                                 child: FittedBox(
-                                   child: Row(
-                                     children: [
-                                       InkWell(
-                                         onTap: (){
-                                           updating = true;
-                                           if(cartvalue>=1){
+                   Column(
+                     children: [
+                       Container(
+                           padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                           child: Container(
+                             margin: EdgeInsets.only(left: 10, right: 10),
+                             height: 50,
+                             child: Padding(
+                               padding: const EdgeInsets.all(10.0),
+                               child: FittedBox(
+                                 child: Row(
+                                   children: [
+                                     InkWell(
+                                       onTap: (){
+                                         updating = true;
+                                         if(cartvalue>=1){
+                                           setState(() {
+                                             cartvalue -=1;
+                                           });
+                                           var total = cartvalue * data['sellingPrice'];
+                                           _cart.updateCartqty(docId: _docId,qty: cartvalue,total: total).then((value){
                                              setState(() {
-                                               cartvalue -=1;
+                                               updating = false;
                                              });
-                                             var total = cartvalue * data['sellingPrice'];
-                                             _cart.updateCartqty(docId: _docId,qty: cartvalue,total: total).then((value){
-                                               setState(() {
-                                                 updating = false;
-                                               });
-                                             });
-                                           }
-                                         },
-                                         child: Container(
-                                           decoration: BoxDecoration(
-                                               borderRadius: BorderRadius.circular(50),
-                                               border: Border.all(
-                                                 color: Colors.orange,
-                                               )),
-                                           child: Padding(
-                                             padding: EdgeInsets.all(8.0),
-                                             child: Icon(Icons.remove),
-                                           ),
-                                         ),
-                                       ),
-                                       Container(
+                                           });
+                                         }
+                                       },
+                                       child: Container(
+                                         decoration: BoxDecoration(
+                                             borderRadius: BorderRadius.circular(50),
+                                             border: Border.all(
+                                               color: Colors.orange,
+                                             )),
                                          child: Padding(
-                                           padding:
-                                           EdgeInsets.only(left: 20, right: 20, top: 8, bottom: 8),
-                                           child: Text(cartvalue.toString()),
+                                           padding: EdgeInsets.all(8.0),
+                                           child: Icon(Icons.remove),
                                          ),
                                        ),
-                                       InkWell(
-                                         onTap: (){
-                                           updating = true;
-                                           if(cartvalue>=0){
+                                     ),
+                                     Padding(
+                                       padding:
+                                       EdgeInsets.only(left: 20, right: 20, top: 8, bottom: 8),
+                                       child: Text(cartvalue.toString()),
+                                     ),
+                                     InkWell(
+                                       onTap: (){
+                                         updating = true;
+                                         if(cartvalue>=0){
+                                           setState(() {
+                                             cartvalue +=1;
+                                           });
+                                           var total = cartvalue * data['sellingPrice'];
+                                           _cart.updateCartqty(docId: _docId,qty: cartvalue,total: total).then((value){
                                              setState(() {
-                                               cartvalue +=1;
+                                               updating = false;
                                              });
-                                             var total = cartvalue * data['sellingPrice'];
-                                             _cart.updateCartqty(docId: _docId,qty: cartvalue,total: total).then((value){
-                                               setState(() {
-                                                 updating = false;
-                                               });
-                                             });
-                                           }
-                                           print('add');
-                                         },
-                                         child: Container(
-                                           decoration: BoxDecoration(
-                                               borderRadius: BorderRadius.circular(50),
-                                               border: Border.all(
-                                                 color: Colors.orange,
-                                               )),
-                                           child: Padding(
-                                             padding: EdgeInsets.all(8.0),
-                                             child: Icon(Icons.add),
-                                           ),
+                                           });
+                                         }
+                                         print('add');
+                                       },
+                                       child: Container(
+                                         decoration: BoxDecoration(
+                                             borderRadius: BorderRadius.circular(50),
+                                             border: Border.all(
+                                               color: Colors.orange,
+                                             )),
+                                         child: Padding(
+                                           padding: EdgeInsets.all(8.0),
+                                           child: Icon(Icons.add),
                                          ),
                                        ),
-                                     ],
-                                   ),
+                                     ),
+                                   ],
                                  ),
                                ),
-                             )),
-                         InkWell(
-                           onTap: (){
-                             print('product removed');
-                             _cart.removeFromCart(docId: _docId);
-                           },
-                           child: Container(
-                               height: 30,
-                               width: 60,
-                               color: Colors.orange[300],
-                               child: Center(child: Text('Remove',style: TextStyle(fontSize: 10),),)
-                           ),
+                             ),
+                           )),
+                       InkWell(
+                         onTap: (){
+                           //print('product removed');
+                           _cart.removeFromCart(docId: _docId);
+                         },
+                         child: Container(
+                             height: 30,
+                             width: 60,
+                             color: Colors.orange[300],
+                             child: const Center(child: Text('Remove',style: TextStyle(fontSize: 10),),)
                          ),
-                       ],
-                     )
-                   ],
-                 ),
+                       ),
+                     ],
+                   )
+                 ],
                ),
              );
            }).toList(),
@@ -237,7 +230,7 @@ class _CartState extends State<Cart> {
     return Container(
       width: double.infinity,
       height: 80,
-      padding: EdgeInsets.all(8),
+      padding: const EdgeInsets.all(8),
       child: Card(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -251,8 +244,8 @@ class _CartState extends State<Cart> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Total Value",style: TextStyle(fontSize: 10,color: Colors.grey),),
-                    Text('₹ '+carttotal.toString(),style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15),),
+                    const Text("Total Value",style: TextStyle(fontSize: 10,color: Colors.grey),),
+                    Text('₹ '+carttotal.toString(),style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 15),),
                   ],
                 ),
               ),
@@ -261,16 +254,16 @@ class _CartState extends State<Cart> {
                 width: 180,
                 child: RaisedButton(
                   onPressed: () {
-                    print("proceed to buy");
+                    // print("proceed to buy");
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => Checkout(cartValue: carttotal,delivryCharge: deliverycharge,)),
                     );
                   },
                   color: Colors.orange[300],
-                  padding: EdgeInsets.symmetric(horizontal: 50),
+                  padding: const EdgeInsets.symmetric(horizontal: 50),
                   elevation: 2,
-                  child: Text(
+                  child: const Text(
                     "Continue",
                     style: TextStyle(
                         fontSize: 14,

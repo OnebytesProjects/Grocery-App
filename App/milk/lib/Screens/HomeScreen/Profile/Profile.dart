@@ -8,9 +8,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:menu_button/menu_button.dart';
 import 'package:milk/Screens/HomeScreen/Home/Mainscreen.dart';
-import 'package:milk/providers/auth_provider.dart';
 import 'package:milk/services/user_service.dart';
-import 'package:provider/provider.dart';
 
 class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
@@ -20,9 +18,18 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  String dropdownValue = 'Choose Region';
+  String dropdownValueGender = 'Choose Gender';
+  String dropdownValue = 'Choose Pincode';
+
+  final List<String> GenderList = <String>[
+    'Choose Gender',
+    'Male',
+    'Female',
+    'Not Prefered to say'
+  ];
+
   final List<String> regionList = <String>[
-    'Choose Region',
+    'Choose Pincode',
     '638001',
     '638002',
     '638003',
@@ -34,7 +41,7 @@ class _ProfileState extends State<Profile> {
   UserServices _user = UserServices();
   TextEditingController _name = TextEditingController();
   TextEditingController _mobile = TextEditingController();
-  TextEditingController _gender = TextEditingController();
+  //TextEditingController _gender = TextEditingController();
   TextEditingController _address = TextEditingController();
   TextEditingController _referral = TextEditingController();
   TextEditingController _email = TextEditingController();
@@ -81,9 +88,9 @@ class _ProfileState extends State<Profile> {
           .doc(user.uid)
           .update({
         'name': _name.text,
-        'gender': _gender.text,
+        'gender': dropdownValueGender,
+        'address': _address.text+dropdownValue,
         'zip': dropdownValue,
-        'address': _address.text,
         'referral': _referral.text,
         'mail': _email.text,
       });
@@ -186,15 +193,43 @@ class _ProfileState extends State<Profile> {
                                 "Full Name", "Your Name", true, _name),
                             buildTextField(
                                 "Mobile Number", "number", false, _mobile),
-                            buildTextField("Gender", "Gender", true, _gender),
-                            //dropdown
+                            //buildTextField("Gender", "Gender", true, _gender),
+                            //dropdown-gender
                             Container(
                                 width: double.infinity,
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      "Enter Region",
+                                      "Choose Gender",
+                                      style: TextStyle(
+                                          fontSize: 13, color: Colors.grey),
+                                    ),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Row(
+                                      crossAxisAlignment:
+                                      CrossAxisAlignment.center,
+                                      children: [
+                                        DropDownField(),
+                                      ],
+                                    ),
+                                  ],
+                                )),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            buildTextField(
+                                "Address", "Enter here", true, _address),
+                            //dropdown-pincode
+                            Container(
+                                width: double.infinity,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Enter Pincode",
                                       style: TextStyle(
                                           fontSize: 13, color: Colors.grey),
                                     ),
@@ -214,8 +249,6 @@ class _ProfileState extends State<Profile> {
                             SizedBox(
                               height: 20,
                             ),
-                            buildTextField(
-                                "Address", "Enter here", true, _address),
                             buildTextField(
                                 "Referral Code", "Enter here", true, _referral),
                             buildTextField("Email", "Enter here", true, _email),
@@ -351,31 +384,31 @@ class _ProfileState extends State<Profile> {
       ),
     );
   }
-
-  Widget DropDownField() {
+  Widget DropDownField(){
     return Container(
       width: 300,
-      child: MenuButton<String>(
-        child: normalChildButton(),
-        items: regionList,
-        itemBuilder: (String value) => Container(
-          height: 40,
-          width: double.infinity,
-          alignment: Alignment.centerLeft,
-          padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 16),
-          child: Text(value),
+      child: DropdownButton<String>(
+        value: dropdownValueGender,
+        //icon: const Icon(Icons.arrow_downward,),
+        alignment: Alignment.topRight,
+        iconSize: 24,
+        elevation: 16,
+        style: const TextStyle(fontSize: 13, color: Colors.grey),
+        underline: Container(
+          height: 1,
+          color: Colors.grey,
         ),
-        toggledChild: Container(
-          child: normalChildButton(),
-        ),
-        onItemSelected: (String value) {
+        onChanged: (String? newValue) {
           setState(() {
-            dropdownValue = value;
+            dropdownValueGender = newValue!;
           });
         },
-        onMenuButtonToggle: (bool isToggle) {
-          print(isToggle);
-        },
+        items: GenderList.map<DropdownMenuItem<String>>((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList(),
       ),
     );
   }
