@@ -12,7 +12,7 @@ class AuthProvider with ChangeNotifier {
   String VerificationId = '';
   String error = '';
   UserServices _userServices = UserServices();
-  late DocumentSnapshot snapshot;
+  //late DocumentSnapshot snapshot;
 
   Future<void> verifyPhone(BuildContext context, String number) async {
     final PhoneVerificationCompleted verificationCompleted =
@@ -45,7 +45,6 @@ class AuthProvider with ChangeNotifier {
   }
 
   Future<dynamic> smsOtpDialog(BuildContext context, String number) {
-
     return showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -83,7 +82,6 @@ class AuthProvider with ChangeNotifier {
                     final User user =
                         (await _auth.signInWithCredential(phoneAuthCredentials))
                             .user;
-
                     if (user != null) {
                       print('User Exist');
                       Navigator.of(context).pop();
@@ -107,6 +105,7 @@ class AuthProvider with ChangeNotifier {
   }
 
   void _createUser({required String id, required String number}) {
+    var referal = id.substring(0,6);
     _userServices.createUserData({
       'id': id,
       'number': number,
@@ -115,20 +114,22 @@ class AuthProvider with ChangeNotifier {
       'gender': 'null',
       'zip': 'null',
       'address': 'null',
-      'referral': 'null',
+      'referal': referal,
       'mail': 'null',
-      'myreferral': 'null',
-      'preference': 'null',
-
+      'refered': 'null',
+      'preference': 'Ring Door Bell',
     });
   }
 
-  Future<DocumentSnapshot>getUserDetails()async{
-    var result = await FirebaseFirestore.instance.collection('users').doc(_auth.currentUser.uid).get();
-
-    this.snapshot = result;
-    notifyListeners();
-
-    return result;
-  }
+  // Future<DocumentSnapshot> getUserDetails() async {
+  //   var result = await FirebaseFirestore.instance
+  //       .collection('users')
+  //       .doc(_auth.currentUser.uid)
+  //       .get();
+  //
+  //   this.snapshot = result;
+  //   notifyListeners();
+  //
+  //   return result;
+  // }
 }

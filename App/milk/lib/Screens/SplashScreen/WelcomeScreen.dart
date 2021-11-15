@@ -102,25 +102,95 @@ class WelcomeScreen extends StatelessWidget {
         padding: const EdgeInsets.all(20.0),
         child: Column(
           children: [
-            Expanded(child: OnBoard()),
-            SizedBox(
-              height: 20,
-            ),
-            Text("Ready To Order?"),
-            SizedBox(
-              height: 20,
-            ),
-            FlatButton(
-              color: Colors.orange[300],
-              child: Text("Login"),
-              onPressed: () {
-                BottomSheet(context);
-              },
-            ),
-            SizedBox(
-              height: 20,
-            ),
+            Expanded(
+                child: Container(
+                  margin: EdgeInsets.fromLTRB(50, 10, 50, 100),
+                  child: Image.asset("images/splscrn.png"),
+                )),
+            Text("Your Content"),
           ],
+        )
+
+      ),
+      bottomSheet: Card(
+        child: SizedBox(
+          height: 250,
+          child: StatefulBuilder(builder: (context, StateSetter myState) {
+            return Container(
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Visibility(
+                      visible: auth.error == 'Invalid OTP' ? true : false,
+                      child: Container(
+                        child: Column(
+                          children: [
+                            Text(auth.error),
+                            SizedBox(height: 3),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Text(
+                      'LOGIN',
+                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                    Text('Enter your mobile number',
+                        style: TextStyle(fontSize: 12)),
+                    SizedBox(
+                      height: 30,
+                    ),
+                    TextField(
+                      decoration: InputDecoration(
+                        prefixText: '+91',
+                        labelText: '10 digit number',
+                      ),
+                      autofocus: true,
+                      keyboardType: TextInputType.phone,
+                      maxLength: 10,
+                      controller: _phoneNumberController,
+                      onChanged: (value) {
+                        if (value.length == 10) {
+                          myState(() {
+                            _validmobilenumber = true;
+                          });
+                        } else {
+                          myState(() {
+                            _validmobilenumber = false;
+                          });
+                        }
+                      },
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                            child: AbsorbPointer(
+                              absorbing: _validmobilenumber ? false : true,
+                              child: FlatButton(
+                                  onPressed: () {
+                                    String number =
+                                        "+91${_phoneNumberController.text}";
+                                    auth.verifyPhone(context, number).then((value) {
+                                      _phoneNumberController.clear();
+                                    });
+                                  },
+                                  child: Text('Proceed'),
+                                  color: _validmobilenumber
+                                      ? Colors.orange[300]
+                                      : Colors.grey),
+                            ))
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            );
+          }),
         ),
       ),
     );

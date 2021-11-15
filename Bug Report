@@ -1,7 +1,7 @@
 Bug and toDo List:
 
 1.Profile Page:
--userlogin
+-profile page not opening
 -first time login
 -pincode
 -malefemale
@@ -9,25 +9,21 @@ Bug and toDo List:
 2.Preferences:
 -assign to db
 
-3.Cart:
+3.RegisterScreen
+
+4.Carousel error
+
+
+5.Cart:
 -product not deleting
 -convenience fee view
 
-4.Volume:
+6.Coupon pricing not changing
+
+7.Volume:
 -visibility
 -pricing
 
-5.Milk:
+8.Milk:
 -Date
 
-6.Carousel
-
-7.Opening Snapshot Error
-
-8.Exit on Back
-
-9.Published product display
-
-10.New referal code on creation
-
-11.Coupon pricing not changing

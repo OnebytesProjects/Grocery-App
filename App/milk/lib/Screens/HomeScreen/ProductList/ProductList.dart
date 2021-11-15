@@ -17,7 +17,7 @@ class _ProductListState extends State<ProductList> {
   @override
   Widget build(BuildContext context) {
 
-    final Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance.collection('products').where('category.mainCategory',isEqualTo:widget.condition).snapshots();
+    final Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance.collection('products').where('category.mainCategory',isEqualTo:widget.condition).where('published',isEqualTo:true).snapshots();
 
     return StreamBuilder<QuerySnapshot>(
         stream: _usersStream,

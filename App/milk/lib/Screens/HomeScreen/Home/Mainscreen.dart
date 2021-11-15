@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:milk/Screens/HomeScreen/Product/ProductScreen.dart';
 import 'package:milk/Screens/HomeScreen/Profile/Profile.dart';
 import 'package:milk/Screens/HomeScreen/Screens/ClientFeeds/About_us.dart';
@@ -31,6 +32,8 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   static List<Product> product = [];
+  FirebaseAuth _auth = FirebaseAuth.instance;
+  String Username = '';
 
   @override
   void initState() {
@@ -41,17 +44,26 @@ class _MainScreenState extends State<MainScreen> {
       querySnapshot.docs.forEach((doc) {
         setState(() {
           product.add(Product(
-            productName:doc['productName'] ,
-            category: doc['category']['mainCategory'],
-            image: doc['productImage'],
-            snapshot: doc
-          ));
+              productName: doc['productName'],
+              category: doc['category']['mainCategory'],
+              image: doc['productImage'],
+              snapshot: doc));
         });
       });
     });
+
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(_auth.currentUser.uid)
+        .get()
+        .then((DocumentSnapshot doc) {
+      setState(() {
+        this.Username = doc['name'];
+      });
+    });
+
     super.initState();
   }
-
 
   var currentPage = DrawerSection.HOME;
   String _username = '';
@@ -59,11 +71,9 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var userDetails = Provider.of<AuthProvider>(context);
-    userDetails.getUserDetails();
 
-    _username = userDetails.snapshot.data()['name'];
-    _appbarname = 'Hi,$_username';
+    //_username = userDetails.snapshot.data()['name'];
+    _appbarname = 'Hi,$Username';
 
     var container;
     if (currentPage == DrawerSection.HOME) {
@@ -95,12 +105,21 @@ class _MainScreenState extends State<MainScreen> {
         appBar: AppBar(
           elevation: 1.5,
           backgroundColor: Colors.grey[800],
-          title: Text(_appbarname,style: TextStyle(fontSize: 15,fontStyle: FontStyle.italic),),
+          title: Text(
+            _appbarname,
+            style: TextStyle(fontSize: 15, fontStyle: FontStyle.italic),
+          ),
           leading: Builder(
             builder: (BuildContext context) {
               return IconButton(
-                icon:  Image.asset('images/drawericon.png',height: 25,width: 34,),
-                onPressed: () { Scaffold.of(context).openDrawer(); },
+                icon: Image.asset(
+                  'images/drawericon.png',
+                  height: 25,
+                  width: 34,
+                ),
+                onPressed: () {
+                  Scaffold.of(context).openDrawer();
+                },
               );
             },
           ),
@@ -125,17 +144,20 @@ class _MainScreenState extends State<MainScreen> {
                       products.category,
                     ],
                     builder: (products) => InkWell(
-                      onTap: (){
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ProductScreen(pname: products.productName,)),
-                          );
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ProductScreen(
+                                    pname: products.productName,
+                                  )),
+                        );
                       },
                       child: Container(
                         decoration: BoxDecoration(
                           border: Border(
-                            bottom:BorderSide(width: 2.0, color: Colors.black45),
+                            bottom:
+                                BorderSide(width: 2.0, color: Colors.black45),
                           ),
                         ),
                         padding: EdgeInsets.all(10),
@@ -171,7 +193,6 @@ class _MainScreenState extends State<MainScreen> {
                 builder: (BuildContext context) => Notifications(),
               ),
             ),
-
             IconButton(
               icon: Icon(Icons.shopping_cart),
               onPressed: () {
@@ -187,7 +208,6 @@ class _MainScreenState extends State<MainScreen> {
           ],
         ),
         drawer: Drawer(
-
           child: SingleChildScrollView(
             child: Container(
               child: Column(
@@ -249,7 +269,7 @@ class _MainScreenState extends State<MainScreen> {
                           fit: BoxFit.fill),
                     ),
                   ),
-                  onTap: (){
+                  onTap: () {
                     Navigator.pop(context);
                     currentPage = DrawerSection.PROFILE;
                   },
@@ -263,26 +283,29 @@ class _MainScreenState extends State<MainScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        SizedBox(height: 20,),
+                        SizedBox(
+                          height: 20,
+                        ),
                         Text(
-                            '$_username',
-                            style: TextStyle(
-                                fontSize: 18,
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
-                          ),
+                          '$Username',
+                          style: TextStyle(
+                              fontSize: 18,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold),
+                        ),
                         Row(
                           children: [
                             Text(
                               'Edit Profile',
-                              style: TextStyle(fontSize: 10, color: Colors.white),
+                              style:
+                                  TextStyle(fontSize: 10, color: Colors.white),
                             ),
                             IconButton(
                               icon: Icon(
-                            Icons.edit,
-                            color: Colors.white,
+                                Icons.edit,
+                                color: Colors.white,
                               ),
-                               onPressed: null,
+                              onPressed: null,
                               // () {
                               //   Navigator.pop(context);
                               //   currentPage = DrawerSection.PROFILE;
@@ -293,7 +316,7 @@ class _MainScreenState extends State<MainScreen> {
                       ],
                     ),
                   ),
-                  onTap: (){
+                  onTap: () {
                     Navigator.pop(context);
                     currentPage = DrawerSection.PROFILE;
                   },
@@ -305,7 +328,6 @@ class _MainScreenState extends State<MainScreen> {
       ),
     );
   }
-
 
   Widget DrawerList() {
     return Container(

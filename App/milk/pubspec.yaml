@@ -48,6 +48,7 @@ dependencies:
   toggle_switch: ^1.2.0
   intl:
   search_page: ^2.0.0+1
+  fluttertoast: ^8.0.8
 
 dev_dependencies:
   flutter_test:

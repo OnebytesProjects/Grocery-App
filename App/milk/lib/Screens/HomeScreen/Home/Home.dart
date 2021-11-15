@@ -1,8 +1,8 @@
 import 'dart:async';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:milk/Screens/HomeScreen/ProductList/ProductList.dart';
 import 'package:milk/services/product_service.dart';
 
@@ -12,6 +12,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
+
   var _productList = 'Dairy Products';
   //Stream function
   late Stream slides;
@@ -29,7 +30,6 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
 
   @override
   void initState() {
-    // TODO: implement initState
     _queryDb();
 
     //Start at the controller and set the time to switch pages
@@ -56,61 +56,80 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   @override
   void dispose() {
     _animationController.dispose();
+    //_pcontroller.dispose();
     super.dispose();
   }
+  DateTime timeBackPressed = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
     _animationController.forward(); //Start controller with widget
     //print(_nextPage.value);
 
-    return Scaffold(
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.all(5),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                //carousel
-                Container(
-                  width: double.infinity,
-                  height: 175,
-                  child: CarouselView(),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Text(
-                  "Categories",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                //categories
-                Container(width: double.infinity,
-                    height: 130,
-                    child: Category()),
-                SizedBox(
-                  height: 10,
-                ),
-                Text(
-                  "Products",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                //products
-                Container(width: double.infinity,
-                    height: 480,
-                    child: ProductList(
-                      condition: _productList,
-                    )),
-              ],
+    return WillPopScope(
+      onWillPop: ()async{
+        final difference = DateTime.now().difference(timeBackPressed);
+        final isExitWarning = difference >= Duration(seconds: 2);
+        timeBackPressed = DateTime.now();
+
+        if(isExitWarning){
+          final message = 'Press Back Again To Exit.';
+          Fluttertoast.showToast(msg: message,fontSize: 18);
+          return false;
+        }else{
+          Fluttertoast.cancel();
+          return true;
+        }
+
+      },
+      child: Scaffold(
+          body: SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.all(5),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  //carousel
+                  Container(
+                    width: double.infinity,
+                    height: 175,
+                    child: CarouselView(),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    "Categories",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  //categories
+                  Container(width: double.infinity,
+                      height: 130,
+                      child: Category()),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    "Products",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  //products
+                  Container(width: double.infinity,
+                      height: 480,
+                      child: ProductList(
+                        condition: _productList,
+                      )),
+                ],
+              ),
             ),
-          ),
-        ));
+          )),
+    );
   }
 
   //Carousel
@@ -151,7 +170,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   //Categories
 
   Widget Category() {
-    final Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance.collection('users').snapshots();
+    //final Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance.collection('users').snapshots();
     ProductService _services = ProductService();
     return FutureBuilder(
         future: _services.category.get(),
