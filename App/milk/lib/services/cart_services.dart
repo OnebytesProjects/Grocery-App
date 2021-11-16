@@ -7,7 +7,7 @@ class CartService{
   CollectionReference cart = FirebaseFirestore.instance.collection('cart');
   User user = FirebaseAuth.instance.currentUser;
 
-  Future<void>addToCart({data, qty, volume,checkbox,total}){
+  Future<void>addToCart({data, qty, volume,total}){
     cart.doc(user.uid).set({
       'user':user.uid,
     });
@@ -18,7 +18,6 @@ class CartService{
       'productVolume' : volume,
       'sellingPrice' : data['sellingPrice'],
       'qty' : qty,
-      'checkbox':checkbox,
       'total':total,
     });
   }

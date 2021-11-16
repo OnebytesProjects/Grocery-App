@@ -91,9 +91,14 @@ class _CartState extends State<Cart> {
              });
 
              return Container(
+               decoration: BoxDecoration(
+                 border: Border(
+                   bottom:BorderSide(width: 2.0, color: Colors.black45),
+                 ),
+               ),
                padding: const EdgeInsets.all(10),
                width: double.infinity,
-               height: 100,
+               height: 102,
                child: Row(
                  crossAxisAlignment: CrossAxisAlignment.center,
                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -120,7 +125,7 @@ class _CartState extends State<Cart> {
                          height: 10,
                        ),
                        Text(
-                         '₹'+data['sellingPrice'].toString(),
+                         '₹'+data['total'].toString(),
                          style: TextStyle(fontWeight: FontWeight.bold),
                        ),
                      ],
@@ -206,7 +211,8 @@ class _CartState extends State<Cart> {
                        InkWell(
                          onTap: (){
                            //print('product removed');
-                           _cart.removeFromCart(docId: _docId);
+                           //_cart.removeFromCart(docId: _docId);
+                           print(_docId);
                          },
                          child: Container(
                              height: 30,
@@ -228,53 +234,69 @@ class _CartState extends State<Cart> {
 
   Widget BillDetails() {
     return Container(
+      decoration: BoxDecoration(
+        border: Border(
+          top:BorderSide(width: 2.0, color: Colors.black45),
+        ),
+      ),
       width: double.infinity,
       height: 80,
       padding: const EdgeInsets.all(8),
-      child: Card(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Container(
-                height: 80,
-                width: 100,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text("Total Value",style: TextStyle(fontSize: 10,color: Colors.grey),),
-                    Text('₹ '+carttotal.toString(),style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 15),),
-                  ],
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Container(
+              height: 80,
+              width: 100,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text("Total Value",style: TextStyle(fontSize: 10,color: Colors.grey),),
+                  Text('₹ '+carttotal.toString(),style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 15),),
+                  SizedBox(height: 1,),
+                  GestureDetector(
+                      onTap: (){
+                        showModalBottomSheet(context: context, builder: (context){
+                          return Column(
+                            children: [
+                              Text("data"),
+                              Text("data"),
+                            ],
+                          );
+                        });
+                      },
+                      child: const Text("Convenience fee",style: TextStyle(fontSize: 10,color: Colors.grey),)),
+                ],
+              ),
+            ),
+            Container(
+              height: 80,
+              width: 180,
+              child: RaisedButton(
+                onPressed: () {
+                  // print("proceed to buy");
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Checkout(cartValue: carttotal,delivryCharge: deliverycharge,)),
+                  );
+                },
+                color: Colors.orange[300],
+                padding: const EdgeInsets.symmetric(horizontal: 50),
+                elevation: 2,
+                child: const Text(
+                  "Continue",
+                  style: TextStyle(
+                      fontSize: 14,
+                      letterSpacing: 2.2,
+                      color: Colors.black),
                 ),
               ),
-              Container(
-                height: 80,
-                width: 180,
-                child: RaisedButton(
-                  onPressed: () {
-                    // print("proceed to buy");
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => Checkout(cartValue: carttotal,delivryCharge: deliverycharge,)),
-                    );
-                  },
-                  color: Colors.orange[300],
-                  padding: const EdgeInsets.symmetric(horizontal: 50),
-                  elevation: 2,
-                  child: const Text(
-                    "Continue",
-                    style: TextStyle(
-                        fontSize: 14,
-                        letterSpacing: 2.2,
-                        color: Colors.black),
-                  ),
-                ),
-              ),
+            ),
 
-            ],
-          ),
+          ],
         ),
       ),
     );

@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:image_picker/image_picker.dart';
 
-class ProductProvider with ChangeNotifier{
+class ProductProvider with ChangeNotifier {
   String selectedCategory = 'Not selected';
   String selectedSubCategory = 'Not selected';
   String categoryImage = '';
@@ -18,44 +18,48 @@ class ProductProvider with ChangeNotifier{
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   FirebaseStorage storage = FirebaseStorage.instance;
 
-
-  selectCategory(mainCategory,categoryImage){
+  selectCategory(mainCategory, categoryImage) {
     this.selectedCategory = mainCategory;
     this.categoryImage = categoryImage;
     notifyListeners();
   }
 
-  selectSubCategory(selected){
+  selectSubCategory(selected) {
     this.selectedSubCategory = selected;
     notifyListeners();
   }
 
-  Future getProductImage()async{
+  Future getProductImage() async {
     ImagePicker picker = ImagePicker();
     PickedFile? pickedfile = await picker.getImage(source: ImageSource.gallery);
-    if(pickedfile != null){
+    if (pickedfile != null) {
       this.image = File(pickedfile.path);
       notifyListeners();
-    }else{
+    } else {
       this.pickError = 'No Image Selected';
       print('No image Selected');
       notifyListeners();
     }
     return this.image;
   }
-  
-  alertDialog({context, title, content}){
-    return showCupertinoDialog(context: context, builder: (BuildContext context){
-      return CupertinoAlertDialog(
-        title: Text(title),
-        content: Text(content),
-        actions: [
-          CupertinoDialogAction(child: Text('OK'),onPressed: (){
-            Navigator.pop(context);
-          },)
-        ],
-      );
-    });
+
+  alertDialog({context, title, content}) {
+    return showCupertinoDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return CupertinoAlertDialog(
+            title: Text(title),
+            content: Text(content),
+            actions: [
+              CupertinoDialogAction(
+                child: Text('OK'),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              )
+            ],
+          );
+        });
   }
 
   // getShopName(shopName){
@@ -65,11 +69,11 @@ class ProductProvider with ChangeNotifier{
 
   //upload product image
 
-  Future<String>uploadproductImageToDb(url)async{
+  Future<String> uploadproductImageToDb(url) async {
     String downloadUrl = await storage.ref(url).getDownloadURL();
-    if(downloadUrl!=null){
+    if (downloadUrl != null) {
       firestore.collection('slider').add({
-        'image':downloadUrl,
+        'image': downloadUrl,
       });
     }
     this.productUrl = downloadUrl;
@@ -78,11 +82,72 @@ class ProductProvider with ChangeNotifier{
 
   //product data to firestore
 
-  Future<void>?saveProductDatatoDb(
+  Future<void>? saveProductDatatoDb(
       {productName,
       brandName,
       sellingPrice,
       comparedPrice,
+      productDescription,
+      productQuantity,
+      v1,
+      v2,
+      v3,
+      v4,
+      p1,
+      p2,
+      p3,
+      p4,
+      maxqty,
+      minQty,
+      context}) {
+    var timeStamp = DateTime.now().microsecondsSinceEpoch;
+    CollectionReference _products =
+        FirebaseFirestore.instance.collection('products');
+    try {
+      _products.doc(timeStamp.toString()).set({
+        'productName': productName,
+        'brandName': brandName,
+        'sellingPrice': sellingPrice,
+        'ProductQuantity': productQuantity,
+        'ComparedPrice': comparedPrice,
+        'productDescription': productDescription,
+        'category': {
+          'mainCategory': this.selectedCategory,
+          'subCategory': this.selectedSubCategory,
+          'categoryImage': this.categoryImage
+        },
+        'v1': v1,
+        'v2': v2,
+        'v3': v3,
+        'v4': v4,
+        'p1': p1,
+        'p2': p2,
+        'p3': p3,
+        'p4': p4,
+        'published': false,
+        'productId': timeStamp,
+        'Inventory_max_qty': maxqty,
+        'Inventory_min_qty': minQty,
+        'productid': timeStamp.toString(),
+        'productImage': this.productUrl,
+      });
+      this.alertDialog(
+          context: context,
+          title: 'Save Data',
+          content: 'Product Saved Successfully');
+    } catch (e) {
+      this.alertDialog(
+          context: context, title: 'Save Data', content: '${e.toString()}');
+    }
+    return null;
+  }
+
+  Future<String>? updateProductDatatoDb(
+      {productName,
+      brandName,
+      sellingPrice,
+      comparedPrice,
+      productQuantity,
       productDescription,
       v1,
       v2,
@@ -90,71 +155,34 @@ class ProductProvider with ChangeNotifier{
       v4,
       qty,
       minQty,
-      context}){
-    var timeStamp = DateTime.now().microsecondsSinceEpoch;
-    CollectionReference _products = FirebaseFirestore.instance.collection('products');
-    try{
-      _products.doc(timeStamp.toString()).set({
-        'productName' : productName,
-        'brandName' : brandName,
-        'sellingPrice' : sellingPrice,
-        'ComparedPrice' : comparedPrice,
-        'productDescription' : productDescription,
-        'category' :{'mainCategory' : this.selectedCategory, 'subCategory' : this.selectedSubCategory,'categoryImage':this.categoryImage},
-        'v1' : v1,
-        'v2' : v2,
-        'v3' : v3,
-        'v4' : v4,
-        'published' : false,
-        'productId' : timeStamp,
-        'qty' : qty,
-        'min_qty' : minQty,
-        'productid' : timeStamp.toString(),
-        'productImage' : this.productUrl,
-      });
-      this.alertDialog(context: context,title: 'Save Data',content: 'Product Saved Successfully');
-    }catch(e){
-      this.alertDialog(context: context,title: 'Save Data',content: '${e.toString()}');
-    }
-    return null;
-  }
-
-  Future<String>?updateProductDatatoDb(
-      {productName,
-        brandName,
-        sellingPrice,
-        comparedPrice,
-        productDescription,
-        v1,
-        v2,
-        v3,
-        v4,
-        qty,
-        minQty,
-        productid,
-        context}){
-    CollectionReference _products = FirebaseFirestore.instance.collection('products');
-    try{
+      productid,
+      context}) {
+    CollectionReference _products =
+        FirebaseFirestore.instance.collection('products');
+    try {
       _products.doc(productid).update({
-        'productName' : productName,
-        'brandName' : brandName,
-        'sellingPrice' : sellingPrice,
-        'ComparedPrice' : comparedPrice,
-        'productDescription' : productDescription,
-        'v1' : v1,
-        'v2' : v2,
-        'v3' : v3,
-        'v4' : v4,
-        'productId' : productid,
-        'qty' : qty,
-        'min_qty' : minQty,
+        'productName': productName,
+        'brandName': brandName,
+        'sellingPrice': sellingPrice,
+        'ComparedPrice': comparedPrice,
+        'ProductQuantity': productQuantity,
+        'productDescription': productDescription,
+        'v1': v1,
+        'v2': v2,
+        'v3': v3,
+        'v4': v4,
+        'productId': productid,
+        'qty': qty,
+        'min_qty': minQty,
       });
-      this.alertDialog(context: context,title: 'Save Data',content: 'Product Saved Successfully');
+      this.alertDialog(
+          context: context,
+          title: 'Save Data',
+          content: 'Product Saved Successfully');
       EasyLoading.dismiss();
-    }catch(e){
-      this.alertDialog(context: context,title: 'Save Data',content: '${e.toString()}');
+    } catch (e) {
+      this.alertDialog(
+          context: context, title: 'Save Data', content: '${e.toString()}');
     }
-
   }
-
 }

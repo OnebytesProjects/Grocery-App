@@ -85,7 +85,6 @@ class UnpublishedProducts extends StatelessWidget {
           }
           if(value == 'preview/edit'){
             print(value);
-            //Navigator.push(context, MaterialPageRoute(builder: (context)=>EditViewProduct(productId: data['productid'])));
             Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>EditViewProduct(productId: data['productid'],productImage: data['productImage'],)));
           }
           if(value == 'delete'){

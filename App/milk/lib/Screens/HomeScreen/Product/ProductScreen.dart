@@ -25,11 +25,16 @@ class _ProductScreenState extends State<ProductScreen> {
   bool isChecked3 = false;
   bool isChecked4 = false;
   bool _cartbutton = false;
-  bool _itemexist = false;
+  bool _v1visible = false;
+  bool _v2visible = false;
+  bool _v3visible = false;
+  bool _v4visible = false;
   int _qty = 0;
   late String _docId;
-  late String _checkbox;
   String volume = 'nil';
+  //
+  double chosenPrice = 0.0;
+  bool _chosenprice = false;
   var total;
 
   CartService _cart = CartService();
@@ -52,31 +57,53 @@ class _ProductScreenState extends State<ProductScreen> {
               snapshot: doc
           ));
         });
+
       });
     });
-    getCartData();
     super.initState();
   }
 
-  getCartData()async{
-    final snapshot =await _cart.cart.doc(user.uid).collection('products').get();
 
-  }
 
   @override
   Widget build(BuildContext context) {
 
+
+
+
     FirebaseFirestore.instance
-        .collection('cart')
-    .doc(user.uid).collection('products').where('productName',isEqualTo: widget.pname)
+        .collection('products').where('productName',isEqualTo: widget.pname)
         .get()
         .then((QuerySnapshot querySnapshot) {
       querySnapshot.docs.forEach((doc) {
        if(doc['productName']==widget.pname){
          setState(() {
            _docId = doc.id;
-           _itemexist = true;
          });
+         if(doc['v1'] !="" && doc['p1'] !=""){
+           setState(() {
+             _v1visible = true;
+             _chosenprice = true;
+           });
+         }else{volume = doc['ProductQuantity'];}
+         if(doc['v2'] !=""  && doc['p2'] !=""){
+           setState(() {
+             _v2visible = true;
+             _chosenprice = true;
+           });
+         }
+         if(doc['v3'] !=""  && doc['p3'] !=""){
+           setState(() {
+             _v3visible = true;
+             _chosenprice = true;
+           });
+         }
+         if(doc['v4'] !=""  && doc['p4'] !=""){
+           setState(() {
+             _v4visible = true;
+             _chosenprice = true;
+           });
+         }
        }
       });
     });
@@ -92,6 +119,7 @@ class _ProductScreenState extends State<ProductScreen> {
       //change in chosen product
 
     });
+
 
     return Scaffold(
       appBar: AppBar(
@@ -236,24 +264,27 @@ class _ProductScreenState extends State<ProductScreen> {
                                 padding: EdgeInsets.only(left: 30),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                   children: [
-                                    SizedBox(
-                                      height: 40,
-                                    ),
                                     Text(
                                       data['productName'],
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold, fontSize: 20),
                                     ),
                                     Text(
-                                      data['brandName'],
+                                      "Brand:${data['brandName']}",
                                       style: TextStyle(fontSize: 15),
                                     ),
-                                    SizedBox(
-                                      height: 10,
+                                    Text(
+                                      "Quantity: ${data['ProductQuantity']}",
+                                      style: TextStyle(fontSize: 15),
                                     ),
                                     Row(
                                       children: [
+                                        Text(
+                                          "Price: ",
+                                          style: TextStyle(fontSize: 15),
+                                        ),
                                         Text(
                                           '₹'+data['sellingPrice'].toString(),
                                           style: TextStyle(fontWeight: FontWeight.bold),
@@ -311,9 +342,12 @@ class _ProductScreenState extends State<ProductScreen> {
                         SizedBox(
                           height: 10,
                         ),
-                        Text(
-                          "Volume",
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                        Visibility(
+                          visible: _v1visible,
+                          child: Text(
+                            "Volume",
+                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                          ),
                         ),
                         SizedBox(
                           height: 10,
@@ -327,10 +361,11 @@ class _ProductScreenState extends State<ProductScreen> {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Container(
-                                    child: Row(
-                                      children: [
-                                        Checkbox(
+                                  Row(
+                                    children: [
+                                      Visibility(
+                                        visible: _v1visible,
+                                        child: Checkbox(
                                             checkColor: Colors.white,
                                             fillColor: MaterialStateProperty.resolveWith(getColor),
                                             value: isChecked1,
@@ -341,26 +376,29 @@ class _ProductScreenState extends State<ProductScreen> {
                                                 isChecked3 = false;
                                                 isChecked4 = false;
                                                 volume = data['v1'];
-                                                _checkbox = 'isChecked1';
+                                                chosenPrice = double.parse(data['p1']);
                                               });
                                               if(value == false){
                                                 setState(() {
                                                   volume = 'nil';
-                                                  _checkbox = 'nil';
+                                                  chosenPrice = 0.0;
                                                 });
                                               }
                                             }),
-                                        Text(data['v1'])
-                                      ],
-                                    ),
+                                      ),
+                                      Visibility(
+                                          visible: _v1visible,
+                                          child: Text("${data['v1']} - ₹ ${data['p1']}"))
+                                    ],
                                   ),
                                   SizedBox(
                                     height: 10,
                                   ),
-                                  Container(
-                                    child: Row(
-                                      children: [
-                                        Checkbox(
+                                  Row(
+                                    children: [
+                                      Visibility(
+                                        visible: _v3visible,
+                                        child: Checkbox(
                                             checkColor: Colors.white,
                                             fillColor: MaterialStateProperty.resolveWith(getColor),
                                             value: isChecked2,
@@ -371,18 +409,20 @@ class _ProductScreenState extends State<ProductScreen> {
                                                 isChecked3 = false;
                                                 isChecked4 = false;
                                                 volume = data['v3'];
-                                                _checkbox = 'isChecked2';
+                                                chosenPrice = double.parse(data['p3']);
                                               });
                                               if(value == false){
                                                 setState(() {
                                                   volume = 'nil';
-                                                  _checkbox = 'nil';
+                                                  chosenPrice = 0.0;
                                                 });
                                               }
                                             }),
-                                        Text(data['v3'])
-                                      ],
-                                    ),
+                                      ),
+                                      Visibility(
+                                          visible: _v3visible,
+                                          child: Text("${data['v3']} - ₹ ${data['p3']}"))
+                                    ],
                                   ),
                                 ],
                               ),
@@ -392,27 +432,32 @@ class _ProductScreenState extends State<ProductScreen> {
                                   Container(
                                     child: Row(
                                       children: [
-                                        Checkbox(
-                                            checkColor: Colors.white,
-                                            fillColor: MaterialStateProperty.resolveWith(getColor),
-                                            value: isChecked3,
-                                            onChanged: (bool? value) {
-                                              setState(() {
-                                                isChecked1 = false;
-                                                isChecked2 = false;
-                                                isChecked3 = value!;
-                                                isChecked4 = false;
-                                                volume = data['v2'];
-                                                _checkbox = 'isChecked3';
-                                              });
-                                              if(value == false){
+                                        Visibility(
+                                          visible: _v2visible,
+                                          child: Checkbox(
+                                              checkColor: Colors.white,
+                                              fillColor: MaterialStateProperty.resolveWith(getColor),
+                                              value: isChecked3,
+                                              onChanged: (bool? value) {
                                                 setState(() {
-                                                  volume = 'nil';
-                                                  _checkbox = 'nil';
+                                                  isChecked1 = false;
+                                                  isChecked2 = false;
+                                                  isChecked3 = value!;
+                                                  isChecked4 = false;
+                                                  volume = data['v2'];
+                                                  chosenPrice = double.parse(data['p2']);
                                                 });
-                                              }
-                                            }),
-                                        Text(data['v2'])
+                                                if(value == false){
+                                                  setState(() {
+                                                    volume = 'nil';
+                                                    chosenPrice = 0.0;
+                                                  });
+                                                }
+                                              }),
+                                        ),
+                                        Visibility(
+                                            visible: _v2visible,
+                                            child: Text("${data['v2']} - ₹ ${data['p2']}"))
                                       ],
                                     ),
                                   ),
@@ -422,27 +467,32 @@ class _ProductScreenState extends State<ProductScreen> {
                                   Container(
                                     child: Row(
                                       children: [
-                                        Checkbox(
-                                            checkColor: Colors.white,
-                                            fillColor: MaterialStateProperty.resolveWith(getColor),
-                                            value: isChecked4,
-                                            onChanged: (bool? value) {
-                                              setState(() {
-                                                isChecked1 = false;
-                                                isChecked2 = false;
-                                                isChecked3 = false;
-                                                isChecked4 = value!;
-                                                volume = data['v4'];
-                                                _checkbox = 'isChecked4';
-                                              });
-                                              if(value == false){
+                                        Visibility(
+                                          visible: _v4visible,
+                                          child: Checkbox(
+                                              checkColor: Colors.white,
+                                              fillColor: MaterialStateProperty.resolveWith(getColor),
+                                              value: isChecked4,
+                                              onChanged: (bool? value) {
                                                 setState(() {
-                                                  volume = 'nil';
-                                                  _checkbox = 'nil';
+                                                  isChecked1 = false;
+                                                  isChecked2 = false;
+                                                  isChecked3 = false;
+                                                  isChecked4 = value!;
+                                                  volume = data['v4'];
+                                                  chosenPrice = double.parse(data['p4']);
                                                 });
-                                              }
-                                            }),
-                                        Text(data['v4'])
+                                                if(value == false){
+                                                  setState(() {
+                                                    volume = 'nil';
+                                                    chosenPrice = 0.0;
+                                                  });
+                                                }
+                                              }),
+                                        ),
+                                        Visibility(
+                                            visible: _v4visible,
+                                            child: Text("${data['v4']} - ₹ ${data['p4']}"))
                                       ],
                                     ),
                                   ),
@@ -471,7 +521,11 @@ class _ProductScreenState extends State<ProductScreen> {
                                 setState(() {
                                   _qty -=1;
                                 });
-                                total = _qty * data['sellingPrice'];
+                                if(_chosenprice){
+                                  total = _qty * chosenPrice;
+                                }else{
+                                  total = _qty * data['sellingPrice'];
+                                }
                               }
                             },
                             child: Container(
@@ -499,7 +553,12 @@ class _ProductScreenState extends State<ProductScreen> {
                                 setState(() {
                                   _qty+=1;
                                 });
-                                total = _qty * data['sellingPrice'];
+                                if(_chosenprice){
+                                  total = _qty * chosenPrice;
+                                }else{
+                                  total = _qty * data['sellingPrice'];
+                                }
+
                               }
                             },
                             child: Container(
@@ -527,17 +586,9 @@ class _ProductScreenState extends State<ProductScreen> {
                             RaisedButton(
                               onPressed: _cartbutton ? (){
                                 EasyLoading.show(status: 'Adding to Cart...');
-                                if(_itemexist == true){
-                                  //remove
-                                  //_cart.removeFromCart(docId: _docId);
-                                  _cart.addToCart(data: data,volume: volume,qty: _qty,checkbox: _checkbox,total: total).then((value){
-                                    EasyLoading.showSuccess('Added to Cart');
-                                  });
-                                }if(_itemexist == false){
-                                  _cart.addToCart(data: data,volume: volume,qty: _qty,checkbox: _checkbox,total: total).then((value){
-                                    EasyLoading.showSuccess('Added to Cart');
-                                  });
-                                }
+                                _cart.addToCart(data: data,volume: volume,qty: _qty,total: total).then((value){
+                                  EasyLoading.showSuccess('Added to Cart');
+                                });
                                 print('added to cart');
                               }:(){
                                 showDialog<String>(

@@ -63,7 +63,7 @@ class _ProductListState extends State<ProductList> {
                           SizedBox(
                             height: 10,
                           ),
-                          Text('Quantity'),
+                          Text(data['ProductQuantity']),
                           SizedBox(
                             height: 10,
                           ),

@@ -7,16 +7,19 @@ Bug and toDo List:
 2.Carousel error and initial page error
 
 3.Cart:
--product not deleting
+-pricing & deleting -- major bug
 -convenience fee view
 -Deliveryman deliveryMode Update
+-Coupon pricing not changing
+-address pin
+-deliverymode 
 
-4.Coupon pricing not changing
+4.Banner
+-Images loading inapropriatly
 
-5.Volume:
--visibility
--pricing
+5.Inventory
 
 6.Milk:
 -Date
 
+checkout bill ask

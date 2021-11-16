@@ -1,3 +1,4 @@
+import 'package:admin/Screens/Vendor/productP_UP/edit_view_product.dart';
 import 'package:admin/Services/Firebase_Services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -59,7 +60,7 @@ class PublishedProducts extends StatelessWidget {
                               child: Image.network(data['productImage']),
                             ),
                           ),
-                          popUpButton(data),
+                          popUpButton(data,context),
                         ],
                       ),
                     ),
@@ -75,7 +76,7 @@ class PublishedProducts extends StatelessWidget {
   }
 
 
-  Widget popUpButton(data){
+  Widget popUpButton(data, BuildContext context){
     FirebaseServices _services = FirebaseServices();
 
     return PopupMenuButton<String>(
@@ -85,6 +86,7 @@ class PublishedProducts extends StatelessWidget {
           }
           if(value == 'preview'){
             print(value);
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>EditViewProduct(productId: data['productid'],productImage: data['productImage'],)));
           }
 
         },

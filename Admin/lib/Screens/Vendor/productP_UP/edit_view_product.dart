@@ -22,12 +22,17 @@ class _EditViewProductState extends State<EditViewProduct> {
   var _productname = TextEditingController();
   var _brandName = TextEditingController();
   var _sellingPrice = TextEditingController();
+  var _productQuantity = TextEditingController();
   var _comparedPrice = TextEditingController();
   var _productDescription = TextEditingController();
   var _v1 = TextEditingController();
   var _v2 = TextEditingController();
   var _v3 = TextEditingController();
   var _v4 = TextEditingController();
+  var _p1 = TextEditingController();
+  var _p2 = TextEditingController();
+  var _p3 = TextEditingController();
+  var _p4 = TextEditingController();
   var _qty = TextEditingController();
   var _minqty = TextEditingController();
   bool _editing = true;
@@ -50,12 +55,17 @@ class _EditViewProductState extends State<EditViewProduct> {
         _productname.text = data['productName'];
         _brandName.text = data['brandName'];
         _sellingPrice.text = data['sellingPrice'].toString();
+        _productQuantity.text = data['ProductQuantity'];
         _comparedPrice.text = data['ComparedPrice'].toString();
         _productDescription.text = data['productDescription'];
         _v1.text = data['v1'].toString();
         _v2.text = data['v2'].toString();
         _v3.text = data['v3'].toString();
         _v4.text = data['v4'].toString();
+        _p1.text = data['p1'].toString();
+        _p2.text = data['p2'].toString();
+        _p3.text = data['p3'].toString();
+        _p4.text = data['p4'].toString();
         _qty.text = data['qty'].toString();
         _minqty.text = data['min_qty'].toString();
       } else {
@@ -118,9 +128,6 @@ class _EditViewProductState extends State<EditViewProduct> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              SizedBox(
-                                height: 40,
-                              ),
                               Container(
                                 height: 30,
                                 width: 140,
@@ -144,6 +151,21 @@ class _EditViewProductState extends State<EditViewProduct> {
                                   controller: _brandName,
                                   decoration: InputDecoration(
                                       hintText: 'Product Brand',
+                                      hintStyle: TextStyle(
+                                        fontSize: 15,
+                                      )),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Container(
+                                height: 20,
+                                width: 120,
+                                child: TextFormField(
+                                  controller: _productQuantity,
+                                  decoration: InputDecoration(
+                                      hintText: 'Quantity',
                                       hintStyle: TextStyle(
                                         fontSize: 15,
                                       )),
@@ -196,6 +218,7 @@ class _EditViewProductState extends State<EditViewProduct> {
                     height: 20,
                   ),
                   Card(
+                    elevation: 10,
                     child: Container(
                       padding: EdgeInsets.all(8),
                       child: Column(
@@ -301,6 +324,18 @@ class _EditViewProductState extends State<EditViewProduct> {
                                           )),
                                     ),
                                   ),
+                                  Container(
+                                    height: 20,
+                                    width: 50,
+                                    child: TextFormField(
+                                      controller: _p1,
+                                      decoration: InputDecoration(
+                                          hintText: 'price',
+                                          hintStyle: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                          )),
+                                    ),
+                                  ),
                                 ],
                               ),
                             ),
@@ -324,6 +359,18 @@ class _EditViewProductState extends State<EditViewProduct> {
                                       controller: _v2,
                                       decoration: InputDecoration(
                                           hintText: 'v2',
+                                          hintStyle: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                          )),
+                                    ),
+                                  ),
+                                  Container(
+                                    height: 20,
+                                    width: 50,
+                                    child: TextFormField(
+                                      controller: _p2,
+                                      decoration: InputDecoration(
+                                          hintText: 'price',
                                           hintStyle: TextStyle(
                                             fontWeight: FontWeight.bold,
                                           )),
@@ -358,6 +405,18 @@ class _EditViewProductState extends State<EditViewProduct> {
                                           )),
                                     ),
                                   ),
+                                  Container(
+                                    height: 20,
+                                    width: 50,
+                                    child: TextFormField(
+                                      controller: _p3,
+                                      decoration: InputDecoration(
+                                          hintText: 'price',
+                                          hintStyle: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                          )),
+                                    ),
+                                  ),
                                 ],
                               ),
                             ),
@@ -381,6 +440,18 @@ class _EditViewProductState extends State<EditViewProduct> {
                                       controller: _v4,
                                       decoration: InputDecoration(
                                           hintText: 'v4',
+                                          hintStyle: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                          )),
+                                    ),
+                                  ),
+                                  Container(
+                                    height: 20,
+                                    width: 50,
+                                    child: TextFormField(
+                                      controller: _p4,
+                                      decoration: InputDecoration(
+                                          hintText: 'price',
                                           hintStyle: TextStyle(
                                             fontWeight: FontWeight.bold,
                                           )),
@@ -433,6 +504,7 @@ class _EditViewProductState extends State<EditViewProduct> {
                             context: context,
                             productName: _productname.text,
                             brandName: _brandName.text,
+                            productQuantity: _productQuantity.text,
                             sellingPrice: double.parse(_sellingPrice.text),
                             comparedPrice: double.parse(_comparedPrice.text),
                             productDescription: _productDescription.text,

@@ -38,6 +38,7 @@ class _AddNewProductState extends State<AddNewProduct> {
 
   late String productName;
   late String brandName;
+  late String productQuantity;
   late double sellingPrice;
   late double comparedPrice;
   late String productDescription;
@@ -45,17 +46,26 @@ class _AddNewProductState extends State<AddNewProduct> {
   late String volume2;
   late String volume3;
   late String volume4;
+  late String volume1Price;
+  late String volume2Price;
+  late String volume3Price;
+  late String volume4Price;
   late int qty;
   late int minqty;
   var _productNameTextController = TextEditingController();
   var _brandNameTextController = TextEditingController();
   var _sellingPriceTextController = TextEditingController();
+  var _productquantityTextController = TextEditingController();
   var _comparedPriceTextController = TextEditingController();
   var _productDescriptionTextController = TextEditingController();
   var _v1TextController = TextEditingController();
   var _v2TextController = TextEditingController();
   var _v3TextController = TextEditingController();
   var _v4TextController = TextEditingController();
+  var _v1PriceTextController = TextEditingController();
+  var _v2PriceTextController = TextEditingController();
+  var _v3PriceTextController = TextEditingController();
+  var _v4PriceTextController = TextEditingController();
   var _quantityTextController = TextEditingController();
   var _minquantityTextController = TextEditingController();
   
@@ -105,13 +115,18 @@ class _AddNewProductState extends State<AddNewProduct> {
                                         productName: _productNameTextController.text,
                                         brandName: _brandNameTextController.text,
                                         sellingPrice: double.parse(_sellingPriceTextController.text),
+                                        productQuantity: _productquantityTextController.text,
                                         comparedPrice:double.parse(_comparedPriceTextController.text),
                                         productDescription:_productDescriptionTextController.text,
                                         v1:_v1TextController.text,
                                         v2:_v2TextController.text,
                                         v3:_v3TextController.text,
                                         v4:_v4TextController.text,
-                                        qty:int.parse(_quantityTextController.text),
+                                        p1: _v1PriceTextController.text,
+                                        p2: _v2PriceTextController.text,
+                                        p3: _v3PriceTextController.text,
+                                        p4: _v4PriceTextController.text,
+                                        maxqty:int.parse(_quantityTextController.text),
                                         minQty:int.parse(_minquantityTextController.text),
                                       );
                                       setState(() {
@@ -120,6 +135,7 @@ class _AddNewProductState extends State<AddNewProduct> {
                                         _productNameTextController.clear();
                                         _brandNameTextController.clear();
                                         _sellingPriceTextController.clear();
+                                        _productquantityTextController.clear();
                                         _comparedPriceTextController.clear();
                                         _productDescriptionTextController.clear();
                                         _categoryTextController.clear();
@@ -290,6 +306,24 @@ class _AddNewProductState extends State<AddNewProduct> {
                                               BorderSide(color: Colors.grey))),
                                 ),
                                 TextFormField(
+                                  controller: _productquantityTextController,
+                                  validator: (value){
+                                    if(value!.isEmpty){
+                                      return 'Enter product Quantity price';
+                                    }
+                                    setState(() {
+                                      productQuantity = value;
+                                    });
+                                    return null;
+                                  },
+                                  decoration: InputDecoration(
+                                      labelText: 'Quantity',
+                                      labelStyle: TextStyle(color: Colors.grey),
+                                      enabledBorder: UnderlineInputBorder(
+                                          borderSide:
+                                          BorderSide(color: Colors.grey))),
+                                ),
+                                TextFormField(
                                   maxLines: 5,
                                   maxLength: 500,
                                   controller: _productDescriptionTextController,
@@ -458,7 +492,6 @@ class _AddNewProductState extends State<AddNewProduct> {
                                           setState(() {
                                             volume1 = value!;
                                           });
-                                          return '-';
                                         },
                                         decoration: InputDecoration(
                                             labelText: 'Volume 1',
@@ -477,7 +510,6 @@ class _AddNewProductState extends State<AddNewProduct> {
                                           setState(() {
                                             volume2 = value!;
                                           });
-                                          return '-';
                                         },
                                         decoration: InputDecoration(
                                             labelText: 'Volume 2',
@@ -496,7 +528,6 @@ class _AddNewProductState extends State<AddNewProduct> {
                                           setState(() {
                                             volume3 = value!;
                                           });
-                                          return '-';
                                         },
                                         decoration: InputDecoration(
                                             labelText: 'Volume 3',
@@ -515,10 +546,89 @@ class _AddNewProductState extends State<AddNewProduct> {
                                           setState(() {
                                             volume4 = value!;
                                           });
-                                          return '-';
                                         },
                                         decoration: InputDecoration(
                                             labelText: 'Volume 4',
+                                            labelStyle: TextStyle(color: Colors.grey),
+                                            enabledBorder: UnderlineInputBorder(
+                                                borderSide:
+                                                BorderSide(color: Colors.grey))),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Container(padding: EdgeInsets.all(20),
+                                    width: double.infinity,
+                                    child: Text("Volume Price",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),)),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Container(
+                                      height: 50,
+                                      width: 100,
+                                      child: TextFormField(
+                                        controller: _v1PriceTextController,
+                                        validator: (value){
+                                          setState(() {
+                                            volume1Price = value!;
+                                          });
+                                        },
+                                        decoration: InputDecoration(
+                                            labelText: 'Price 1',
+                                            labelStyle: TextStyle(color: Colors.grey),
+                                            enabledBorder: UnderlineInputBorder(
+                                                borderSide:
+                                                BorderSide(color: Colors.grey))),
+                                      ),
+                                    ),
+                                    Container(
+                                      height: 50,
+                                      width: 100,
+                                      child: TextFormField(
+                                        controller: _v2PriceTextController,
+                                        validator: (value){
+                                          setState(() {
+                                            volume2Price = value!;
+                                          });
+                                        },
+                                        decoration: InputDecoration(
+                                            labelText: 'Price 2',
+                                            labelStyle: TextStyle(color: Colors.grey),
+                                            enabledBorder: UnderlineInputBorder(
+                                                borderSide:
+                                                BorderSide(color: Colors.grey))),
+                                      ),
+                                    ),
+                                    Container(
+                                      height: 50,
+                                      width: 100,
+                                      child: TextFormField(
+                                        controller: _v3PriceTextController,
+                                        validator: (value){
+                                          setState(() {
+                                            volume3Price = value!;
+                                          });
+                                        },
+                                        decoration: InputDecoration(
+                                            labelText: 'Price 3',
+                                            labelStyle: TextStyle(color: Colors.grey),
+                                            enabledBorder: UnderlineInputBorder(
+                                                borderSide:
+                                                BorderSide(color: Colors.grey))),
+                                      ),
+                                    ),
+                                    Container(
+                                      height: 50,
+                                      width: 100,
+                                      child: TextFormField(
+                                        controller: _v4PriceTextController,
+                                        validator: (value){
+                                          setState(() {
+                                            volume4Price = value!;
+                                          });
+                                        },
+                                        decoration: InputDecoration(
+                                            labelText: 'Price 4',
                                             labelStyle: TextStyle(color: Colors.grey),
                                             enabledBorder: UnderlineInputBorder(
                                                 borderSide:
