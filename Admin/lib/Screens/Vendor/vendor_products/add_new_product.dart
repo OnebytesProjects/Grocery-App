@@ -19,11 +19,6 @@ class AddNewProduct extends StatefulWidget {
 class _AddNewProductState extends State<AddNewProduct> {
 
   final _formKey = GlobalKey<FormState>();
-  List<String> _collection = [
-    'a',
-    'b',
-    'c',
-  ];
   late String dropDownValue;
 
   var _categoryTextController = TextEditingController();
@@ -201,18 +196,7 @@ class _AddNewProductState extends State<AddNewProduct> {
                                   padding: const EdgeInsets.all(8.0),
                                   child: InkWell(
                                     onTap: () async {
-
                                       uploadStorage();
-                                      // ImagePicker picker = ImagePicker();
-                                      // final XFile? pickedfile = await picker.pickImage(source: ImageSource.gallery);
-                                      // if(pickedfile != null){
-                                      //   setState(() {
-                                      //     _image = File(pickedfile.path);
-                                      //     //this.image = File(pickedfile.path);
-                                      //   });
-                                      // }else{
-                                      //   print('No image Selected');
-                                      // }
                                     },
                                     child: SizedBox(
                                       width: 150,

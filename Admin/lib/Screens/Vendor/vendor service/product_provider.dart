@@ -72,7 +72,7 @@ class ProductProvider with ChangeNotifier {
   Future<String> uploadproductImageToDb(url) async {
     String downloadUrl = await storage.ref(url).getDownloadURL();
     if (downloadUrl != null) {
-      firestore.collection('slider').add({
+      firestore.collection('productsUrl').add({
         'image': downloadUrl,
       });
     }

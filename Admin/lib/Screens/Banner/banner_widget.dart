@@ -26,8 +26,9 @@ class BannerWidget extends StatelessWidget {
         return Container(
           width: double.infinity,
           height: 300,
-          child: ListView(
-            scrollDirection: Axis.horizontal,
+          child: GridView.count(
+            scrollDirection: Axis.vertical,
+            crossAxisCount: 3,
             children: snapshot.data!.docs.map((DocumentSnapshot document) {
               Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
               return Padding(

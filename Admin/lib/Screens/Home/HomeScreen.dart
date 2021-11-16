@@ -1,4 +1,5 @@
 import 'package:admin/Screens/Home/Coupon/CouponScreenMain.dart';
+import 'package:admin/Screens/Home/Inventory/Inventory.dart';
 import 'package:admin/Screens/Home/Location/LocationMain.dart';
 import 'package:admin/Services/sidebar.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +31,18 @@ class _HomeScreenState extends State<HomeScreen> {
       sideBar: _sideBar.sideBarmenus(context,HomeScreen.id),
       body: ListView(
         children: [
+          Container(
+            height: 450,
+            width: double.infinity,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Card(
+                elevation: 10,
+                child: Inventory(),
+              ),
+            ),
+          ),
+          Divider(thickness: 3,),
           Container(
             height: 450,
             width: double.infinity,

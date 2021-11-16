@@ -14,6 +14,8 @@ class FirebaseServices {
   FirebaseStorage storage = FirebaseStorage.instance;
   CollectionReference order = FirebaseFirestore.instance.collection('orders');
   CollectionReference coupons = FirebaseFirestore.instance.collection('coupons');
+  CollectionReference pincode = FirebaseFirestore.instance.collection('pincode');
+
 
 
   Future<QuerySnapshot> getAdminCredentials() {
@@ -166,6 +168,19 @@ class FirebaseServices {
 
   Future<void> deleteCoupon({id}) {
     return coupons
+        .doc(id)
+        .delete();
+  }
+
+  Future<void>savePincode({setpincode,deliverycharge}) async {
+    return pincode.doc(setpincode).set({
+      'pincode' : setpincode,
+      'deliverycharge' : deliverycharge,
+    });
+  }
+
+  Future<void> deletePincode({id}) {
+    return pincode
         .doc(id)
         .delete();
   }
