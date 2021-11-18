@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:milk/Screens/HomeScreen/checkout/checkout.dart';
 import 'package:milk/providers/cart__provider.dart';
@@ -76,20 +75,6 @@ class _CartState extends State<Cart> {
 
              int cartvalue = data['qty'];
 
-             User user = FirebaseAuth.instance.currentUser;
-
-             FirebaseFirestore.instance
-                 .collection('cart')
-                 .doc(user.uid).collection('products').where('productName',isEqualTo:data['productName'])
-                 .get()
-                 .then((QuerySnapshot querySnapshot) {
-               querySnapshot.docs.forEach((doc) {
-                 if(doc['productName']==data['productName']){
-                   _docId = doc.id;
-                 }
-               });
-             });
-
              return Container(
                decoration: BoxDecoration(
                  border: Border(
@@ -145,11 +130,15 @@ class _CartState extends State<Cart> {
                                    children: [
                                      InkWell(
                                        onTap: (){
-                                         updating = true;
+                                         _docId = document.id;
                                          if(cartvalue>=1){
                                            setState(() {
                                              cartvalue -=1;
+                                             updating = true;
                                            });
+                                           if(cartvalue == 0){
+                                             _cart.removeFromCart(docId: _docId);
+                                           }
                                            var total = cartvalue * data['sellingPrice'];
                                            _cart.updateCartqty(docId: _docId,qty: cartvalue,total: total).then((value){
                                              setState(() {
@@ -170,19 +159,26 @@ class _CartState extends State<Cart> {
                                          ),
                                        ),
                                      ),
-                                     Padding(
-                                       padding:
-                                       EdgeInsets.only(left: 20, right: 20, top: 8, bottom: 8),
-                                       child: Text(cartvalue.toString()),
+                                     Container(
+                                       width: 30,
+                                       child: Center(
+                                         child: FittedBox(
+                                           child: Text(cartvalue.toString())
+                                       //     child: updating?Padding(
+                                       //   padding: const EdgeInsets.all(8.0),
+                                       //   child: CircularProgressIndicator(),
+                                       // ):Text(cartvalue.toString())
+                                         ,),),
                                      ),
                                      InkWell(
                                        onTap: (){
-                                         updating = true;
                                          if(cartvalue>=0){
                                            setState(() {
                                              cartvalue +=1;
+                                             updating = true;
                                            });
                                            var total = cartvalue * data['sellingPrice'];
+                                           _docId = document.id;
                                            _cart.updateCartqty(docId: _docId,qty: cartvalue,total: total).then((value){
                                              setState(() {
                                                updating = false;
@@ -210,8 +206,8 @@ class _CartState extends State<Cart> {
                            )),
                        InkWell(
                          onTap: (){
-                           //print('product removed');
-                           //_cart.removeFromCart(docId: _docId);
+                           _docId = document.id;
+                           _cart.removeFromCart(docId: _docId);
                            print(_docId);
                          },
                          child: Container(
@@ -259,12 +255,20 @@ class _CartState extends State<Cart> {
                   SizedBox(height: 1,),
                   GestureDetector(
                       onTap: (){
-                        showModalBottomSheet(context: context, builder: (context){
-                          return Column(
-                            children: [
-                              Text("data"),
-                              Text("data"),
-                            ],
+                        showModalBottomSheet(
+                            backgroundColor: Colors.transparent,
+                            context: context,
+                            builder: (context){
+                          return Card(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: ListView(
+                                children: [
+                                  Text("data"),
+                                  Text("data"),
+                                ],
+                              ),
+                            ),
                           );
                         });
                       },

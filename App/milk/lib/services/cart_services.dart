@@ -2,6 +2,9 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class CartService{
   CollectionReference cart = FirebaseFirestore.instance.collection('cart');
@@ -19,6 +22,21 @@ class CartService{
       'sellingPrice' : data['sellingPrice'],
       'qty' : qty,
       'total':total,
+    });
+  }
+  Future<void>addToCartSubscription({data, qty, volume,total,subscription}){
+    cart.doc(user.uid).set({
+      'user':user.uid,
+    });
+    return cart.doc(user.uid).collection('products').add({
+      'productName' : data['productName'],
+      'productid' : data['productid'],
+      'productImage': data['productImage'],
+      'productVolume' : volume,
+      'sellingPrice' : data['sellingPrice'],
+      'qty' : qty,
+      'total':total,
+      'subscription':subscription,
     });
   }
 
@@ -46,12 +64,12 @@ class CartService{
         .catchError((error) => print("Failed to update cart: $error"));
   }
 
-  Future<void> deleteCart()async{
-    cart.doc(user.uid).delete();
-  }
-
-
   Future<void> removeFromCart({docId})async{
     cart.doc(user.uid).collection('products').doc(docId).delete();
+  }
+
+  Future<void> deleteFromCart()async{
+    print('order placed');
+    return cart.doc(user.uid).delete();
   }
 }

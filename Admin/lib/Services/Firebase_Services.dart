@@ -184,4 +184,12 @@ class FirebaseServices {
         .doc(id)
         .delete();
   }
+
+  Future<void>updateInventory({data,minqty,maxqty}) async {
+    return products.doc(data).update({
+      'Inventory_min_qty' : minqty,
+      'Inventory_max_qty' : maxqty,
+
+    });
+  }
 }

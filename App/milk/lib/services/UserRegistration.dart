@@ -81,6 +81,7 @@ class _UserRegistrationState extends State<UserRegistration> {
   }
 
   updateProfile() {
+    String address = "${_address.text} - ${dropdownValue}";
     if (_fomrKey.currentState!.validate()) {
       return FirebaseFirestore.instance
           .collection('users')
@@ -88,7 +89,7 @@ class _UserRegistrationState extends State<UserRegistration> {
           .update({
         'name': _name.text,
         'gender': dropdownValueGender,
-        'address': _address.text+dropdownValue,
+        'address': address,
         'zip': dropdownValue,
         'referral': _referral.text,
         'mail': _email.text,

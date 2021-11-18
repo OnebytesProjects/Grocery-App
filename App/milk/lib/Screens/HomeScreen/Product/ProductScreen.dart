@@ -29,6 +29,10 @@ class _ProductScreenState extends State<ProductScreen> {
   bool _v2visible = false;
   bool _v3visible = false;
   bool _v4visible = false;
+  bool _subscription = false;
+  bool  isChecked1sub = false;
+  bool isChecked2sub = false;
+  String subscriptionType = '';
   int _qty = 0;
   late String _docId;
   String volume = 'nil';
@@ -104,19 +108,31 @@ class _ProductScreenState extends State<ProductScreen> {
              _chosenprice = true;
            });
          }
+         if(widget.pname=='Milk'){
+           _subscription = true;
+         }
+
        }
       });
     });
 
     setState(() {
-      //No product chosen
-      if(_qty>0 || volume !='nil'){
-        _cartbutton = true;
+      if(widget.pname == 'Milk'){
+        if(_qty>0 || volume !='nil' || subscriptionType != ''){
+          _cartbutton = true;
+        }
+        if(_qty == 0 || volume =='nil'|| subscriptionType == ''){
+          _cartbutton = false;
+        }
+      }else{
+        if(_qty>0 || volume !='nil'){
+          _cartbutton = true;
+        }
+        if(_qty == 0 || volume =='nil'){
+          _cartbutton = false;
+        }
       }
-      if(_qty == 0 || volume =='nil'){
-        _cartbutton = false;
-      }
-      //change in chosen product
+
 
     });
 
@@ -501,6 +517,63 @@ class _ProductScreenState extends State<ProductScreen> {
                             ],
                           ),
                         ),
+                        _subscription ?
+                        Column(
+                          children: [
+                            Text('Subscription',style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+                            Container(
+                              height: 50,
+                              padding: EdgeInsets.only(left: 20, right: 50),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Checkbox(
+                                          checkColor: Colors.white,
+                                          fillColor: MaterialStateProperty.resolveWith(getColor),
+                                          value: isChecked1sub,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              isChecked1sub = value!;
+                                              isChecked2sub = false;
+                                              subscriptionType = 'Monthly';
+                                            });
+                                            if(value == false){
+                                              setState(() {
+                                                subscriptionType = '';
+                                              });
+                                            }
+                                          }),
+                                      Text("Monthly")
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      Checkbox(
+                                          checkColor: Colors.white,
+                                          fillColor: MaterialStateProperty.resolveWith(getColor),
+                                          value: isChecked2sub,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              isChecked1sub = false;
+                                              isChecked2sub = value!;
+                                              subscriptionType = 'Yearly';
+                                            });
+                                            if(value == false){
+                                              setState(() {
+                                                subscriptionType = '';
+                                              });
+                                            }
+                                          }),
+                                      Text("Yearly")
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ):Container(),
                         SizedBox(
                           height: 10,
                         ),
@@ -585,16 +658,25 @@ class _ProductScreenState extends State<ProductScreen> {
                           children: [
                             RaisedButton(
                               onPressed: _cartbutton ? (){
-                                EasyLoading.show(status: 'Adding to Cart...');
-                                _cart.addToCart(data: data,volume: volume,qty: _qty,total: total).then((value){
-                                  EasyLoading.showSuccess('Added to Cart');
-                                });
+                                if(widget.pname == 'Milk'){
+                                  EasyLoading.show(status: 'Adding to Cart...');
+                                  _cart.addToCartSubscription(data: data,volume: volume,qty: _qty,total: total,subscription: subscriptionType).then((value){
+                                    EasyLoading.showSuccess('Added to Cart');
+                                  });
+                                  print('added to cart');
+                                }else{
+                                  EasyLoading.show(status: 'Adding to Cart...');
+                                  _cart.addToCart(data: data,volume: volume,qty: _qty,total: total).then((value){
+                                    EasyLoading.showSuccess('Added to Cart');
+                                  });
+                                  print('added to cart');
+                                }
                                 print('added to cart');
                               }:(){
                                 showDialog<String>(
                                   context: context,
                                   builder: (BuildContext context) => AlertDialog(
-                                    content: const Text('Please enter Volume and Quantity'),
+                                    content: const Text('Please select the required details'),
                                     actions: <Widget>[
                                       TextButton(
                                         onPressed: () => Navigator.pop(context, 'OK'),

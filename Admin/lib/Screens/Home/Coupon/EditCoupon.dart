@@ -62,6 +62,7 @@ class _EditCouponState extends State<EditCoupon> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Edit Coupon'),
+        backgroundColor: Colors.black87,
       ),
       body: Container(
         child: Form(

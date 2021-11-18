@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 
 class CouponProvider with ChangeNotifier{
-  late bool expired;
+  late bool expired = false;
   late DocumentSnapshot document;
   double discountrate = 0.0;
 
@@ -13,6 +13,7 @@ class CouponProvider with ChangeNotifier{
 
     if(document.exists){
       CheckExpiry(document);
+      print('Exist');
     }
     return document;
   }
@@ -20,7 +21,8 @@ class CouponProvider with ChangeNotifier{
   CheckExpiry(DocumentSnapshot document){
     DateTime date = document.data()['Expiry'].toDate();
     var dateDiff = date.difference(DateTime.now()).inDays;
-    if(dateDiff <0){
+    if(dateDiff < 0){
+      print(dateDiff);
       this.expired = true;
       notifyListeners();
     }

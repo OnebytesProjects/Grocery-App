@@ -8,19 +8,20 @@ Bug and toDo List:
 2.Carousel error and initial page error
 
 3.Cart:
--pricing & deleting -- major bug
--convenience fee view
--Deliveryman deliveryMode Update
 -Coupon pricing not changing
--address pin
--deliverymode 
+-Unable to delete cart content
 
-4.Banner
--Images loading inapropriatly
+4.Orders
+-Admin Pannel subscription
 
-5.Inventory
+5.Inventory(Admin Panel)
+-app qty reduce
 
-6.Milk:
--Date
 
-checkout bill ask
+convenience fee details
+Google Pay
+home page scroll
+
+Notification:
+-app
+-status notification

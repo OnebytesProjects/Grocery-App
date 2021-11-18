@@ -9,6 +9,8 @@ class CartProvider with ChangeNotifier{
   double deliverycharge  = 40;
   late QuerySnapshot snapshot;
   List cartList = [];
+  List subscritionList = [];
+  String subExist = 'No';
 
   Future<double> getCartTotal()async{
     var cartTotal = 0.0;
@@ -22,6 +24,7 @@ class CartProvider with ChangeNotifier{
         _newList.add(doc.data());
         this.cartList = _newList;
         notifyListeners();
+        getSubscriptionDetails();
       }
       cartTotal = cartTotal+doc.data()['total'];
     });
@@ -30,5 +33,20 @@ class CartProvider with ChangeNotifier{
     this.snapshot = snapshot;
     notifyListeners();
     return cartTotal;
+  }
+  getSubscriptionDetails()async{
+    List _newsubList = [];
+    QuerySnapshot snapshot = await _cart.cart.doc(_cart.user.uid).collection('products').where('productName',isEqualTo: 'Milk').get();
+    if(snapshot == null){
+      this.subExist = 'No';
+    }
+    snapshot.docs.forEach((doc) {
+      if(!_newsubList.contains(doc.data())){
+        _newsubList.add(doc.data());
+        this.subscritionList = _newsubList;
+        this.subExist = 'Yes';
+        notifyListeners();
+      }
+    });
   }
 }

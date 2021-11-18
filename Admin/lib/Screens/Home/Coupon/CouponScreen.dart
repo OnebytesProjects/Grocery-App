@@ -42,6 +42,7 @@ class _CouponScreenState extends State<CouponScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Add Coupon'),
+        backgroundColor: Colors.black87,
       ),
       body: Container(
         child: Form(

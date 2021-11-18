@@ -17,6 +17,10 @@ class _CouponScreenMainState extends State<CouponScreenMain> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Manage Coupon'),
+        backgroundColor: Colors.black87,
+      ),
             body: Container(
                 child: Column(
               children: [
@@ -142,21 +146,6 @@ class _CouponScreenMainState extends State<CouponScreenMain> {
                                 expiry.toString(),
                               ),
                             ),
-                            // IconButton(
-                            //     onPressed: () {
-                            //       Navigator.push(
-                            //           context,
-                            //           MaterialPageRoute(
-                            //               builder: (context) => EditCoupon(
-                            //                 title:  data['title'],
-                            //                 discount: data['discountRate'],
-                            //                 coupondetail: data['details'],
-                            //                 expdate: expiry.toString(),
-                            //                 status: data['active'],
-                            //                 documentSnapshot: document,
-                            //               )));
-                            //     },
-                            //     icon: Icon(Icons.info_outline)),
                             popUpButton(data,context,expiry),
                           ],
                         ),

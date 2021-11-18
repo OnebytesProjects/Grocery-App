@@ -17,6 +17,10 @@ class _LocationScreenMainState extends State<LocationScreenMain> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Manage Pincode'),
+        backgroundColor: Colors.black87,
+      ),
       body: Container(
           child: Column(
             children: [

@@ -4,6 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:milk/Screens/HomeScreen/Home/Home.dart';
+import 'package:milk/Screens/HomeScreen/Home/Mainscreen.dart';
 import 'package:milk/providers/cart__provider.dart';
 import 'package:milk/providers/coupon_provider.dart';
 import 'package:milk/services/cart_services.dart';
@@ -111,10 +113,11 @@ class _CheckoutState extends State<Checkout> {
                                   showDialog(_couponText.text,'is invalid');
                                   _couponText.clear();
                                 }
-                                if(_coupon.expired == false){
+                                if(_coupon.expired != false){
                                   setState(() {
                                     this.discountrate = _coupon.discountrate;
-                                    this.total = total-discountrate;
+                                    print(discountrate);
+                                    //this.total = total-discountrate;
                                   });
                                   showDialog(_couponText.text,'is applied successfully');
                                 }
@@ -164,6 +167,22 @@ class _CheckoutState extends State<Checkout> {
                         ),
                         ExpandableText(
                           _address,
+                          expandText: 'View More',
+                          collapseText: 'View Less',
+                          maxLines: 2,
+                        ),
+                        Divider(),
+                        Divider(),
+                        Text(
+                          "Delivery Mode",
+                          style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        ExpandableText(
+                          _deliverymode,
                           expandText: 'View More',
                           collapseText: 'View Less',
                           maxLines: 2,
@@ -249,6 +268,27 @@ class _CheckoutState extends State<Checkout> {
     });
   }
   saveOrder(CartProvider cartProvider){
+    CollectionReference cart = FirebaseFirestore.instance.collection('cart');
+    if(cartProvider.subExist == 'Yes'){
+      _orderService.saveSubscription({
+        'products':cartProvider.subscritionList,
+        'userId':user.uid,
+        'total':total,
+        'name':_name,
+        'number':_number,
+        'address':_address,
+        'deliveryMode': _deliverymode,
+        'payment':payment,
+        'timestamp': DateTime.now().toString(),
+        'orderStatus':'Pending',
+        'deliverBoy':{
+          'name' : '',
+          'phone': '',
+        },
+        'startdate':'',
+        'endDate':'',
+      });
+    }
     _orderService.saveorder({
       'products':cartProvider.cartList,
       'userId':user.uid,
@@ -265,10 +305,11 @@ class _CheckoutState extends State<Checkout> {
         'phone': '',
       }
     }).then((value){
-      cartService.deleteCart().then((value) {
-        Navigator.pop(context);
-      });
+      print(user.uid);
+      cartService.deleteFromCart();
+      EasyLoading.showSuccess('OrederPlaced');
+      Navigator.pop(context);
+      Navigator.pop(context);
     });
-    EasyLoading.showSuccess('OrederPlaced');
   }
 }
