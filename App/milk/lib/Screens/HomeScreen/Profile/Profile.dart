@@ -30,10 +30,6 @@ class _ProfileState extends State<Profile> {
 
   final List<String> regionList = <String>[
     'Choose Pincode',
-    '638001',
-    '638002',
-    '638003',
-    '638004'
   ];
 
   final _fomrKey = GlobalKey<FormState>();
@@ -105,6 +101,31 @@ class _ProfileState extends State<Profile> {
         setState(() {});
       }
     });
+    FirebaseFirestore.instance
+        .collection('pincode')
+        .get()
+        .then((QuerySnapshot querySnapshot){
+      querySnapshot.docs.forEach((doc) {
+        setState(() {
+          regionList.add(doc['pincode']);
+        });
+      });
+    });
+
+    FirebaseFirestore.instance
+        .collection('users')
+        .where('id', isEqualTo: user.uid)
+        .get()
+        .then((QuerySnapshot querySnapshot){
+      querySnapshot.docs.forEach((doc) {
+        _name.text = doc['name'];
+        _address.text = doc['address'];
+        _referral.text = doc['refered'];
+        _email.text = doc['mail'];
+        //dropdownValue = doc[''];
+      });
+    });
+
     super.initState();
   }
 

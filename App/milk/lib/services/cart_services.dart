@@ -55,7 +55,7 @@ class CartService{
     });
     productquantity = productquantity - qty;
     products.doc(productid).update({
-      'ProductQuantity': productquantity,
+      'Inventory_max_qty': productquantity,
     });
   }
 

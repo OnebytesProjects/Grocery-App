@@ -14,6 +14,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     Timer(Duration(seconds: 3), () {
+
       FirebaseAuth.instance.authStateChanges().listen((User user) {
         if (user == null) {
           Navigator.pushReplacementNamed(context, WelcomeScreen.id);

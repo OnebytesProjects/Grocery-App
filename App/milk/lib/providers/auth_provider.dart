@@ -82,14 +82,32 @@ class AuthProvider with ChangeNotifier {
                     final User user =
                         (await _auth.signInWithCredential(phoneAuthCredentials))
                             .user;
-                    if (user != null) {
-                      print('User Exist');
-                      Navigator.of(context).pop();
-                      Navigator.pushReplacementNamed(context, MainScreen.id);
-                    } else {
-                      print('User Does not Exist');
-                      _createUser(id: user.uid, number: user.phoneNumber);
-                    }
+
+                    FirebaseFirestore.instance
+                        .collection('users')
+                        .doc(user.uid)
+                        .get()
+                        .then((DocumentSnapshot documentSnapshot) {
+                      if (documentSnapshot.exists) {
+                        //check profile created
+
+                        Navigator.of(context).pop();
+                        Navigator.pushReplacementNamed(context, MainScreen.id);
+                      }
+                      else{
+                        Navigator.of(context).pop();
+                        _createUser(id: user.uid, number: user.phoneNumber);
+                        Navigator.pushReplacementNamed(context, UserRegistration.id);
+                      }
+                    });
+                    // if (user != null) {
+                    //   print('User Exist');
+                    //   Navigator.of(context).pop();
+                    //   //Navigator.pushReplacementNamed(context, MainScreen.id);
+                    // } else {
+                    //   print('User Does not Exist');
+                    //   _createUser(id: user.uid, number: user.phoneNumber);
+                    // }
                   } catch (e) {
                     this.error = 'Invalid OTP';
                     notifyListeners();
@@ -118,6 +136,7 @@ class AuthProvider with ChangeNotifier {
       'mail': 'null',
       'refered': 'null',
       'preference': 'Ring Door Bell',
+      'pincode':'',
     });
   }
 

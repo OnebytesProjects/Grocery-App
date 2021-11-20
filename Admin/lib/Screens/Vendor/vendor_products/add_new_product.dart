@@ -141,9 +141,12 @@ class _AddNewProductState extends State<AddNewProduct> {
                                         _v4TextController.clear();
                                         _quantityTextController.clear();
                                         _minquantityTextController.clear();
+                                        _v1PriceTextController.clear();
+                                        _v2PriceTextController.clear();
+                                        _v3PriceTextController.clear();
+                                        _v4PriceTextController.clear();
                                         _visible = false;
                                         _track = false;
-
                                       });
                                     } else {
                                       _provider.alertDialog(context: context,
