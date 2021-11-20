@@ -22,7 +22,7 @@ import 'package:search_page/search_page.dart';
 import '../Screens/ClientFeeds/Contact_us.dart';
 import '../Screens/ClientFeeds/Terms_of_use.dart';
 import '../Preference/Preference.dart';
-import '../Screens/DrawerContent/Subscription.dart';
+import '../Subscription/Subscription.dart';
 
 class MainScreen extends StatefulWidget {
   static const String id = 'home';

@@ -23,6 +23,7 @@ class _MenuWidgetState extends State<MenuWidget> {
           ),
           sliderItem('Products', Icons.shopping_bag_outlined),
           sliderItem('Orders', Icons.list_alt_outlined),
+          sliderItem('Subscription', Icons.book_outlined),
         ],
       ),
     );

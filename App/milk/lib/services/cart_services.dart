@@ -8,6 +8,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class CartService{
   CollectionReference cart = FirebaseFirestore.instance.collection('cart');
+  CollectionReference products = FirebaseFirestore.instance.collection('products');
   User user = FirebaseAuth.instance.currentUser;
 
   Future<void>addToCart({data, qty, volume,total}){
@@ -28,6 +29,7 @@ class CartService{
     cart.doc(user.uid).set({
       'user':user.uid,
     });
+    //updateproducts(data['productid'], qty);
     return cart.doc(user.uid).collection('products').add({
       'productName' : data['productName'],
       'productid' : data['productid'],
@@ -37,6 +39,23 @@ class CartService{
       'qty' : qty,
       'total':total,
       'subscription':subscription,
+    });
+
+  }
+
+  updateproducts(productid,qty){
+    var productquantity;
+    FirebaseFirestore.instance
+        .collection('products')
+        .where('productId', isEqualTo: productid)
+        .get().then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((doc) {
+        productquantity = doc['ProductQuantity'];
+      });
+    });
+    productquantity = productquantity - qty;
+    products.doc(productid).update({
+      'ProductQuantity': productquantity,
     });
   }
 
@@ -69,7 +88,6 @@ class CartService{
   }
 
   Future<void> deleteFromCart()async{
-    print('order placed');
     return cart.doc(user.uid).delete();
   }
 }

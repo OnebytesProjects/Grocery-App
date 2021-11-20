@@ -15,7 +15,7 @@ class FirebaseServices {
   CollectionReference order = FirebaseFirestore.instance.collection('orders');
   CollectionReference coupons = FirebaseFirestore.instance.collection('coupons');
   CollectionReference pincode = FirebaseFirestore.instance.collection('pincode');
-
+  CollectionReference subscription = FirebaseFirestore.instance.collection('subscription');
 
 
   Future<QuerySnapshot> getAdminCredentials() {
@@ -142,6 +142,16 @@ class FirebaseServices {
         'phone' : number,
       },
       'orderStatus': orderstatus,
+    });
+    return result;
+  }
+
+  Future<void>selectDeliveryManForSubscription(orderId,name,number){
+    var result = subscription.doc(orderId).update({
+      'deliverBoy':{
+        'name' : name,
+        'phone' : number,
+      },
     });
     return result;
   }

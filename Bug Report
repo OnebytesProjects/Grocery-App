@@ -5,23 +5,23 @@ Bug and toDo List:
 -check referalcode
 -pincode list
 
-2.Carousel error and initial page error
-
-3.Cart:
+2.Cart:
 -Coupon pricing not changing
 -Unable to delete cart content
 
-4.Orders
--Admin Pannel subscription
+3.Inventory(Admin Panel)
+-app qty reduce(add productid)
 
-5.Inventory(Admin Panel)
--app qty reduce
-
-
+To be checked:
 convenience fee details
+Drawer Content
 Google Pay
 home page scroll
+delivery boy
+Carousel error and initial page error
 
+Last to implement:
+Calender
 Notification:
 -app
 -status notification

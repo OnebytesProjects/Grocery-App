@@ -3,7 +3,6 @@ import 'package:admin/Screens/Home/HomeScreen.dart';
 import 'package:admin/Screens/Category/category_screen.dart';
 import 'package:admin/Screens/Banner/manage_banners.dart';
 import 'package:admin/Screens/Notification/notification_screen.dart';
-import 'package:admin/Screens/Subscriptions/Subscriptions.dart';
 import 'package:admin/Screens/Vendor/vendor%20service/product_provider.dart';
 import 'package:admin/Screens/Vendor/vendor_products/add_new_product.dart';
 import 'package:admin/Screens/Vendor/vendor_screen.dart';
@@ -12,6 +11,8 @@ import 'package:admin/Screens/Login/SplashScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
+
+import 'Screens/Vendor/Subscriptions/Subscriptions.dart';
 
 void main() {
   Provider.debugCheckInvalidValueType=null;

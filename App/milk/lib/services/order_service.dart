@@ -16,11 +16,7 @@ class OrderService{
   }
 
   Future<DocumentReference> saveSubscription(Map<String,dynamic>data){
-    subscription.doc(user.uid).set({
-      'user':user.uid,
-    });
-
-    var result = subscription.doc(user.uid).collection('products').add(
+    var result = subscription.add(
         data
     );
     return result;

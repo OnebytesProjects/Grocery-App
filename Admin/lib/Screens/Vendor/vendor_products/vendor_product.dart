@@ -1,6 +1,7 @@
 import 'package:admin/Screens/Vendor/productP_UP/PublishedProducts.dart';
 import 'package:admin/Screens/Vendor/productP_UP/UnpublishedProducts.dart';
 import 'package:admin/Screens/Vendor/vendor_products/add_new_product.dart';
+import 'package:firebase/firebase.dart';
 import 'package:flutter/material.dart';
 
 class VendorProduct extends StatelessWidget {
@@ -11,6 +12,9 @@ class VendorProduct extends StatelessWidget {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
+        appBar: AppBar(
+          title: Text('Products'),
+        ),
         body: Column(
           children: [
             Material(
@@ -18,18 +22,8 @@ class VendorProduct extends StatelessWidget {
               child: Padding(
                 padding: EdgeInsets.all(10),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Padding(
-                      padding: EdgeInsets.only(left: 10),
-                      child: Container(
-                        child: Row(
-                          children: [
-                            Text('Products')
-                          ],
-                        ),
-                      ),
-                    ),
                     FlatButton.icon(onPressed: (){
                       Navigator.pushNamed(context, AddNewProduct.id);
                     }, icon: Icon(Icons.add), label: Text("Add Product"),color: Colors.orange[700],)

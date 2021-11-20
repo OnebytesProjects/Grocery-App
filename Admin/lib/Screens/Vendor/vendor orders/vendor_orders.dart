@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:admin/Screens/Vendor/vendor%20orders/deliveryboy_list.dart';
 import 'package:admin/Services/order_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -19,13 +17,17 @@ class VendorsOrders extends StatefulWidget {
 class _VendorsOrdersState extends State<VendorsOrders> {
   OrderService orderService = OrderService();
 
+
   void _launchURL(number) async =>
       await canLaunch(number) ? await launch(number) : throw 'Could not call to $number';
 
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context){
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Orders'),
+      ),
       backgroundColor: Colors.grey[100],
       body: Container(
         child: StreamBuilder<QuerySnapshot>(
@@ -35,7 +37,7 @@ class _VendorsOrdersState extends State<VendorsOrders> {
               return Text('Something went wrong');
             }
             if(!snapshot.hasData){
-              return Center(child: Text('No orders placed.Continue Shopping'),);
+              return Center(child: Text('No orders placed.'),);
             }
 
             return ListView(
@@ -116,10 +118,10 @@ class _VendorsOrdersState extends State<VendorsOrders> {
                           )
                         ],),
                       Divider(height: 3,),
-                      tasks(data['orderStatus'], document, document.id,data['deliverBoy']['name'],data['deliverBoy']['phone']),
 
+                      tasks(data['orderStatus'], document, document.id,data['deliverBoy']['name'],data['deliverBoy']['phone'],data,context),
+                      //checking
                       Divider(height: 10,thickness: 3,),
-
                     ],
                   ),
                 );
@@ -170,7 +172,7 @@ class _VendorsOrdersState extends State<VendorsOrders> {
     }
   }
 
-  tasks(data,document,documentId,name,number){
+  tasks(data,document,documentId,name,number,docdata,context){
     if(data == 'Accepted'){
       return Container(
         height: 40,
@@ -261,4 +263,5 @@ class _VendorsOrdersState extends State<VendorsOrders> {
       );
     }
   }
+
 }

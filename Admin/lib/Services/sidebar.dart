@@ -2,7 +2,6 @@ import 'package:admin/Screens/Home/HomeScreen.dart';
 import 'package:admin/Screens/Category/category_screen.dart';
 import 'package:admin/Screens/Banner/manage_banners.dart';
 import 'package:admin/Screens/Notification/notification_screen.dart';
-import 'package:admin/Screens/Subscriptions/Subscriptions.dart';
 import 'package:admin/Screens/Vendor/vendor_screen.dart';
 import 'package:admin/Screens/Login/LoginScreen.dart';
 import 'package:flutter/cupertino.dart';
@@ -32,11 +31,6 @@ class SidebarWidget {
           title: 'Vendor',
           route: VendorScreen.id,
           icon: CupertinoIcons.shopping_cart,
-        ),
-        MenuItem(
-          title: 'Subscriptions',
-          route: Subscription.id,
-          icon: CupertinoIcons.book,
         ),
         MenuItem(
           title: 'Send Notification',
