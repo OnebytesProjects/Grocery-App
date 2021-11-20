@@ -5,7 +5,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:menu_button/menu_button.dart';
 import 'package:milk/Screens/HomeScreen/Home/Mainscreen.dart';
 import 'package:milk/services/user_service.dart';
 
@@ -90,8 +89,9 @@ class _UserRegistrationState extends State<UserRegistration> {
         'address': address,
         'zip': dropdownValue,
         'referral': _referral.text,
+        'refered' : _referral.text,
         'mail': _email.text,
-        'pincode':_referral.text,
+        'pincode':dropdownValue,
       });
     }
   }
@@ -372,7 +372,6 @@ class _UserRegistrationState extends State<UserRegistration> {
       child: DropdownButton<String>(
         value: dropdownValue,
         //icon: const Icon(Icons.arrow_downward,),
-        alignment: Alignment.topRight,
         iconSize: 24,
         elevation: 16,
         style: const TextStyle(fontSize: 13, color: Colors.grey),
@@ -400,7 +399,6 @@ class _UserRegistrationState extends State<UserRegistration> {
       child: DropdownButton<String>(
         value: dropdownValueGender,
         //icon: const Icon(Icons.arrow_downward,),
-        alignment: Alignment.topRight,
         iconSize: 24,
         elevation: 16,
         style: const TextStyle(fontSize: 13, color: Colors.grey),

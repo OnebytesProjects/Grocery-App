@@ -6,7 +6,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:menu_button/menu_button.dart';
 import 'package:milk/Screens/HomeScreen/Home/Mainscreen.dart';
 import 'package:milk/services/user_service.dart';
 
@@ -37,7 +36,6 @@ class _ProfileState extends State<Profile> {
   UserServices _user = UserServices();
   TextEditingController _name = TextEditingController();
   TextEditingController _mobile = TextEditingController();
-  //TextEditingController _gender = TextEditingController();
   TextEditingController _address = TextEditingController();
   TextEditingController _referral = TextEditingController();
   TextEditingController _email = TextEditingController();
@@ -122,7 +120,8 @@ class _ProfileState extends State<Profile> {
         _address.text = doc['address'];
         _referral.text = doc['refered'];
         _email.text = doc['mail'];
-        //dropdownValue = doc[''];
+         dropdownValue = doc['pincode'];
+         dropdownValueGender = doc['gender'];
       });
     });
 
@@ -231,8 +230,6 @@ class _ProfileState extends State<Profile> {
                                       height: 10,
                                     ),
                                     Row(
-                                      crossAxisAlignment:
-                                      CrossAxisAlignment.center,
                                       children: [
                                         DropDownField(),
                                       ],
@@ -259,10 +256,7 @@ class _ProfileState extends State<Profile> {
                                       height: 10,
                                     ),
                                     Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
                                       children: [
-                                        //DropDownField(),
                                         DropDownField1(),
                                       ],
                                     ),
@@ -384,7 +378,6 @@ class _ProfileState extends State<Profile> {
       child: DropdownButton<String>(
         value: dropdownValue,
         //icon: const Icon(Icons.arrow_downward,),
-        alignment: Alignment.topRight,
         iconSize: 24,
         elevation: 16,
         style: const TextStyle(fontSize: 13, color: Colors.grey),
@@ -412,7 +405,7 @@ class _ProfileState extends State<Profile> {
       child: DropdownButton<String>(
         value: dropdownValueGender,
         //icon: const Icon(Icons.arrow_downward,),
-        alignment: Alignment.topRight,
+        //alignment: Alignment.topRight,
         iconSize: 24,
         elevation: 16,
         style: const TextStyle(fontSize: 13, color: Colors.grey),

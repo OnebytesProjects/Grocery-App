@@ -15,6 +15,9 @@ class CartService{
     cart.doc(user.uid).set({
       'user':user.uid,
     });
+    //
+    updateproducts(data['productid'], qty);
+
     return cart.doc(user.uid).collection('products').add({
       'productName' : data['productName'],
       'productid' : data['productid'],
@@ -29,7 +32,6 @@ class CartService{
     cart.doc(user.uid).set({
       'user':user.uid,
     });
-    //updateproducts(data['productid'], qty);
     return cart.doc(user.uid).collection('products').add({
       'productName' : data['productName'],
       'productid' : data['productid'],
@@ -44,19 +46,18 @@ class CartService{
   }
 
   updateproducts(productid,qty){
-    var productquantity;
+    int productquantity;
     FirebaseFirestore.instance
         .collection('products')
         .where('productId', isEqualTo: productid)
         .get().then((QuerySnapshot querySnapshot) {
       querySnapshot.docs.forEach((doc) {
-        productquantity = doc['ProductQuantity'];
+        productquantity = doc['ProductQuantity'] - qty;
       });
     });
-    productquantity = productquantity - qty;
-    products.doc(productid).update({
-      'Inventory_max_qty': productquantity,
-    });
+    // products.doc(productid).update({
+    //   'Inventory_max_qty': productquantity,
+    // });
   }
 
   Future<void> updateCartqty({docId, qty,total})async{

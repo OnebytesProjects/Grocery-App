@@ -3,7 +3,6 @@ Bug and toDo List:
 1.Profile Page& RegistrationPage:
 -Pincode&gender dropdown bug
 -check referalcode
--pincode list
 
 2.Cart:
 -Coupon pricing not changing
@@ -12,13 +11,15 @@ Bug and toDo List:
 3.Inventory(Admin Panel)
 -app qty reduce(add productid)
 
-To be checked:
+To be checked and implemented:
+first time login
 convenience fee details
 Drawer Content
 Google Pay
 home page scroll
 delivery boy
 Carousel error and initial page error
+order cancelation
 
 Last to implement:
 Calender

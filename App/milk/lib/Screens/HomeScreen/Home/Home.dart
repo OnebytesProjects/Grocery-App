@@ -13,7 +13,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
 
-  var _productList = 'Dairy Products';
+  var _productList = 'Milk Products';
   //Stream function
   late Stream slides;
   Future<Stream> _queryDb() async => slides = FirebaseFirestore.instance
