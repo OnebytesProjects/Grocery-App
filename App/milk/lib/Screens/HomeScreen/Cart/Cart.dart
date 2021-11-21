@@ -68,164 +68,167 @@ class _CartState extends State<Cart> {
          if(!snapshot.hasData){
            return const Center(child: Text('Cart is Empty. Continue Shopping?'),);
          }
-         return ListView(
-           shrinkWrap: true,
-           children: snapshot.data!.docs.map((DocumentSnapshot document) {
-             Map<String, dynamic> data = document.data()!;
+         if(snapshot.hasData){
+           return ListView(
+             shrinkWrap: true,
+             children: snapshot.data!.docs.map((DocumentSnapshot document) {
+               Map<String, dynamic> data = document.data()!;
 
-             int cartvalue = data['qty'];
+               int cartvalue = data['qty'];
 
-             return Container(
-               decoration: BoxDecoration(
-                 border: Border(
-                   bottom:BorderSide(width: 2.0, color: Colors.black45),
+               return Container(
+                 decoration: BoxDecoration(
+                   border: Border(
+                     bottom:BorderSide(width: 2.0, color: Colors.black45),
+                   ),
                  ),
-               ),
-               padding: const EdgeInsets.all(10),
-               width: double.infinity,
-               height: 102,
-               child: Row(
-                 crossAxisAlignment: CrossAxisAlignment.center,
-                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                 children: <Widget>[
-                   Container(
-                     height: 100,
-                     width: 90,
-                     child: Image.network(data['productImage']),
-                   ),
-                   SizedBox(
-                     width: 10,
-                   ),
-                   Column(
-                     children: [
-                       Text(
-                         data['productName'],
-                         style: TextStyle(fontWeight: FontWeight.bold),
-                       ),
-                       SizedBox(
-                         height: 10,
-                       ),
-                       Text(data['productVolume']),
-                       SizedBox(
-                         height: 10,
-                       ),
-                       Text(
-                         '₹'+data['total'].toString(),
-                         style: TextStyle(fontWeight: FontWeight.bold),
-                       ),
-                     ],
-                   ),
-
-                   Column(
-                     children: [
-                       Container(
-                           padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                           child: Container(
-                             margin: EdgeInsets.only(left: 10, right: 10),
-                             height: 50,
-                             child: Padding(
-                               padding: const EdgeInsets.all(10.0),
-                               child: Text('Quantity :${data['qty']} ')
-                               // FittedBox(
-                               //   child: Row(
-                               //     children: [
-                               //       InkWell(
-                               //         onTap: (){
-                               //           _docId = document.id;
-                               //           if(cartvalue>=1){
-                               //             setState(() {
-                               //               cartvalue -=1;
-                               //               updating = true;
-                               //             });
-                               //             if(cartvalue == 0){
-                               //               _cart.removeFromCart(docId: _docId);
-                               //             }
-                               //             var total = cartvalue * data['sellingPrice'];
-                               //             _cart.incproducts(_docId, cartvalue);
-                               //             _cart.updateCartqty(docId: _docId,qty: cartvalue,total: total).then((value){
-                               //               setState(() {
-                               //                 updating = false;
-                               //               });
-                               //             });
-                               //           }
-                               //         },
-                               //         child: Container(
-                               //           decoration: BoxDecoration(
-                               //               borderRadius: BorderRadius.circular(50),
-                               //               border: Border.all(
-                               //                 color: Colors.orange,
-                               //               )),
-                               //           child: Padding(
-                               //             padding: EdgeInsets.all(8.0),
-                               //             child: Icon(Icons.remove),
-                               //           ),
-                               //         ),
-                               //       ),
-                               //       Container(
-                               //         width: 30,
-                               //         child: Center(
-                               //           child: FittedBox(
-                               //             child: Text(cartvalue.toString())
-                               //         //     child: updating?Padding(
-                               //         //   padding: const EdgeInsets.all(8.0),
-                               //         //   child: CircularProgressIndicator(),
-                               //         // ):Text(cartvalue.toString())
-                               //           ,),),
-                               //       ),
-                               //       InkWell(
-                               //         onTap: (){
-                               //           if(cartvalue>=0){
-                               //             setState(() {
-                               //               cartvalue +=1;
-                               //               updating = true;
-                               //             });
-                               //             var total = cartvalue * data['sellingPrice'];
-                               //             _docId = document.id;
-                               //             _cart.updateCartqty(docId: _docId,qty: cartvalue,total: total).then((value){
-                               //               setState(() {
-                               //                 updating = false;
-                               //               });
-                               //             });
-                               //           }
-                               //           print('add');
-                               //         },
-                               //         child: Container(
-                               //           decoration: BoxDecoration(
-                               //               borderRadius: BorderRadius.circular(50),
-                               //               border: Border.all(
-                               //                 color: Colors.orange,
-                               //               )),
-                               //           child: Padding(
-                               //             padding: EdgeInsets.all(8.0),
-                               //             child: Icon(Icons.add),
-                               //           ),
-                               //         ),
-                               //       ),
-                               //     ],
-                               //   ),
-                               // ),
-                             ),
-                           )),
-                       InkWell(
-                         onTap: (){
-                           _docId = document.id;
-                           _cart.removeFromCart(docId: _docId,qty: data['qty'],productid: data['productid']);
-                           print(_docId);
-                         },
-                         child: Container(
-                             height: 30,
-                             width: 60,
-                             color: Colors.orange[300],
-                             child: const Center(child: Text('Remove',style: TextStyle(fontSize: 10),),)
+                 padding: const EdgeInsets.all(10),
+                 width: double.infinity,
+                 height: 102,
+                 child: Row(
+                   crossAxisAlignment: CrossAxisAlignment.center,
+                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                   children: <Widget>[
+                     Container(
+                       height: 100,
+                       width: 90,
+                       child: Image.network(data['productImage']),
+                     ),
+                     SizedBox(
+                       width: 10,
+                     ),
+                     Column(
+                       children: [
+                         Text(
+                           data['productName'],
+                           style: TextStyle(fontWeight: FontWeight.bold),
                          ),
-                       ),
-                     ],
-                   )
-                 ],
-               ),
-             );
-           }).toList(),
-         );
+                         SizedBox(
+                           height: 10,
+                         ),
+                         Text(data['productVolume']),
+                         SizedBox(
+                           height: 10,
+                         ),
+                         Text(
+                           '₹'+data['total'].toString(),
+                           style: TextStyle(fontWeight: FontWeight.bold),
+                         ),
+                       ],
+                     ),
+
+                     Column(
+                       children: [
+                         Container(
+                             padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                             child: Container(
+                               margin: EdgeInsets.only(left: 10, right: 10),
+                               height: 50,
+                               child: Padding(
+                                   padding: const EdgeInsets.all(10.0),
+                                   child: Text('Quantity :${data['qty']} ')
+                                 // FittedBox(
+                                 //   child: Row(
+                                 //     children: [
+                                 //       InkWell(
+                                 //         onTap: (){
+                                 //           _docId = document.id;
+                                 //           if(cartvalue>=1){
+                                 //             setState(() {
+                                 //               cartvalue -=1;
+                                 //               updating = true;
+                                 //             });
+                                 //             if(cartvalue == 0){
+                                 //               _cart.removeFromCart(docId: _docId);
+                                 //             }
+                                 //             var total = cartvalue * data['sellingPrice'];
+                                 //             _cart.incproducts(_docId, cartvalue);
+                                 //             _cart.updateCartqty(docId: _docId,qty: cartvalue,total: total).then((value){
+                                 //               setState(() {
+                                 //                 updating = false;
+                                 //               });
+                                 //             });
+                                 //           }
+                                 //         },
+                                 //         child: Container(
+                                 //           decoration: BoxDecoration(
+                                 //               borderRadius: BorderRadius.circular(50),
+                                 //               border: Border.all(
+                                 //                 color: Colors.orange,
+                                 //               )),
+                                 //           child: Padding(
+                                 //             padding: EdgeInsets.all(8.0),
+                                 //             child: Icon(Icons.remove),
+                                 //           ),
+                                 //         ),
+                                 //       ),
+                                 //       Container(
+                                 //         width: 30,
+                                 //         child: Center(
+                                 //           child: FittedBox(
+                                 //             child: Text(cartvalue.toString())
+                                 //         //     child: updating?Padding(
+                                 //         //   padding: const EdgeInsets.all(8.0),
+                                 //         //   child: CircularProgressIndicator(),
+                                 //         // ):Text(cartvalue.toString())
+                                 //           ,),),
+                                 //       ),
+                                 //       InkWell(
+                                 //         onTap: (){
+                                 //           if(cartvalue>=0){
+                                 //             setState(() {
+                                 //               cartvalue +=1;
+                                 //               updating = true;
+                                 //             });
+                                 //             var total = cartvalue * data['sellingPrice'];
+                                 //             _docId = document.id;
+                                 //             _cart.updateCartqty(docId: _docId,qty: cartvalue,total: total).then((value){
+                                 //               setState(() {
+                                 //                 updating = false;
+                                 //               });
+                                 //             });
+                                 //           }
+                                 //           print('add');
+                                 //         },
+                                 //         child: Container(
+                                 //           decoration: BoxDecoration(
+                                 //               borderRadius: BorderRadius.circular(50),
+                                 //               border: Border.all(
+                                 //                 color: Colors.orange,
+                                 //               )),
+                                 //           child: Padding(
+                                 //             padding: EdgeInsets.all(8.0),
+                                 //             child: Icon(Icons.add),
+                                 //           ),
+                                 //         ),
+                                 //       ),
+                                 //     ],
+                                 //   ),
+                                 // ),
+                               ),
+                             )),
+                         InkWell(
+                           onTap: (){
+                             _docId = document.id;
+                             _cart.removeFromCart(docId: _docId,qty: data['qty'],productid: data['productid']);
+                             print(_docId);
+                           },
+                           child: Container(
+                               height: 30,
+                               width: 60,
+                               color: Colors.orange[300],
+                               child: const Center(child: Text('Remove',style: TextStyle(fontSize: 10),),)
+                           ),
+                         ),
+                       ],
+                     )
+                   ],
+                 ),
+               );
+             }).toList(),
+           );
+         }
+         return const Center(child: Text('Cart is Empty. Continue Shopping?'),);
 
   });
   }
@@ -266,8 +269,15 @@ class _CartState extends State<Cart> {
                               padding: const EdgeInsets.all(8.0),
                               child: ListView(
                                 children: [
-                                  Text("data"),
-                                  Text("data"),
+                                  Text("Convenience Fee",style: TextStyle(fontSize: 20),),
+                                  SizedBox(height: 5,),
+                                  Divider(),
+                                  Row(
+                                    children: [
+                                      Text("Lorem Ipsum adgbahjdikaj"),
+                                    ],
+                                  )
+
                                 ],
                               ),
                             ),
@@ -286,7 +296,7 @@ class _CartState extends State<Cart> {
                   // print("proceed to buy");
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => Checkout(cartValue: carttotal,delivryCharge: deliverycharge,)),
+                    MaterialPageRoute(builder: (context) => Checkout(cartValue: carttotal)),
                   );
                 },
                 color: Colors.orange[300],

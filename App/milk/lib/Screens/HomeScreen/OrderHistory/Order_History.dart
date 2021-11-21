@@ -5,14 +5,21 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:milk/services/order_service.dart';
 
-class OrderHistory extends StatelessWidget {
+class OrderHistory extends StatefulWidget {
   const OrderHistory({Key? key}) : super(key: key);
 
+  @override
+  State<OrderHistory> createState() => _OrderHistoryState();
+}
+
+class _OrderHistoryState extends State<OrderHistory> {
+  CollectionReference orders = FirebaseFirestore.instance.collection('orders');
   @override
   Widget build(BuildContext context) {
 
     OrderService orderService = OrderService();
     User user = FirebaseAuth.instance.currentUser;
+
     return Scaffold(
       backgroundColor: Colors.grey[100],
       body: Container(
@@ -64,14 +71,21 @@ class OrderHistory extends StatelessWidget {
                           shrinkWrap: true,
                           physics: NeverScrollableScrollPhysics(),
                           itemBuilder: (BuildContext context,int index){
-                          return ListTile(
-                            leading: CircleAvatar(
-                              backgroundColor: Colors.white,
-                              child: Image.network(document.data()['products'][index]['productImage']),
-                            ),
-                            title: Text(document.data()['products'][index]['productName']),
-                              subtitle: Text('Quantity: ${document.data()['products'][index]['qty'].toString()}   Price:₹ ${document.data()['products'][index]['sellingPrice'].toString()}',
-                                style: TextStyle(fontSize: 12,color: Colors.grey),),
+                          return Column(
+                            children: [
+                              ListTile(
+                                leading: CircleAvatar(
+                                  backgroundColor: Colors.white,
+                                  child: Image.network(document.data()['products'][index]['productImage']),
+                                ),
+                                title: Text(document.data()['products'][index]['productName']),
+                                  subtitle: Text('Quantity: ${document.data()['products'][index]['qty'].toString()}   Price:₹ ${document.data()['products'][index]['sellingPrice'].toString()}',
+                                    style: TextStyle(fontSize: 12,color: Colors.grey),),
+                              ),
+                              document.data()['orderStatus'] !='Cancelled'?RaisedButton(onPressed: (){
+                                showDialog('Are you Sure?', context,document.id);
+                              },child: Text('Cancel Order'),color: Colors.orange,):Container(),
+                            ],
                           );
                         },
                           itemCount: document.data()['products'].length,
@@ -88,9 +102,32 @@ class OrderHistory extends StatelessWidget {
       ),
     );
   }
+
+  showDialog(message,context,docid){
+    showCupertinoDialog(context: context, builder: (BuildContext context){
+      return CupertinoAlertDialog(
+        content: Text('$message'),
+        actions: [
+          FlatButton(onPressed: (){
+            Navigator.pop(context);
+          }, child: Text('Cancel')),
+          FlatButton(onPressed: (){
+            Navigator.pop(context);
+            //changestatus
+            orders.doc(docid)
+                .update({'orderStatus': 'Cancelled'});
+          }, child: Text('Ok'))
+        ],
+      );
+    });
+  }
+
   statusColor(data){
     if(data == 'Accepted'){
       return Colors.orange;
+    }
+    if(data == 'Cancelled'){
+      return Colors.red;
     }
     if(data == 'Pending'){
       return Colors.orange;

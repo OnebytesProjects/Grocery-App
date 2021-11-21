@@ -6,7 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:milk/Screens/HomeScreen/Home/Mainscreen.dart';
+import 'package:milk/Screens/HomeScreen/UserRegistration/CheckReferalid.dart';
+import 'package:milk/providers/referal_provider.dart';
 import 'package:milk/services/user_service.dart';
+import 'package:provider/provider.dart';
 
 class UserRegistration extends StatefulWidget {
   static const String id = 'userregistration';
@@ -77,29 +80,9 @@ class _UserRegistrationState extends State<UserRegistration> {
     }
   }
 
-  String exist = '';
-
-  upprofile(){
-    FirebaseFirestore.instance
-        .collection('referal')
-        .get()
-        .then((QuerySnapshot querySnapshot) {
-      querySnapshot.docs.forEach((doc) {
-        if(_referral.text == doc['referal']){
-          setState(() {
-            this.exist = 'Coupon valid';
-          });
-        }else{
-          this.exist = 'Not Valid';
-        }
-      });
-    });
-  }
-
   updateProfile() async{
     String address = "${_address.text} - ${dropdownValue}";
     if (_fomrKey.currentState!.validate()) {
-      upprofile();
       return FirebaseFirestore.instance
           .collection('users')
           .doc(user.uid)
@@ -137,8 +120,10 @@ class _UserRegistrationState extends State<UserRegistration> {
 
   @override
   Widget build(BuildContext context) {
+    var _referalid = Provider.of<ReferalProvider>(context);
     setState(() {
       _mobile.text = user.phoneNumber;
+      this._referral.text = _referalid.referalid;
     });
 
     return SafeArea(
@@ -278,25 +263,20 @@ class _UserRegistrationState extends State<UserRegistration> {
                               SizedBox(
                                 height: 20,
                               ),
-                              buildTextField(
-                                  "Referral Code", "Enter here", true, _referral),
+                              // buildTextField(
+                              //     "Referral Code", "Enter here", true, _referral),
                               buildTextField("Email", "Enter here", true, _email),
+                              CheckReferalId(),
                               SizedBox(
                                 height: 35,
                               ),
                               RaisedButton(
                                 onPressed: () {
-                                  upprofile();
-                                  if(exist == 'Not Valid'){
-                                    EasyLoading.showSuccess('Coupon code Invalid');
-                                  }
-                                  if(exist == 'Coupon valid'){
-                                    updateProfile().then((value) {
-                                      EasyLoading.showSuccess('Profile Updated');
-                                      Navigator.pushReplacementNamed(
-                                          context, MainScreen.id);
-                                    });
-                                  }
+                                  updateProfile().then((value) {
+                                    EasyLoading.showSuccess('Profile Updated');
+                                    Navigator.pushReplacementNamed(
+                                        context, MainScreen.id);
+                                  });
                                 },
                                 color: Colors.orange[300],
                                 padding: EdgeInsets.symmetric(horizontal: 50),

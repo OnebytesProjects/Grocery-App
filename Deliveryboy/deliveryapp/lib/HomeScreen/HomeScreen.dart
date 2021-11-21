@@ -1,3 +1,4 @@
+import 'package:deliveryapp/HomeScreen/Pending.dart';
 import 'package:deliveryapp/HomeScreen/pendingOrder.dart';
 import 'package:deliveryapp/HomeScreen/pickedupOrder.dart';
 import 'package:flutter/cupertino.dart';
@@ -36,7 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           body: const TabBarView(
             children: <Widget>[
-              PendingOrder(),
+              Pending(),
               PickedupOrder(),
             ],
           ),

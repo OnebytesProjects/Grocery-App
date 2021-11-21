@@ -17,8 +17,7 @@ enum SingingCharacter { Googlepay, CashOnDelivery }
 
 class Checkout extends StatefulWidget {
   double cartValue;
-  double delivryCharge;
-  Checkout({required this.cartValue,required this.delivryCharge,});
+  Checkout({required this.cartValue,});
 
   @override
   State<Checkout> createState() => _CheckoutState();
@@ -35,9 +34,11 @@ class _CheckoutState extends State<Checkout> {
   String payment = 'GooglePay';
   SingingCharacter? _paymentmode = SingingCharacter.Googlepay;
   String _address = '';
+  String _pincode = '';
   String _deliverymode = '';
   String _name = '';
   String _number = '';
+  int delivryCharge = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -53,12 +54,24 @@ class _CheckoutState extends State<Checkout> {
       if (documentSnapshot.exists) {
         setState(() {
           this._address = documentSnapshot.data()['address'];
+          this._pincode = documentSnapshot.data()['pincode'];
           this._deliverymode = documentSnapshot.data()['preference'];
           this._name = documentSnapshot.data()['name'];
           this._number = documentSnapshot.data()['number'];
           //name
           //number
-          total = (widget.cartValue+widget.delivryCharge)-discountrate;
+          total = (widget.cartValue+delivryCharge)-discountrate;
+        });
+      }
+    });
+    FirebaseFirestore.instance
+        .collection('pincode')
+        .doc(_pincode)
+        .get()
+        .then((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists) {
+        setState(() {
+          this.delivryCharge = documentSnapshot.data()['deliverycharge'];
         });
       }
     });
@@ -105,7 +118,7 @@ class _CheckoutState extends State<Checkout> {
                         Row(
                           children: [
                             Expanded(child: Text("Delivery Charge")),
-                            Text('₹ '+widget.delivryCharge.toString())
+                            Text('₹ '+delivryCharge.toString())
                           ],
                         ),
                         SizedBox(

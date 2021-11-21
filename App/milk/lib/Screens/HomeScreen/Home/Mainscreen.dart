@@ -16,7 +16,7 @@ import 'package:milk/Screens/Notifications.dart';
 import 'package:milk/Screens/SplashScreen/WelcomeScreen.dart';
 import 'package:milk/models/product_model.dart';
 import 'package:milk/providers/auth_provider.dart';
-import 'package:milk/services/UserRegistration.dart';
+import 'package:milk/Screens/HomeScreen/UserRegistration/UserRegistration.dart';
 import 'package:provider/provider.dart';
 import 'package:search_page/search_page.dart';
 import '../Screens/ClientFeeds/Contact_us.dart';

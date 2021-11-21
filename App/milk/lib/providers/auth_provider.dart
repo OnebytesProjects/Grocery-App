@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:milk/Screens/HomeScreen/Home/Mainscreen.dart';
-import 'package:milk/services/UserRegistration.dart';
+import 'package:milk/Screens/HomeScreen/UserRegistration/UserRegistration.dart';
 import 'package:milk/services/user_service.dart';
 
 class AuthProvider with ChangeNotifier {

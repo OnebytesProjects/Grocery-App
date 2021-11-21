@@ -156,10 +156,13 @@ class _VendorsOrdersState extends State<VendorsOrders> {
 
   statusColor(data){
     if(data == 'Accepted'){
-      return Colors.orange[400];
+      return Colors.orange;
+    }
+    if(data == 'Cancelled'){
+      return Colors.red;
     }
     if(data == 'Pending'){
-      return Colors.red;
+      return Colors.orange;
     }
     if(data == 'On The Way'){
       return Colors.purple[900];
@@ -261,6 +264,9 @@ class _VendorsOrdersState extends State<VendorsOrders> {
           ],
         ),
       );
+    }
+    if(data == 'Cancelled'){
+      return Container();
     }
   }
 

@@ -1,23 +1,17 @@
 Bug and toDo List:
 
 To be checked and implemented:
-checkout delivery charge
-coupon string to int 
-userregistration coupon douoble tap
-2 product id in db
-first time login
-convenience fee details
-Drawer Content
+subscription error
 mail sending
 Google Pay
-home page scroll
-delivery boy
-Carousel error and initial page error
-order cancelation
-milk db inventory not updating
+first time login
 
 Last to implement:
 Calender
 Notification:
 -app
 -status notification
+
+To be done in main build:
+home page scroll
+Carousel error and initial page error

@@ -6,8 +6,9 @@ import 'package:milk/Screens/SplashScreen/WelcomeScreen.dart';
 import 'package:milk/providers/auth_provider.dart';
 import 'package:milk/providers/cart__provider.dart';
 import 'package:milk/providers/coupon_provider.dart';
+import 'package:milk/providers/referal_provider.dart';
 import 'package:milk/providers/store_provider.dart';
-import 'package:milk/services/UserRegistration.dart';
+import 'package:milk/Screens/HomeScreen/UserRegistration/UserRegistration.dart';
 import 'package:provider/provider.dart';
 import 'Screens/SplashScreen/SplashScreen.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -22,6 +23,7 @@ void main() async {
         ChangeNotifierProvider(create: (_) => StoreProvider()),
         ChangeNotifierProvider(create: (_) => CartProvider()),
         ChangeNotifierProvider(create: (_) => CouponProvider()),
+        ChangeNotifierProvider(create: (_) => ReferalProvider()),
       ],
       child: MyApp(),
     ),

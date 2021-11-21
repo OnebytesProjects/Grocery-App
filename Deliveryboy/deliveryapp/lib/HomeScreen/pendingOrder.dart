@@ -23,7 +23,8 @@ class _PendingOrderState extends State<PendingOrder> {
   FirebaseService _service = FirebaseService();
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return
+      Container(
       child: StreamBuilder<QuerySnapshot>(
         stream: _service.orders.where('orderStatus',isEqualTo: 'Delivery Man Assigned').snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {

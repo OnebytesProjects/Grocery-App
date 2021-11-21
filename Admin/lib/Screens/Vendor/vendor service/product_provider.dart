@@ -125,7 +125,6 @@ class ProductProvider with ChangeNotifier {
         'p3': p3,
         'p4': p4,
         'published': false,
-        'productId': timeStamp,
         'Inventory_max_qty': maxqty,
         'Inventory_min_qty': minQty,
         'productid': timeStamp.toString(),
