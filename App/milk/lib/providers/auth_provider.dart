@@ -138,6 +138,10 @@ class AuthProvider with ChangeNotifier {
       'preference': 'Ring Door Bell',
       'pincode':'',
     });
+
+    _userServices.createReferalData({
+      'referal': referal,
+    },referal);
   }
 
   Future<DocumentSnapshot> getUserDetails() async {

@@ -15,9 +15,7 @@ class CartService{
     cart.doc(user.uid).set({
       'user':user.uid,
     });
-    //
     updateproducts(data['productid'], qty);
-
     return cart.doc(user.uid).collection('products').add({
       'productName' : data['productName'],
       'productid' : data['productid'],
@@ -28,10 +26,12 @@ class CartService{
       'total':total,
     });
   }
+
   Future<void>addToCartSubscription({data, qty, volume,total,subscription}){
     cart.doc(user.uid).set({
       'user':user.uid,
     });
+    updateproducts(data['productid'], qty);
     return cart.doc(user.uid).collection('products').add({
       'productName' : data['productName'],
       'productid' : data['productid'],
@@ -46,18 +46,20 @@ class CartService{
   }
 
   updateproducts(productid,qty){
-    int productquantity;
     FirebaseFirestore.instance
         .collection('products')
-        .where('productId', isEqualTo: productid)
-        .get().then((QuerySnapshot querySnapshot) {
-      querySnapshot.docs.forEach((doc) {
-        productquantity = doc['ProductQuantity'] - qty;
-      });
+        .doc(productid)
+        .get()
+        .then((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists) {
+        //print('Document data: ${documentSnapshot.data()}');
+        products.doc(productid).update({
+          'Inventory_max_qty': documentSnapshot.data()['Inventory_max_qty'] - qty,
+        });
+      } else {
+        print('Document does not exist on the database');
+      }
     });
-    // products.doc(productid).update({
-    //   'Inventory_max_qty': productquantity,
-    // });
   }
 
   Future<void> updateCartqty({docId, qty,total})async{
@@ -84,11 +86,22 @@ class CartService{
         .catchError((error) => print("Failed to update cart: $error"));
   }
 
-  Future<void> removeFromCart({docId})async{
+  Future<void> removeFromCart({docId,qty,productid})async{
     cart.doc(user.uid).collection('products').doc(docId).delete();
+
+    FirebaseFirestore.instance
+        .collection('products')
+        .doc(productid)
+        .get()
+        .then((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists) {
+        //print('Document data: ${documentSnapshot.data()}');
+        products.doc(productid).update({
+          'Inventory_max_qty': documentSnapshot.data()['Inventory_max_qty'] + qty,
+        });
+      }
+    });
   }
 
-  Future<void> deleteFromCart()async{
-    return cart.doc(user.uid).delete();
-  }
+
 }

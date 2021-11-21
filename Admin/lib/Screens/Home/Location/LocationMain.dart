@@ -118,7 +118,7 @@ class _LocationScreenMainState extends State<LocationScreenMain> {
                                 ),
                                 Container(
                                   child: Text(
-                                    data['deliverycharge'],
+                                    data['deliverycharge'].toString(),
                                   ),
                                 ),
                                 popUpButton(data),

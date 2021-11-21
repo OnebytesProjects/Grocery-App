@@ -1,25 +1,20 @@
 Bug and toDo List:
 
-1.Profile Page& RegistrationPage:
--Pincode&gender dropdown bug
--check referalcode
-
-2.Cart:
--Coupon pricing not changing
--Unable to delete cart content
-
-3.Inventory(Admin Panel)
--app qty reduce(add productid)
-
 To be checked and implemented:
+checkout delivery charge
+coupon string to int 
+userregistration coupon douoble tap
+2 product id in db
 first time login
 convenience fee details
 Drawer Content
+mail sending
 Google Pay
 home page scroll
 delivery boy
 Carousel error and initial page error
 order cancelation
+milk db inventory not updating
 
 Last to implement:
 Calender

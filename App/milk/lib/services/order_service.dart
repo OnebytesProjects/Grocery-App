@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class OrderService{
   CollectionReference order = FirebaseFirestore.instance.collection('orders');
+  CollectionReference cart = FirebaseFirestore.instance.collection('cart');
   CollectionReference subscription = FirebaseFirestore.instance.collection('subscription');
   User user = FirebaseAuth.instance.currentUser;
 
@@ -20,6 +21,21 @@ class OrderService{
         data
     );
     return result;
+  }
+
+  Future<void>deleteCart()async{
+    final result = await cart.doc(user.uid).collection('products').get().then((snapshot){
+      for(DocumentSnapshot ds in snapshot.docs){
+        ds.reference.delete();
+      }
+    });
+  }
+
+  Future<void>checkData()async{
+    final snapshot = await cart.doc(user.uid).collection('products').get();
+    if(snapshot.docs.length==0){
+      cart.doc(user.uid).delete();
+    }
   }
 
 }

@@ -37,7 +37,6 @@ class _ProfileState extends State<Profile> {
   TextEditingController _name = TextEditingController();
   TextEditingController _mobile = TextEditingController();
   TextEditingController _address = TextEditingController();
-  TextEditingController _referral = TextEditingController();
   TextEditingController _email = TextEditingController();
 
   File? image;
@@ -86,7 +85,6 @@ class _ProfileState extends State<Profile> {
         'gender': dropdownValueGender,
         'address': address,
         'zip': dropdownValue,
-        'referral': _referral.text,
         'mail': _email.text,
       });
     }
@@ -118,7 +116,6 @@ class _ProfileState extends State<Profile> {
       querySnapshot.docs.forEach((doc) {
         _name.text = doc['name'];
         _address.text = doc['address'];
-        _referral.text = doc['refered'];
         _email.text = doc['mail'];
          dropdownValue = doc['pincode'];
          dropdownValueGender = doc['gender'];
@@ -265,8 +262,6 @@ class _ProfileState extends State<Profile> {
                             SizedBox(
                               height: 20,
                             ),
-                            buildTextField(
-                                "Referral Code", "Enter here", true, _referral),
                             buildTextField("Email", "Enter here", true, _email),
                             SizedBox(
                               height: 35,

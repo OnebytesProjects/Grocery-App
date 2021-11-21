@@ -125,89 +125,91 @@ class _CartState extends State<Cart> {
                              height: 50,
                              child: Padding(
                                padding: const EdgeInsets.all(10.0),
-                               child: FittedBox(
-                                 child: Row(
-                                   children: [
-                                     InkWell(
-                                       onTap: (){
-                                         _docId = document.id;
-                                         if(cartvalue>=1){
-                                           setState(() {
-                                             cartvalue -=1;
-                                             updating = true;
-                                           });
-                                           if(cartvalue == 0){
-                                             _cart.removeFromCart(docId: _docId);
-                                           }
-                                           var total = cartvalue * data['sellingPrice'];
-                                           _cart.updateCartqty(docId: _docId,qty: cartvalue,total: total).then((value){
-                                             setState(() {
-                                               updating = false;
-                                             });
-                                           });
-                                         }
-                                       },
-                                       child: Container(
-                                         decoration: BoxDecoration(
-                                             borderRadius: BorderRadius.circular(50),
-                                             border: Border.all(
-                                               color: Colors.orange,
-                                             )),
-                                         child: Padding(
-                                           padding: EdgeInsets.all(8.0),
-                                           child: Icon(Icons.remove),
-                                         ),
-                                       ),
-                                     ),
-                                     Container(
-                                       width: 30,
-                                       child: Center(
-                                         child: FittedBox(
-                                           child: Text(cartvalue.toString())
-                                       //     child: updating?Padding(
-                                       //   padding: const EdgeInsets.all(8.0),
-                                       //   child: CircularProgressIndicator(),
-                                       // ):Text(cartvalue.toString())
-                                         ,),),
-                                     ),
-                                     InkWell(
-                                       onTap: (){
-                                         if(cartvalue>=0){
-                                           setState(() {
-                                             cartvalue +=1;
-                                             updating = true;
-                                           });
-                                           var total = cartvalue * data['sellingPrice'];
-                                           _docId = document.id;
-                                           _cart.updateCartqty(docId: _docId,qty: cartvalue,total: total).then((value){
-                                             setState(() {
-                                               updating = false;
-                                             });
-                                           });
-                                         }
-                                         print('add');
-                                       },
-                                       child: Container(
-                                         decoration: BoxDecoration(
-                                             borderRadius: BorderRadius.circular(50),
-                                             border: Border.all(
-                                               color: Colors.orange,
-                                             )),
-                                         child: Padding(
-                                           padding: EdgeInsets.all(8.0),
-                                           child: Icon(Icons.add),
-                                         ),
-                                       ),
-                                     ),
-                                   ],
-                                 ),
-                               ),
+                               child: Text('Quantity :${data['qty']} ')
+                               // FittedBox(
+                               //   child: Row(
+                               //     children: [
+                               //       InkWell(
+                               //         onTap: (){
+                               //           _docId = document.id;
+                               //           if(cartvalue>=1){
+                               //             setState(() {
+                               //               cartvalue -=1;
+                               //               updating = true;
+                               //             });
+                               //             if(cartvalue == 0){
+                               //               _cart.removeFromCart(docId: _docId);
+                               //             }
+                               //             var total = cartvalue * data['sellingPrice'];
+                               //             _cart.incproducts(_docId, cartvalue);
+                               //             _cart.updateCartqty(docId: _docId,qty: cartvalue,total: total).then((value){
+                               //               setState(() {
+                               //                 updating = false;
+                               //               });
+                               //             });
+                               //           }
+                               //         },
+                               //         child: Container(
+                               //           decoration: BoxDecoration(
+                               //               borderRadius: BorderRadius.circular(50),
+                               //               border: Border.all(
+                               //                 color: Colors.orange,
+                               //               )),
+                               //           child: Padding(
+                               //             padding: EdgeInsets.all(8.0),
+                               //             child: Icon(Icons.remove),
+                               //           ),
+                               //         ),
+                               //       ),
+                               //       Container(
+                               //         width: 30,
+                               //         child: Center(
+                               //           child: FittedBox(
+                               //             child: Text(cartvalue.toString())
+                               //         //     child: updating?Padding(
+                               //         //   padding: const EdgeInsets.all(8.0),
+                               //         //   child: CircularProgressIndicator(),
+                               //         // ):Text(cartvalue.toString())
+                               //           ,),),
+                               //       ),
+                               //       InkWell(
+                               //         onTap: (){
+                               //           if(cartvalue>=0){
+                               //             setState(() {
+                               //               cartvalue +=1;
+                               //               updating = true;
+                               //             });
+                               //             var total = cartvalue * data['sellingPrice'];
+                               //             _docId = document.id;
+                               //             _cart.updateCartqty(docId: _docId,qty: cartvalue,total: total).then((value){
+                               //               setState(() {
+                               //                 updating = false;
+                               //               });
+                               //             });
+                               //           }
+                               //           print('add');
+                               //         },
+                               //         child: Container(
+                               //           decoration: BoxDecoration(
+                               //               borderRadius: BorderRadius.circular(50),
+                               //               border: Border.all(
+                               //                 color: Colors.orange,
+                               //               )),
+                               //           child: Padding(
+                               //             padding: EdgeInsets.all(8.0),
+                               //             child: Icon(Icons.add),
+                               //           ),
+                               //         ),
+                               //       ),
+                               //     ],
+                               //   ),
+                               // ),
                              ),
                            )),
                        InkWell(
                          onTap: (){
                            _docId = document.id;
-                           _cart.removeFromCart(docId: _docId);
+                           _cart.removeFromCart(docId: _docId,qty: data['qty'],productid: data['productid']);
                            print(_docId);
                          },
                          child: Container(

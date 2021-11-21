@@ -4,9 +4,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 
 class CouponProvider with ChangeNotifier{
-  late bool expired = false;
+  late bool expired;
   late DocumentSnapshot document;
-  double discountrate = 0.0;
+  int discountrate = 0;
 
   Future<DocumentSnapshot> getCouponDetails(title)async{
     DocumentSnapshot document = await FirebaseFirestore.instance.collection('coupons').doc(title).get();
@@ -29,7 +29,7 @@ class CouponProvider with ChangeNotifier{
     else{
       this.document = document;
       this.expired = false;
-      this.discountrate = double.parse('${document.data()['discountRate']}');
+      this.discountrate = document.data()['discountRate'];
       notifyListeners();
     }
   }

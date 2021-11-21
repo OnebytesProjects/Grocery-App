@@ -72,7 +72,7 @@ class _LocationAddState extends State<LocationAdd> {
                             EasyLoading.show(status: 'Please wait..');
                             _services.savePincode(
                               setpincode: _pincode.text,
-                              deliverycharge: _deliverycharge.text,
+                              deliverycharge: int.parse(_deliverycharge.text),
                             ).then((value) {
                               Navigator.pop(context);
                               EasyLoading.showSuccess('Saved Pincode Successfully');

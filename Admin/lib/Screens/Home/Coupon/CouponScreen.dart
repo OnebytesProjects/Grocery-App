@@ -139,7 +139,7 @@ class _CouponScreenState extends State<CouponScreen> {
                             _services.saveCoupon(
                               title: titleText.text.toUpperCase(),
                               details: detailsText.text,
-                              discountRate: discountRate.text,
+                              discountRate: int.parse(discountRate.text),
                               expiry: _selectedDate,
                               active: _active,
                             ).then((value) {

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:milk/Screens/HomeScreen/Home/Home.dart';
 import 'package:milk/Screens/HomeScreen/Home/Mainscreen.dart';
+import 'package:milk/Screens/HomeScreen/checkout/coupon_widget.dart';
 import 'package:milk/providers/cart__provider.dart';
 import 'package:milk/providers/coupon_provider.dart';
 import 'package:milk/services/cart_services.dart';
@@ -27,7 +28,7 @@ class _CheckoutState extends State<Checkout> {
   CartService cartService = CartService();
   User user = FirebaseAuth.instance.currentUser;
   OrderService _orderService = OrderService();
-  double discountrate = 0.0;
+  int discountrate = 0;
   double total = 0.0;
 
 
@@ -37,12 +38,12 @@ class _CheckoutState extends State<Checkout> {
   String _deliverymode = '';
   String _name = '';
   String _number = '';
-  var _couponText = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     var _coupon = Provider.of<CouponProvider>(context);
     var cartProvider = Provider.of<CartProvider>(context);
+    discountrate = _coupon.discountrate;
 
     FirebaseFirestore.instance
         .collection('users')
@@ -57,7 +58,7 @@ class _CheckoutState extends State<Checkout> {
           this._number = documentSnapshot.data()['number'];
           //name
           //number
-          total = widget.cartValue+widget.delivryCharge;
+          total = (widget.cartValue+widget.delivryCharge)-discountrate;
         });
       }
     });
@@ -91,40 +92,7 @@ class _CheckoutState extends State<Checkout> {
                         SizedBox(
                           height: 10,
                         ),
-                        Container(
-                          height: 40,
-                          child: Row(children: [
-                            Expanded(child: SizedBox(
-                              height: 38,
-                              child: TextField(
-                                controller: _couponText,
-                                decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    filled: true,
-                                    fillColor: Colors.grey[300],
-                                    hintText: 'Enter Coupon Code'
-                                ),
-                              ),
-                            )),
-                            OutlineButton(borderSide: BorderSide(color: Colors.grey),onPressed: (){
-                              _coupon.getCouponDetails(_couponText.text).then((value) {
-                                if(value.data()==null){
-                                  //display invalid
-                                  showDialog(_couponText.text,'is invalid');
-                                  _couponText.clear();
-                                }
-                                if(_coupon.expired != false){
-                                  setState(() {
-                                    this.discountrate = _coupon.discountrate;
-                                    print(discountrate);
-                                    //this.total = total-discountrate;
-                                  });
-                                  showDialog(_couponText.text,'is applied successfully');
-                                }
-                              });
-                            },child: Text('Apply'),)
-                          ],),
-                        ),
+                        CoupunWidget(),
                         SizedBox(
                           height: 10,
                         ),
@@ -306,10 +274,13 @@ class _CheckoutState extends State<Checkout> {
       }
     }).then((value){
       print(user.uid);
-      cartService.deleteFromCart();
-      EasyLoading.showSuccess('OrederPlaced');
-      Navigator.pop(context);
-      Navigator.pop(context);
+      _orderService.deleteCart().then((value) {
+        _orderService.checkData().then((value) {
+          EasyLoading.showSuccess('OrederPlaced');
+          Navigator.pop(context);
+          Navigator.pop(context);
+        });
+      });
     });
   }
 }

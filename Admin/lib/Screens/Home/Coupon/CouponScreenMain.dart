@@ -128,7 +128,7 @@ class _CouponScreenMainState extends State<CouponScreenMain> {
                             ),
                             Container(
                               child: Text(
-                                '₹ '+data['discountRate'],
+                                '₹ '+data['discountRate'].toString(),
                               ),
                             ),
                             Container(

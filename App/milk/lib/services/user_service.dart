@@ -3,12 +3,19 @@ import 'package:milk/models/user_model.dart';
 
 class UserServices {
   String collection = 'users';
+  String referal = 'referal';
   FirebaseFirestore _firestore = FirebaseFirestore.instance;
   //create user
   Future<void> createUserData(Map<String, dynamic> values) async {
     String id = values['id'];
     await _firestore.collection(collection).doc(id).set(values);
   }
+
+  Future<void> createReferalData(Map<String, dynamic> values,docid) async {
+    String id = values['id'];
+    await _firestore.collection(referal).doc(docid).set(values);
+  }
+
 
   //update user
   Future<void> updateUserData(Map<String, dynamic> values) async {

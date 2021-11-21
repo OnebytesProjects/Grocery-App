@@ -77,9 +77,29 @@ class _UserRegistrationState extends State<UserRegistration> {
     }
   }
 
-  updateProfile() {
+  String exist = '';
+
+  upprofile(){
+    FirebaseFirestore.instance
+        .collection('referal')
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((doc) {
+        if(_referral.text == doc['referal']){
+          setState(() {
+            this.exist = 'Coupon valid';
+          });
+        }else{
+          this.exist = 'Not Valid';
+        }
+      });
+    });
+  }
+
+  updateProfile() async{
     String address = "${_address.text} - ${dropdownValue}";
     if (_fomrKey.currentState!.validate()) {
+      upprofile();
       return FirebaseFirestore.instance
           .collection('users')
           .doc(user.uid)
@@ -88,7 +108,6 @@ class _UserRegistrationState extends State<UserRegistration> {
         'gender': dropdownValueGender,
         'address': address,
         'zip': dropdownValue,
-        'referral': _referral.text,
         'refered' : _referral.text,
         'mail': _email.text,
         'pincode':dropdownValue,
@@ -267,11 +286,17 @@ class _UserRegistrationState extends State<UserRegistration> {
                               ),
                               RaisedButton(
                                 onPressed: () {
-                                  updateProfile().then((value) {
-                                    EasyLoading.showSuccess("Profile Created");
-                                    Navigator.pushReplacementNamed(
-                                        context, MainScreen.id);
-                                  });
+                                  upprofile();
+                                  if(exist == 'Not Valid'){
+                                    EasyLoading.showSuccess('Coupon code Invalid');
+                                  }
+                                  if(exist == 'Coupon valid'){
+                                    updateProfile().then((value) {
+                                      EasyLoading.showSuccess('Profile Updated');
+                                      Navigator.pushReplacementNamed(
+                                          context, MainScreen.id);
+                                    });
+                                  }
                                 },
                                 color: Colors.orange[300],
                                 padding: EdgeInsets.symmetric(horizontal: 50),
