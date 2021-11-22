@@ -152,6 +152,7 @@ class FirebaseServices {
         'name' : name,
         'phone' : number,
       },
+      'deliveryboystatus':'Assigned',
     });
     return result;
   }

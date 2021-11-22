@@ -121,6 +121,19 @@ class _SubscriptionState extends State<Subscription> {
                                   Text('${DateFormat.yMMMd().format(DateTime.parse(data['endDate']))}'),
                                 ],
                               ),
+                              SizedBox(height: 5,),
+                              data['orderStatus']!='SubScription Ended'?Row(
+                                children: [
+                                  Text('Next Delivery date: ',style: TextStyle(fontWeight: FontWeight.bold),),
+                                  Text('${DateFormat.yMMMd().format(DateTime.parse(data['DeliveryDate']))}'),
+                                ],
+                              ):Container(),
+                              data['orderStatus']!='SubScription Ended'?Row(
+                                children: [
+                                  Text('DeliveryBoy Status: ',style: TextStyle(fontWeight: FontWeight.bold),),
+                                  Text(data['deliveryboystatus']),
+                                ],
+                              ):Container(),
                             ],
                           ),
                         ),
@@ -246,24 +259,7 @@ class _SubscriptionState extends State<Subscription> {
         ),
       );
     }
-    if(data == 'Delivery Man Assigned'){
-      return ListTile(
-        leading: CircleAvatar(
-          backgroundColor: Colors.white,
-          child: Container(color: Colors.grey,),
-        ),
-        title: Text(name),
-        subtitle: Text(number),
-        trailing: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            IconButton(onPressed: (){
-              _launchURL('tel:${number}');
-            }, icon: Icon(Icons.call))
-          ],
-        ),
-      );
-    }
+
     if(data == 'SubScription Ended'){
       return Container();
     }

@@ -12,8 +12,8 @@ class OrderService{
   }
   Future<void>updateSubscriptionStatus(documentId,status){
     var result = subs.doc(documentId).update({
-      'deliveredstatus' : status,
-      'timestamp': DateTime.now().toString()
+      'deliveryboystatus' : status,
+      'DeliveryDate': DateTime.now().add(Duration(days: 1)).toString(),
     });
     return result;
   }

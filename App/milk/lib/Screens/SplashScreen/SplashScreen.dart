@@ -15,15 +15,15 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     Timer(Duration(seconds: 3), () {
 
-      Navigator.pushReplacementNamed(context, WelcomeScreen.id);
+      //Navigator.pushReplacementNamed(context, WelcomeScreen.id);
 
-      // FirebaseAuth.instance.authStateChanges().listen((User user) {
-      //   if (user == null) {
-      //     Navigator.pushReplacementNamed(context, WelcomeScreen.id);
-      //   } else {
-      //     Navigator.pushReplacementNamed(context, MainScreen.id);
-      //   }
-      // });
+      FirebaseAuth.instance.authStateChanges().listen((User user) {
+        if (user == null) {
+          Navigator.pushReplacementNamed(context, WelcomeScreen.id);
+        } else {
+          Navigator.pushReplacementNamed(context, MainScreen.id);
+        }
+      });
     });
     super.initState();
   }

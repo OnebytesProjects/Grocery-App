@@ -249,7 +249,6 @@ class _CheckoutState extends State<Checkout> {
     });
   }
   saveOrder(CartProvider cartProvider){
-    CollectionReference cart = FirebaseFirestore.instance.collection('cart');
     if(cartProvider.subExist == 'Yes'){
       _orderService.saveSubscription({
         'products':cartProvider.subscritionList,
@@ -268,6 +267,8 @@ class _CheckoutState extends State<Checkout> {
         },
         'startdate':'',
         'endDate':'',
+        'DeliveryDate':'',
+        'deliveryboystatus':'',
       });
     }
     _orderService.saveorder({

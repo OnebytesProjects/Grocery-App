@@ -12,18 +12,25 @@ class OrderService{
     return result;
   }
   Future<void>updateSubscriptionStatus(documentId,status){
+    //condition to assign delivery date
     var result = subscription.doc(documentId).update({
       'orderStatus' : status,
       'startdate': DateTime.now().toString(),
-      'endDate': DateTime.now().add(Duration(days: 30)).toString()
-      
+      'endDate': DateTime.now().add(Duration(days: 30)).toString(),
+      'DeliveryDate' : DateTime.now().toString(),
     });
     return result;
   }
   Future<void>endSubscriptionStatus(documentId,status){
     var result = subscription.doc(documentId).update({
       'orderStatus' : status,
-      'endDate': DateTime.now().toString()
+      'endDate': DateTime.now().toString(),
+      'deliveryboystatus':'',
+      'deliverBoy':{
+        'name' : '',
+        'phone' : '',
+      },
+      'DeliveryDate' : '',
 
     });
     return result;

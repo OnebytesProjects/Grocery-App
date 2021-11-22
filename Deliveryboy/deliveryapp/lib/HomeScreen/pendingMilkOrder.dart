@@ -26,7 +26,7 @@ class _PendingMilkOrderState extends State<PendingMilkOrder> {
     return
       Container(
         child: StreamBuilder<QuerySnapshot>(
-          stream: _service.subscription.where('orderStatus',isEqualTo: 'SubScription Started').snapshots(),
+          stream: _service.subscription.where('deliveryboystatus',isEqualTo: 'Assigned').snapshots(),
           builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (snapshot.hasError) {
               return Text('Something went wrong');
