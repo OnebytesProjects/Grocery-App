@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:intl/intl.dart';
 import 'package:milk/Screens/HomeScreen/Cart/Cart.dart';
-import 'package:milk/Screens/Notifications.dart';
+import 'package:milk/Screens/HomeScreen/Notification/Notifications.dart';
 import 'package:milk/models/product_model.dart';
 import 'package:milk/services/cart_services.dart';
 import 'package:search_page/search_page.dart';

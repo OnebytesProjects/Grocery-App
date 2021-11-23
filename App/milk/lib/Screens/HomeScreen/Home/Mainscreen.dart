@@ -12,7 +12,7 @@ import 'package:milk/Screens/HomeScreen/Home/Home.dart';
 import 'package:milk/Screens/HomeScreen/OrderHistory/Order_History.dart';
 import 'package:milk/Screens/HomeScreen/Screens/ClientFeeds/Cancelation_and_Refund.dart';
 import 'package:milk/Screens/HomeScreen/Referal/Referal.dart';
-import 'package:milk/Screens/Notifications.dart';
+import 'package:milk/Screens/HomeScreen/Notification/Notifications.dart';
 import 'package:milk/Screens/SplashScreen/WelcomeScreen.dart';
 import 'package:milk/models/product_model.dart';
 import 'package:milk/providers/auth_provider.dart';
