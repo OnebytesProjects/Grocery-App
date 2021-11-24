@@ -58,7 +58,7 @@ class _CartState extends State<Cart> {
    CartService _cart = CartService();
 
    return StreamBuilder<QuerySnapshot>(
-       stream: _cart.cart.doc(_cart.user.uid).collection('products').snapshots(),
+       stream: _cart.cart.doc(_cart.user?.uid).collection('products').snapshots(),
        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
 
          if (snapshot.hasError) {
@@ -72,7 +72,7 @@ class _CartState extends State<Cart> {
            return ListView(
              shrinkWrap: true,
              children: snapshot.data!.docs.map((DocumentSnapshot document) {
-               Map<String, dynamic> data = document.data()!;
+               Map<String, dynamic> data = document.data()! as Map<String, dynamic>;;
 
                int cartvalue = data['qty'];
 

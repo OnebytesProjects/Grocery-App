@@ -18,13 +18,13 @@ class _OrderHistoryState extends State<OrderHistory> {
   Widget build(BuildContext context) {
 
     OrderService orderService = OrderService();
-    User user = FirebaseAuth.instance.currentUser;
+    User? user = FirebaseAuth.instance.currentUser;
 
     return Scaffold(
       backgroundColor: Colors.grey[100],
       body: Container(
         child: StreamBuilder<QuerySnapshot>(
-          stream: orderService.order.where('userId',isEqualTo: user.uid).snapshots(),
+          stream: orderService.order.where('userId',isEqualTo: user?.uid).snapshots(),
           builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (snapshot.hasError) {
               return Text('Something went wrong');
@@ -49,17 +49,17 @@ class _OrderHistoryState extends State<OrderHistory> {
                           ),
 
                         ),
-                        title: Text(document.data()['orderStatus'],
+                        title: Text(data['orderStatus'],
                         style: TextStyle(fontSize: 12,color: statusColor(data['orderStatus']),fontWeight: FontWeight.bold),),
-                        subtitle: Text('On ${DateFormat.yMMMd().format(DateTime.parse(document.data()['timestamp']))}',
+                        subtitle: Text('On ${DateFormat.yMMMd().format(DateTime.parse(data['timestamp']))}',
                           style: TextStyle(fontSize: 12),),
                         trailing: Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Text('Amount : \₹ ${document.data()['total']}',
+                            Text('Amount : \₹ ${data['total']}',
                               style: TextStyle(fontSize: 12,fontWeight: FontWeight.bold),),
-                            Text('Payment Type : ${document.data()['payment']}',
+                            Text('Payment Type : ${data['payment']}',
                               style: TextStyle(fontSize: 12,fontWeight: FontWeight.bold),),
                           ],
                         ),
@@ -76,19 +76,19 @@ class _OrderHistoryState extends State<OrderHistory> {
                               ListTile(
                                 leading: CircleAvatar(
                                   backgroundColor: Colors.white,
-                                  child: Image.network(document.data()['products'][index]['productImage']),
+                                  child: Image.network(data['products'][index]['productImage']),
                                 ),
-                                title: Text(document.data()['products'][index]['productName']),
-                                  subtitle: Text('Quantity: ${document.data()['products'][index]['qty'].toString()}   Price:₹ ${document.data()['products'][index]['sellingPrice'].toString()}',
+                                title: Text(data['products'][index]['productName']),
+                                  subtitle: Text('Quantity: ${data['products'][index]['qty'].toString()}   Price:₹ ${data['products'][index]['sellingPrice'].toString()}',
                                     style: TextStyle(fontSize: 12,color: Colors.grey),),
                               ),
-                              document.data()['orderStatus'] !='Cancelled'?RaisedButton(onPressed: (){
+                              data['orderStatus'] !='Cancelled'?RaisedButton(onPressed: (){
                                 showDialog('Are you Sure?', context,document.id);
                               },child: Text('Cancel Order'),color: Colors.orange,):Container(),
                             ],
                           );
                         },
-                          itemCount: document.data()['products'].length,
+                          itemCount: data['products'].length,
                         )
                       ],),
                       Divider(height: 3,)

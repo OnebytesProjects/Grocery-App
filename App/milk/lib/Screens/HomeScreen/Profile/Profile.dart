@@ -32,7 +32,7 @@ class _ProfileState extends State<Profile> {
   ];
 
   final _fomrKey = GlobalKey<FormState>();
-  User user = FirebaseAuth.instance.currentUser;
+  User? user = FirebaseAuth.instance.currentUser;
   UserServices _user = UserServices();
   TextEditingController _name = TextEditingController();
   TextEditingController _mobile = TextEditingController();
@@ -42,44 +42,44 @@ class _ProfileState extends State<Profile> {
   File? image;
   var profileimgpath = 'images/profile.jpg';
 
-  Future gallerypickImage() async {
-    try {
-      final image = await ImagePicker.pickImage(source: ImageSource.gallery);
-      if (image == null) return;
-
-      //final imageTemp = File(image.path);
-      setState(() {
-        this.profileimgpath = File(image.path) as String;
-        // this.image = imageTemp;
-        //print(profileimgpath);
-      });
-    } catch (e) {
-      print('Imgage picking failed:$e');
-    }
-  }
-
-  Future camerapickImage() async {
-    try {
-      final image = await ImagePicker.pickImage(source: ImageSource.camera);
-      if (image == null) return;
-
-      //final imageTemp = File(image.path);
-      setState(() {
-        this.profileimgpath = File(image.path) as String;
-        // this.image = imageTemp;
-        //print(profileimgpath);
-      });
-    } catch (e) {
-      print('Imgage picking failed:$e');
-    }
-  }
+  // Future gallerypickImage() async {
+  //   try {
+  //     final image = await ImagePicker.pickImage(source: ImageSource.gallery);
+  //     if (image == null) return;
+  //
+  //     //final imageTemp = File(image.path);
+  //     setState(() {
+  //       this.profileimgpath = File(image.path) as String;
+  //       // this.image = imageTemp;
+  //       //print(profileimgpath);
+  //     });
+  //   } catch (e) {
+  //     print('Imgage picking failed:$e');
+  //   }
+  // }
+  //
+  // Future camerapickImage() async {
+  //   try {
+  //     final image = await ImagePicker.pickImage(source: ImageSource.camera);
+  //     if (image == null) return;
+  //
+  //     //final imageTemp = File(image.path);
+  //     setState(() {
+  //       this.profileimgpath = File(image.path) as String;
+  //       // this.image = imageTemp;
+  //       //print(profileimgpath);
+  //     });
+  //   } catch (e) {
+  //     print('Imgage picking failed:$e');
+  //   }
+  // }
 
   updateProfile() {
     String address = "${_address.text} - ${dropdownValue}";
     if (_fomrKey.currentState!.validate()) {
       return FirebaseFirestore.instance
           .collection('users')
-          .doc(user.uid)
+          .doc(user?.uid)
           .update({
         'name': _name.text,
         'gender': dropdownValueGender,
@@ -92,7 +92,7 @@ class _ProfileState extends State<Profile> {
 
   @override
   void initState() {
-    _user.getUserById(user.uid).then((value) {
+    _user.getUserById(user!.uid).then((value) {
       if (mounted) {
         setState(() {});
       }
@@ -110,11 +110,12 @@ class _ProfileState extends State<Profile> {
 
     FirebaseFirestore.instance
         .collection('users')
-        .where('id', isEqualTo: user.uid)
+        .where('id', isEqualTo: user?.uid)
         .get()
         .then((QuerySnapshot querySnapshot){
       querySnapshot.docs.forEach((doc) {
         _name.text = doc['name'];
+        _mobile.text = doc['number'];
         _address.text = doc['address'];
         _email.text = doc['mail'];
          dropdownValue = doc['pincode'];
@@ -127,9 +128,6 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
-    setState(() {
-      _mobile.text = user.phoneNumber;
-    });
 
     return Scaffold(
       body: Form(
@@ -327,45 +325,45 @@ class _ProfileState extends State<Profile> {
     );
   }
 
-  Widget bottomSheet() {
-    return Container(
-      height: 100.0,
-      width: double.infinity,
-      margin: EdgeInsets.symmetric(
-        horizontal: 20,
-        vertical: 20,
-      ),
-      child: Column(
-        children: <Widget>[
-          Text(
-            "Choose Profile photo",
-            style: TextStyle(
-              fontSize: 20.0,
-            ),
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-            FlatButton.icon(
-              icon: Icon(Icons.camera),
-              onPressed: () {
-                camerapickImage();
-              },
-              label: Text("Camera"),
-            ),
-            FlatButton.icon(
-              icon: Icon(Icons.image),
-              onPressed: () {
-                gallerypickImage();
-              },
-              label: Text("Gallery"),
-            ),
-          ])
-        ],
-      ),
-    );
-  }
+  // Widget bottomSheet() {
+  //   return Container(
+  //     height: 100.0,
+  //     width: double.infinity,
+  //     margin: EdgeInsets.symmetric(
+  //       horizontal: 20,
+  //       vertical: 20,
+  //     ),
+  //     child: Column(
+  //       children: <Widget>[
+  //         Text(
+  //           "Choose Profile photo",
+  //           style: TextStyle(
+  //             fontSize: 20.0,
+  //           ),
+  //         ),
+  //         SizedBox(
+  //           height: 20,
+  //         ),
+  //         Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+  //           FlatButton.icon(
+  //             icon: Icon(Icons.camera),
+  //             onPressed: () {
+  //               camerapickImage();
+  //             },
+  //             label: Text("Camera"),
+  //           ),
+  //           FlatButton.icon(
+  //             icon: Icon(Icons.image),
+  //             onPressed: () {
+  //               gallerypickImage();
+  //             },
+  //             label: Text("Gallery"),
+  //           ),
+  //         ])
+  //       ],
+  //     ),
+  //   );
+  // }
 
   Widget DropDownField1(){
     return Container(

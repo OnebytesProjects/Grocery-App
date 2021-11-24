@@ -54,7 +54,7 @@ class _MainScreenState extends State<MainScreen> {
 
     FirebaseFirestore.instance
         .collection('users')
-        .doc(_auth.currentUser.uid)
+        .doc(_auth.currentUser?.uid)
         .get()
         .then((DocumentSnapshot doc) {
       setState(() {
@@ -74,7 +74,7 @@ class _MainScreenState extends State<MainScreen> {
     var userDetails = Provider.of<AuthProvider>(context);
      userDetails.getUserDetails();
 
-    _username = userDetails.snapshot.data()['name'];
+    _username = userDetails.snapshot['name'];
     _appbarname = 'Hi,$_username';
 
     var container;

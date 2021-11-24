@@ -15,7 +15,7 @@ class CartProvider with ChangeNotifier{
   Future<double> getCartTotal()async{
     var cartTotal = 0.0;
     List _newList = [];
-    QuerySnapshot snapshot = await _cart.cart.doc(_cart.user.uid).collection('products').get();
+    QuerySnapshot snapshot = await _cart.cart.doc(_cart.user?.uid).collection('products').get();
     if(snapshot == null){
       return cartTotal;
     }
@@ -26,7 +26,7 @@ class CartProvider with ChangeNotifier{
         notifyListeners();
         getSubscriptionDetails();
       }
-      cartTotal = cartTotal+doc.data()['total'];
+      cartTotal = cartTotal+doc['total'];
     });
     this.subTotal = cartTotal;
     this.cartQty = snapshot.size;
@@ -36,7 +36,7 @@ class CartProvider with ChangeNotifier{
   }
   getSubscriptionDetails()async{
     List _newsubList = [];
-    QuerySnapshot snapshot = await _cart.cart.doc(_cart.user.uid).collection('products').where('productName',isEqualTo: 'Milk').get();
+    QuerySnapshot snapshot = await _cart.cart.doc(_cart.user?.uid).collection('products').where('productName',isEqualTo: 'Milk').get();
     if(snapshot == null){
       this.subExist = 'No';
     }

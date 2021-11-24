@@ -19,7 +19,7 @@ class CouponProvider with ChangeNotifier{
   }
 
   CheckExpiry(DocumentSnapshot document){
-    DateTime date = document.data()['Expiry'].toDate();
+    DateTime date = document['Expiry'].toDate();
     var dateDiff = date.difference(DateTime.now()).inDays;
     if(dateDiff < 0){
       print(dateDiff);
@@ -29,7 +29,7 @@ class CouponProvider with ChangeNotifier{
     else{
       this.document = document;
       this.expired = false;
-      this.discountrate = document.data()['discountRate'];
+      this.discountrate = document['discountRate'];
       notifyListeners();
     }
   }

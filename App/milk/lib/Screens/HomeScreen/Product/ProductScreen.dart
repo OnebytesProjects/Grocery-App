@@ -42,7 +42,7 @@ class _ProductScreenState extends State<ProductScreen> {
   var total;
 
   CartService _cart = CartService();
-  User user = FirebaseAuth.instance.currentUser;
+  User? user = FirebaseAuth.instance.currentUser;
 
   static List<Product> product = [];
 

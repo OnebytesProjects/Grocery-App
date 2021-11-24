@@ -7,7 +7,7 @@ class OrderService{
   CollectionReference order = FirebaseFirestore.instance.collection('orders');
   CollectionReference cart = FirebaseFirestore.instance.collection('cart');
   CollectionReference subscription = FirebaseFirestore.instance.collection('subscription');
-  User user = FirebaseAuth.instance.currentUser;
+  User? user = FirebaseAuth.instance.currentUser;
 
   Future<DocumentReference> saveorder(Map<String,dynamic>data){
     var result = order.add(
@@ -24,7 +24,7 @@ class OrderService{
   }
 
   Future<void>deleteCart()async{
-    final result = await cart.doc(user.uid).collection('products').get().then((snapshot){
+    final result = await cart.doc(user?.uid).collection('products').get().then((snapshot){
       for(DocumentSnapshot ds in snapshot.docs){
         ds.reference.delete();
       }
@@ -32,9 +32,9 @@ class OrderService{
   }
 
   Future<void>checkData()async{
-    final snapshot = await cart.doc(user.uid).collection('products').get();
+    final snapshot = await cart.doc(user?.uid).collection('products').get();
     if(snapshot.docs.length==0){
-      cart.doc(user.uid).delete();
+      cart.doc(user?.uid).delete();
     }
   }
 

@@ -25,7 +25,7 @@ class Checkout extends StatefulWidget {
 
 class _CheckoutState extends State<Checkout> {
   CartService cartService = CartService();
-  User user = FirebaseAuth.instance.currentUser;
+  User? user = FirebaseAuth.instance.currentUser;
   OrderService _orderService = OrderService();
   int discountrate = 0;
   double total = 0.0;
@@ -48,16 +48,16 @@ class _CheckoutState extends State<Checkout> {
 
     FirebaseFirestore.instance
         .collection('users')
-        .doc(user.uid)
+        .doc(user?.uid)
         .get()
         .then((DocumentSnapshot documentSnapshot) {
       if (documentSnapshot.exists) {
         setState(() {
-          this._address = documentSnapshot.data()['address'];
-          this._pincode = documentSnapshot.data()['pincode'];
-          this._deliverymode = documentSnapshot.data()['preference'];
-          this._name = documentSnapshot.data()['name'];
-          this._number = documentSnapshot.data()['number'];
+          this._address = documentSnapshot['address'];
+          this._pincode = documentSnapshot['pincode'];
+          this._deliverymode = documentSnapshot['preference'];
+          this._name = documentSnapshot['name'];
+          this._number = documentSnapshot['number'];
           //name
           //number
           total = (widget.cartValue+delivryCharge)-discountrate;
@@ -71,7 +71,7 @@ class _CheckoutState extends State<Checkout> {
         .then((DocumentSnapshot documentSnapshot) {
       if (documentSnapshot.exists) {
         setState(() {
-          this.delivryCharge = documentSnapshot.data()['deliverycharge'];
+          this.delivryCharge = documentSnapshot['deliverycharge'];
         });
       }
     });
@@ -252,7 +252,7 @@ class _CheckoutState extends State<Checkout> {
     if(cartProvider.subExist == 'Yes'){
       _orderService.saveSubscription({
         'products':cartProvider.subscritionList,
-        'userId':user.uid,
+        'userId':user?.uid,
         'total':total,
         'name':_name,
         'number':_number,
@@ -273,7 +273,7 @@ class _CheckoutState extends State<Checkout> {
     }
     _orderService.saveorder({
       'products':cartProvider.cartList,
-      'userId':user.uid,
+      'userId':user?.uid,
       'total':total,
       'name':_name,
       'number':_number,
@@ -287,7 +287,7 @@ class _CheckoutState extends State<Checkout> {
         'phone': '',
       }
     }).then((value){
-      print(user.uid);
+      print(user?.uid);
       _orderService.deleteCart().then((value) {
         _orderService.checkData().then((value) {
           EasyLoading.showSuccess('OrederPlaced');

@@ -37,7 +37,7 @@ class _UserRegistrationState extends State<UserRegistration> {
 
 
   final _fomrKey = GlobalKey<FormState>();
-  User user = FirebaseAuth.instance.currentUser;
+  User? user = FirebaseAuth.instance.currentUser;
   UserServices _user = UserServices();
   TextEditingController _name = TextEditingController();
   TextEditingController _mobile = TextEditingController();
@@ -48,44 +48,12 @@ class _UserRegistrationState extends State<UserRegistration> {
   File? image;
   var profileimgpath = 'images/profile.jpg';
 
-  Future gallerypickImage() async {
-    try {
-      final image = await ImagePicker.pickImage(source: ImageSource.gallery);
-      if (image == null) return;
-
-      //final imageTemp = File(image.path);
-      setState(() {
-        this.profileimgpath = File(image.path) as String;
-        // this.image = imageTemp;
-        //print(profileimgpath);
-      });
-    } catch (e) {
-      print('Imgage picking failed:$e');
-    }
-  }
-
-  Future camerapickImage() async {
-    try {
-      final image = await ImagePicker.pickImage(source: ImageSource.camera);
-      if (image == null) return;
-
-      //final imageTemp = File(image.path);
-      setState(() {
-        this.profileimgpath = File(image.path) as String;
-        // this.image = imageTemp;
-        //print(profileimgpath);
-      });
-    } catch (e) {
-      print('Imgage picking failed:$e');
-    }
-  }
-
   updateProfile() async{
     String address = "${_address.text} - ${dropdownValue}";
     if (_fomrKey.currentState!.validate()) {
       return FirebaseFirestore.instance
           .collection('users')
-          .doc(user.uid)
+          .doc(user?.uid)
           .update({
         'name': _name.text,
         'gender': dropdownValueGender,
@@ -100,7 +68,7 @@ class _UserRegistrationState extends State<UserRegistration> {
 
   @override
   void initState() {
-    _user.getUserById(user.uid).then((value) {
+    _user.getUserById(user!.uid).then((value) {
       if (mounted) {
         setState(() {});
       }
@@ -115,6 +83,16 @@ class _UserRegistrationState extends State<UserRegistration> {
         });
       });
     });
+
+    FirebaseFirestore.instance
+        .collection('users')
+        .where('id', isEqualTo: user?.uid)
+        .get()
+        .then((QuerySnapshot querySnapshot){
+      querySnapshot.docs.forEach((doc) {
+        _mobile.text = doc['number'];
+      });
+    });
     super.initState();
   }
 
@@ -122,7 +100,6 @@ class _UserRegistrationState extends State<UserRegistration> {
   Widget build(BuildContext context) {
     var _referalid = Provider.of<ReferalProvider>(context);
     setState(() {
-      _mobile.text = user.phoneNumber;
       this._referral.text = _referalid.referalid;
     });
 
@@ -327,46 +304,6 @@ class _UserRegistrationState extends State<UserRegistration> {
               fontSize: 16,
               color: Colors.grey,
             )),
-      ),
-    );
-  }
-
-  Widget bottomSheet() {
-    return Container(
-      height: 100.0,
-      width: double.infinity,
-      margin: EdgeInsets.symmetric(
-        horizontal: 20,
-        vertical: 20,
-      ),
-      child: Column(
-        children: <Widget>[
-          Text(
-            "Choose Profile photo",
-            style: TextStyle(
-              fontSize: 20.0,
-            ),
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-            FlatButton.icon(
-              icon: Icon(Icons.camera),
-              onPressed: () {
-                camerapickImage();
-              },
-              label: Text("Camera"),
-            ),
-            FlatButton.icon(
-              icon: Icon(Icons.image),
-              onPressed: () {
-                gallerypickImage();
-              },
-              label: Text("Gallery"),
-            ),
-          ])
-        ],
       ),
     );
   }

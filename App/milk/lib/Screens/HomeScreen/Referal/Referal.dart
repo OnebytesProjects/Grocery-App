@@ -18,10 +18,12 @@ class _ReferalState extends State<Referal> {
 
     FirebaseFirestore.instance
         .collection('users')
-        .doc(_auth.currentUser.uid)
+        .doc(_auth.currentUser?.uid)
         .get()
-        .then((DocumentSnapshot documentSnapshot) =>
-    {_controller.text = documentSnapshot.data()['referal']});
+        .then((DocumentSnapshot documentSnapshot)
+    {
+      _controller.text = documentSnapshot['referal'];
+    });
 
 
     return Scaffold(

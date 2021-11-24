@@ -11,7 +11,7 @@ class NotificationProvider with ChangeNotifier{
 
   Future<double> getsize() async{
     var notification = 0.0;
-    QuerySnapshot snapshot = await users.doc(_auth.currentUser.uid).collection('notifications').get();
+    QuerySnapshot snapshot = await users.doc(_auth.currentUser?.uid).collection('notifications').get();
     if(snapshot == null){
       this.size = 0;
     }

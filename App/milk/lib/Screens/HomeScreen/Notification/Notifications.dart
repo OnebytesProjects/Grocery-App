@@ -22,7 +22,7 @@ class _NotificationsState extends State<Notifications> {
       title: const Text('Notifications'),
       content: Container(
         child: StreamBuilder<QuerySnapshot>(
-          stream: users.doc(_auth.currentUser.uid).collection('notifications').snapshots(),
+          stream: users.doc(_auth.currentUser?.uid).collection('notifications').snapshots(),
           builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             _notificationProvider.getsize();
             if (snapshot.hasError) {
@@ -52,7 +52,7 @@ class _NotificationsState extends State<Notifications> {
                       trailing: IconButton(
                         icon: Icon(Icons.delete),
                         onPressed: (){
-                          DeleteNotification(_auth.currentUser.uid,document.id);
+                          DeleteNotification(_auth.currentUser?.uid,document.id);
                         },
                       ),
                     ),

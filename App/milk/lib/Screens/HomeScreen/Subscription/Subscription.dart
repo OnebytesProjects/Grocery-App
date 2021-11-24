@@ -11,12 +11,12 @@ class Subscription extends StatelessWidget {
   Widget build(BuildContext context) {
 
     OrderService orderService = OrderService();
-    User user = FirebaseAuth.instance.currentUser;
+    User? user = FirebaseAuth.instance.currentUser;
     return Scaffold(
       backgroundColor: Colors.grey[100],
       body: Container(
         child: StreamBuilder<QuerySnapshot>(
-          stream: orderService.subscription.where('userId',isEqualTo: user.uid).snapshots(),
+          stream: orderService.subscription.where('userId',isEqualTo: user?.uid).snapshots(),
           builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (snapshot.hasError) {
               return Text('Something went wrong');
@@ -43,17 +43,17 @@ class Subscription extends StatelessWidget {
                           ),
 
                         ),
-                        title: Text(document.data()['orderStatus'],
+                        title: Text(data['orderStatus'],
                           style: TextStyle(fontSize: 12,color: statusColor(data['orderStatus']),fontWeight: FontWeight.bold),),
-                        subtitle: Text('Ordered On ${DateFormat.yMMMd().format(DateTime.parse(document.data()['timestamp']))}',
+                        subtitle: Text('Ordered On ${DateFormat.yMMMd().format(DateTime.parse(data['timestamp']))}',
                           style: TextStyle(fontSize: 12),),
                         trailing: Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Text('Amount : \₹ ${document.data()['total']}',
+                            Text('Amount : \₹ ${data['total']}',
                               style: TextStyle(fontSize: 12,fontWeight: FontWeight.bold),),
-                            Text('Payment Type : ${document.data()['payment']}',
+                            Text('Payment Type : ${data['payment']}',
                               style: TextStyle(fontSize: 12,fontWeight: FontWeight.bold),),
                           ],
                         ),
@@ -67,14 +67,14 @@ class Subscription extends StatelessWidget {
                               Row(
                                 children: [
                                   Text('Subscription Start date: ',style: TextStyle(fontWeight: FontWeight.bold),),
-                                  Text('${DateFormat.yMMMd().format(DateTime.parse(document.data()['startdate']))}'),
+                                  Text('${DateFormat.yMMMd().format(DateTime.parse(data['startdate']))}'),
                                 ],
                               ),
                               SizedBox(height: 5,),
                               Row(
                                 children: [
                                   Text('Subscription End date: ',style: TextStyle(fontWeight: FontWeight.bold),),
-                                  Text('${DateFormat.yMMMd().format(DateTime.parse(document.data()['endDate']))}'),
+                                  Text('${DateFormat.yMMMd().format(DateTime.parse(data['endDate']))}'),
                                 ],
                               ),
                             ],
@@ -91,14 +91,14 @@ class Subscription extends StatelessWidget {
                               return ListTile(
                                 leading: CircleAvatar(
                                   backgroundColor: Colors.white,
-                                  child: Image.network(document.data()['products'][index]['productImage']),
+                                  child: Image.network(data['products'][index]['productImage']),
                                 ),
-                                title: Text(document.data()['products'][index]['productName']),
-                                subtitle: Text('Quantity: ${document.data()['products'][index]['qty'].toString()}   Price:₹ ${document.data()['products'][index]['sellingPrice'].toString()}',
+                                title: Text(data['products'][index]['productName']),
+                                subtitle: Text('Quantity: ${data['products'][index]['qty'].toString()}   Price:₹ ${data['products'][index]['sellingPrice'].toString()}',
                                   style: TextStyle(fontSize: 12,color: Colors.grey),),
                               );
                             },
-                            itemCount: document.data()['products'].length,
+                            itemCount: data['products'].length,
                           )
                         ],),
                       Divider(height: 3,)

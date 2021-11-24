@@ -11,16 +11,16 @@ class Calendar extends StatefulWidget {
 }
 
 class _CalendarState extends State<Calendar> {
-  CalendarController _calendarController = CalendarController();
+  // CalendarController _calendarController = CalendarController();
 
   DateTime selectedDay = DateTime.now();
   DateTime focusedDay = DateTime.now();
 
 
-  void initState() {
-    super.initState();
-    _calendarController = CalendarController();
-  }
+  // void initState() {
+  //   super.initState();
+  //   _calendarController = CalendarController();
+  // }
   void _onDaySelected(DateTime selectDay,DateTime foucsDay) {
     setState(() {
       selectedDay = selectDay;
@@ -31,17 +31,22 @@ class _CalendarState extends State<Calendar> {
 
   Widget calendar() {
     return TableCalendar(
-      headerStyle: HeaderStyle(
-        formatButtonVisible: false,
-      ),
-      calendarController: _calendarController,
-      calendarStyle: CalendarStyle(
-        canEventMarkersOverflow: true,
-        markersColor: Theme.of(context).primaryColor,
-        selectedColor: Colors.grey,
-      ),
-      startingDayOfWeek: StartingDayOfWeek.monday,
+      firstDay: DateTime.utc(2010, 10, 16),
+      lastDay: DateTime.utc(2030, 3, 14),
+      focusedDay: DateTime.now(),
     );
+    // return TableCalendar(
+    //   headerStyle: HeaderStyle(
+    //     formatButtonVisible: false,
+    //   ),
+    //   calendarController: _calendarController,
+    //   calendarStyle: CalendarStyle(
+    //     canEventMarkersOverflow: true,
+    //     markersColor: Theme.of(context).primaryColor,
+    //     selectedColor: Colors.grey,
+    //   ),
+    //   startingDayOfWeek: StartingDayOfWeek.monday,
+    // );
   }
 
   @override

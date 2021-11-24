@@ -39,16 +39,16 @@ class UserModel {
   String get preference => _preference;
 
   UserModel.fromSnapshot(DocumentSnapshot snapshot) {
-    _id = snapshot.data()[ID];
-    _number = snapshot.data()[NUMBER];
-    _name = snapshot.data()[NAME];
-    _profilepic = snapshot.data()[PROFILEPIC];
-    _gender = snapshot.data()[GENDER];
-    _zip = snapshot.data()[ZIP];
-    _address = snapshot.data()[ADDRESS];
-    _referral = snapshot.data()[REFERRAL];
-    _mail = snapshot.data()[MAIL];
-    _myreferral = snapshot.data()[MYREFERRAL];
-    _preference = snapshot.data()[PREFERENCE];
+    _id = snapshot[ID];
+    _number = snapshot[NUMBER];
+    _name = snapshot[NAME];
+    _profilepic = snapshot[PROFILEPIC];
+    _gender = snapshot[GENDER];
+    _zip = snapshot[ZIP];
+    _address = snapshot[ADDRESS];
+    _referral = snapshot[REFERRAL];
+    _mail = snapshot[MAIL];
+    _myreferral = snapshot[MYREFERRAL];
+    _preference = snapshot[PREFERENCE];
   }
 }

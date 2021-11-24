@@ -9,14 +9,14 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 class CartService{
   CollectionReference cart = FirebaseFirestore.instance.collection('cart');
   CollectionReference products = FirebaseFirestore.instance.collection('products');
-  User user = FirebaseAuth.instance.currentUser;
+  User? user = FirebaseAuth.instance.currentUser;
 
   Future<void>addToCart({data, qty, volume,total}){
-    cart.doc(user.uid).set({
-      'user':user.uid,
+    cart.doc(user?.uid).set({
+      'user':user?.uid,
     });
     updateproducts(data['productid'], qty);
-    return cart.doc(user.uid).collection('products').add({
+    return cart.doc(user?.uid).collection('products').add({
       'productName' : data['productName'],
       'productid' : data['productid'],
       'productImage': data['productImage'],
@@ -28,11 +28,11 @@ class CartService{
   }
 
   Future<void>addToCartSubscription({data, qty, volume,total,subscription}){
-    cart.doc(user.uid).set({
-      'user':user.uid,
+    cart.doc(user?.uid).set({
+      'user':user?.uid,
     });
     updateproducts(data['productid'], qty);
-    return cart.doc(user.uid).collection('products').add({
+    return cart.doc(user?.uid).collection('products').add({
       'productName' : data['productName'],
       'productid' : data['productid'],
       'productImage': data['productImage'],
@@ -54,7 +54,7 @@ class CartService{
       if (documentSnapshot.exists) {
         //print('Document data: ${documentSnapshot.data()}');
         products.doc(productid).update({
-          'Inventory_max_qty': documentSnapshot.data()['Inventory_max_qty'] - qty,
+          'Inventory_max_qty': documentSnapshot['Inventory_max_qty'] - qty,
         });
       } else {
         print('Document does not exist on the database');
@@ -66,7 +66,7 @@ class CartService{
     // Create a reference to the document the transaction will use
     DocumentReference documentReference = FirebaseFirestore.instance
         .collection('cart')
-        .doc(user.uid).collection('products').doc(docId);
+        .doc(user?.uid).collection('products').doc(docId);
 
     return FirebaseFirestore.instance.runTransaction((transaction) async {
       // Get the document
@@ -87,7 +87,7 @@ class CartService{
   }
 
   Future<void> removeFromCart({docId,qty,productid})async{
-    cart.doc(user.uid).collection('products').doc(docId).delete();
+    cart.doc(user?.uid).collection('products').doc(docId).delete();
 
     FirebaseFirestore.instance
         .collection('products')
@@ -97,7 +97,7 @@ class CartService{
       if (documentSnapshot.exists) {
         //print('Document data: ${documentSnapshot.data()}');
         products.doc(productid).update({
-          'Inventory_max_qty': documentSnapshot.data()['Inventory_max_qty'] + qty,
+          'Inventory_max_qty': documentSnapshot['Inventory_max_qty'] + qty,
         });
       }
     });

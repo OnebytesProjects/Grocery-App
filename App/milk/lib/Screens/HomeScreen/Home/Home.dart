@@ -188,9 +188,9 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                   child: InkWell(
                     splashColor: Colors.blue.withAlpha(30),
                     onTap: () {
-                      print(document.data()['name']);
+                      print(document['name']);
                       setState(() {
-                        this._productList = document.data()['name'];
+                        this._productList = document['name'];
                       });
                     },
                     child: Container(
@@ -210,12 +210,12 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                               width: double.infinity,
                               height: 80,
                               //color: Colors.green,
-                              child: Image.network(document.data()['image']),
+                              child: Image.network(document['image']),
                             ),
                             SizedBox(
                               height: 10,
                             ),
-                            Text(document.data()['name'])
+                            Text(document['name'])
                           ],
                         ),
                       ),

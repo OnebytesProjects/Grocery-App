@@ -25,17 +25,21 @@ class AuthProvider with ChangeNotifier {
       print(e.code);
     };
 
-    final smsOtpSend = (String verId, int resendToken) async {
-      this.VerificationId = verId;
-      //dialog to enter otp
-      smsOtpDialog(context, number);
-    };
+    // final smsOtpSend = (String verId, int resendToken) async {
+    //   this.VerificationId = verId;
+    //   //dialog to enter otp
+    //   smsOtpDialog(context, number);
+    // };
+
     try {
       _auth.verifyPhoneNumber(
           phoneNumber: number,
           verificationCompleted: verificationCompleted,
           verificationFailed: verificationFailed,
-          codeSent: smsOtpSend,
+          codeSent: (String verificationId, int? resendToken) async {
+            this.VerificationId = verificationId;
+            smsOtpDialog(context, number);
+          },
           codeAutoRetrievalTimeout: (String verId) {
             this.VerificationId = verId;
           });
@@ -79,13 +83,13 @@ class AuthProvider with ChangeNotifier {
                     AuthCredential phoneAuthCredentials =
                         PhoneAuthProvider.credential(
                             verificationId: VerificationId, smsCode: smsOtp);
-                    final User user =
+                    final User? user =
                         (await _auth.signInWithCredential(phoneAuthCredentials))
                             .user;
 
                     FirebaseFirestore.instance
                         .collection('users')
-                        .doc(user.uid)
+                        .doc(user?.uid)
                         .get()
                         .then((DocumentSnapshot documentSnapshot) {
                       if (documentSnapshot.exists) {
@@ -96,7 +100,7 @@ class AuthProvider with ChangeNotifier {
                       }
                       else{
                         Navigator.of(context).pop();
-                        _createUser(id: user.uid, number: user.phoneNumber);
+                        _createUser(id: user!.uid, number: number);
                         Navigator.pushReplacementNamed(context, UserRegistration.id);
                       }
                     });
@@ -147,7 +151,7 @@ class AuthProvider with ChangeNotifier {
   Future<DocumentSnapshot> getUserDetails() async {
     var result = await FirebaseFirestore.instance
         .collection('users')
-        .doc(_auth.currentUser.uid)
+        .doc(_auth.currentUser?.uid)
         .get();
 
     this.snapshot = result;

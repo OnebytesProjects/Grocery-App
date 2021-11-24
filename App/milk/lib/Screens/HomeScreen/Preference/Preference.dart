@@ -17,10 +17,10 @@ class _PreferenceState extends State<Preference> {
   Widget build(BuildContext context) {
     FirebaseFirestore.instance
         .collection('users')
-        .doc(_auth.currentUser.uid)
+        .doc(_auth.currentUser?.uid)
         .get()
         .then((DocumentSnapshot documentSnapshot) =>
-            {this._deliveryOption = documentSnapshot.data()['preference']});
+            {this._deliveryOption = documentSnapshot['preference']});
 
     return Scaffold(
       body: Container(
@@ -90,7 +90,7 @@ class _PreferenceState extends State<Preference> {
           splashColor: Colors.blue.withAlpha(30),
           onTap: () {
             users
-                .doc(_auth.currentUser.uid)
+                .doc(_auth.currentUser?.uid)
                 .update({'preference': title})
                 .then((value) => print("User Updated"))
                 .catchError((error) => print("Failed to update user: $error"));
