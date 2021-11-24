@@ -12,41 +12,55 @@ class Calendar extends StatefulWidget {
 
 class _CalendarState extends State<Calendar> {
   // CalendarController _calendarController = CalendarController();
+  CalendarFormat _calendarFormat = CalendarFormat.month;
+  DateTime _focusedDay = DateTime.now();
+  DateTime? _selectedDay;
+  DateTime? _rangeStart = DateTime(2021,11,3);
+  DateTime? _rangeEnd = DateTime(2021,11,29);
 
-  DateTime selectedDay = DateTime.now();
-  DateTime focusedDay = DateTime.now();
 
-
-  // void initState() {
-  //   super.initState();
-  //   _calendarController = CalendarController();
-  // }
-  void _onDaySelected(DateTime selectDay,DateTime foucsDay) {
-    setState(() {
-      selectedDay = selectDay;
-      focusedDay = foucsDay;
-    });
-    print('Selected Day:${focusedDay}');
-  }
 
   Widget calendar() {
     return TableCalendar(
-      firstDay: DateTime.utc(2010, 10, 16),
-      lastDay: DateTime.utc(2030, 3, 14),
-      focusedDay: DateTime.now(),
+      headerStyle: HeaderStyle(
+        formatButtonVisible: false,
+      ),
+      firstDay: DateTime(2020),
+      lastDay: DateTime(2050),
+      rangeStartDay: _rangeStart,
+      rangeEndDay: _rangeEnd,
+      focusedDay: _focusedDay,
+      calendarFormat: _calendarFormat,
+      selectedDayPredicate: (day) {
+        // Use `selectedDayPredicate` to determine which day is currently selected.
+        // If this returns true, then `day` will be marked as selected.
+
+        // Using `isSameDay` is recommended to disregard
+        // the time-part of compared DateTime objects.
+        return isSameDay(_selectedDay, day);
+      },
+      onDaySelected: (selectedDay, focusedDay) {
+        if (!isSameDay(_selectedDay, selectedDay)) {
+          // Call `setState()` when updating the selected day
+          setState(() {
+            _selectedDay = selectedDay;
+            _focusedDay = focusedDay;
+          });
+        }
+      },
+      onFormatChanged: (format) {
+        if (_calendarFormat != format) {
+          // Call `setState()` when updating calendar format
+          setState(() {
+            _calendarFormat = format;
+          });
+        }
+      },
+      onPageChanged: (focusedDay) {
+        // No need to call `setState()` here
+        _focusedDay = focusedDay;
+      },
     );
-    // return TableCalendar(
-    //   headerStyle: HeaderStyle(
-    //     formatButtonVisible: false,
-    //   ),
-    //   calendarController: _calendarController,
-    //   calendarStyle: CalendarStyle(
-    //     canEventMarkersOverflow: true,
-    //     markersColor: Theme.of(context).primaryColor,
-    //     selectedColor: Colors.grey,
-    //   ),
-    //   startingDayOfWeek: StartingDayOfWeek.monday,
-    // );
   }
 
   @override

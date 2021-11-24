@@ -9,7 +9,7 @@ Calender
 
 To be done in main build:
 Carousel error and initial page error and to checkout
-if nothing there show nothing--ceck
+if nothing there show nothing--ceck{cart,notification,orders,subscription,calendar}
 notification service
 mainscreen update
 convenience fee
@@ -17,3 +17,4 @@ cart checkout page if asket nil
 login convinience fee alignment
 coupon and referal id recreation
 notification container size
+subscription-milk,user
