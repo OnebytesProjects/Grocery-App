@@ -114,11 +114,11 @@ class WelcomeScreen extends StatelessWidget {
       ),
       bottomSheet: Card(
         child: SizedBox(
-          height: 250,
+          height: 260,
           child: StatefulBuilder(builder: (context, StateSetter myState) {
             return Container(
               child: Padding(
-                padding: const EdgeInsets.all(20.0),
+                padding: const EdgeInsets.fromLTRB(20,20,20,0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -127,7 +127,7 @@ class WelcomeScreen extends StatelessWidget {
                       child: Container(
                         child: Column(
                           children: [
-                            Text(auth.error),
+                            Text(auth.error,style: TextStyle(color: Colors.red),),
                             SizedBox(height: 3),
                           ],
                         ),
@@ -147,7 +147,6 @@ class WelcomeScreen extends StatelessWidget {
                         prefixText: '+91',
                         labelText: '10 digit number',
                       ),
-                      autofocus: true,
                       keyboardType: TextInputType.phone,
                       maxLength: 10,
                       controller: _phoneNumberController,

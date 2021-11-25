@@ -50,7 +50,8 @@ class _CartState extends State<Cart> {
             ],
           ),
         ),
-      bottomSheet: BillDetails(),
+      bottomSheet: cartProvider.subTotal == 0.0 ?Container(child: Center(child: Text('Your Cart Is Empty.'),),
+      ) : BillDetails(),
     );
   }
 
@@ -249,10 +250,10 @@ class _CartState extends State<Cart> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             Container(
-              height: 80,
+              height: 90,
               width: 100,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text("Total Value",style: TextStyle(fontSize: 10,color: Colors.grey),),

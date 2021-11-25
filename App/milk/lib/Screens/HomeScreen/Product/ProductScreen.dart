@@ -34,20 +34,29 @@ class _ProductScreenState extends State<ProductScreen> {
   bool isChecked2sub = false;
   String subscriptionType = '';
   int _qty = 0;
+  String vip = '';
   late String _docId;
   String volume = 'nil';
-  //
   double chosenPrice = 0.0;
   bool _chosenprice = false;
   var total;
 
   CartService _cart = CartService();
+  FirebaseAuth _auth = FirebaseAuth.instance;
   User? user = FirebaseAuth.instance.currentUser;
 
   static List<Product> product = [];
 
   @override
   void initState() {
+    //check vip
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(_auth.currentUser?.uid)
+        .get()
+        .then((DocumentSnapshot documentSnapshot) =>
+    {this.vip = documentSnapshot['vip']});
+
     FirebaseFirestore.instance
         .collection('products')
         .get()
@@ -128,9 +137,7 @@ class _ProductScreenState extends State<ProductScreen> {
         }
       }
 
-
     });
-
 
     return Scaffold(
       appBar: AppBar(
@@ -648,7 +655,8 @@ class _ProductScreenState extends State<ProductScreen> {
                 ),
                           ],
                         ),
-                        Row(
+                        SizedBox(height: 5,),
+                        vip=='no'?Container(child: Text('Please Subscribe To Make Orders.'),):Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             RaisedButton(

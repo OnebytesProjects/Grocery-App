@@ -2,6 +2,7 @@ import 'dart:html';
 
 import 'package:admin/Services/Firebase_Services.dart';
 import 'package:ars_progress_dialog/ars_progress_dialog.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase/firebase.dart' as db;
 
@@ -35,15 +36,17 @@ class _CategorycreateWidgetState extends State<CategorycreateWidget> {
     return Container(
       color: Colors.grey,
       width: MediaQuery.of(context).size.width,
-      height: 80,
+      height: 130,
       child: Padding(
         padding: const EdgeInsets.only(left: 30),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Visibility(
               visible: _visible,
               child: Container(
-                child: Row(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     SizedBox(
                       width: 200,

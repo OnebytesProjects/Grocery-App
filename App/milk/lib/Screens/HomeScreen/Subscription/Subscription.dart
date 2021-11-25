@@ -5,7 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:milk/services/order_service.dart';
 import 'package:intl/intl.dart';
 
-class Subscription extends StatelessWidget {
+class Subscription extends StatefulWidget {
+  @override
+  State<Subscription> createState() => _SubscriptionState();
+}
+
+class _SubscriptionState extends State<Subscription> {
+  CollectionReference subscription = FirebaseFirestore.instance.collection('subscription');
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +64,30 @@ class Subscription extends StatelessWidget {
                           ],
                         ),
                       ),
-                      data['orderStatus']!='Pending'?Padding(
+                      data['orderStatus']=='SubScription Started'?Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          width: double.infinity,
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Text('Subscription Start date: ',style: TextStyle(fontWeight: FontWeight.bold),),
+                                  Text('${DateFormat.yMMMd().format(DateTime.parse(data['startdate']))}'),
+                                ],
+                              ),
+                              SizedBox(height: 5,),
+                              Row(
+                                children: [
+                                  Text('Subscription End date: ',style: TextStyle(fontWeight: FontWeight.bold),),
+                                  Text('${DateFormat.yMMMd().format(DateTime.parse(data['endDate']))}'),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ):Container(),
+                      data['orderStatus']=='SubScription Ended'?Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Container(
                           width: double.infinity,
@@ -88,14 +117,21 @@ class Subscription extends StatelessWidget {
                             shrinkWrap: true,
                             physics: NeverScrollableScrollPhysics(),
                             itemBuilder: (BuildContext context,int index){
-                              return ListTile(
-                                leading: CircleAvatar(
-                                  backgroundColor: Colors.white,
-                                  child: Image.network(data['products'][index]['productImage']),
-                                ),
-                                title: Text(data['products'][index]['productName']),
-                                subtitle: Text('Quantity: ${data['products'][index]['qty'].toString()}   Price:₹ ${data['products'][index]['sellingPrice'].toString()}',
-                                  style: TextStyle(fontSize: 12,color: Colors.grey),),
+                              return Column(
+                                children: [
+                                  ListTile(
+                                    leading: CircleAvatar(
+                                      backgroundColor: Colors.white,
+                                      child: Image.network(data['products'][index]['productImage']),
+                                    ),
+                                    title: Text(data['products'][index]['productName']),
+                                    subtitle: Text('Quantity: ${data['products'][index]['qty'].toString()}   Price:₹ ${data['products'][index]['sellingPrice'].toString()}',
+                                      style: TextStyle(fontSize: 12,color: Colors.grey),),
+                                  ),
+                                  data['orderStatus'] =='Pending'?RaisedButton(onPressed: (){
+                                    showDialog('Are you Sure?', context,document.id);
+                                  },child: Text('Cancel Subscription'),color: Colors.orange,):Container(),
+                                ],
                               );
                             },
                             itemCount: data['products'].length,
@@ -112,6 +148,7 @@ class Subscription extends StatelessWidget {
       ),
     );
   }
+
   statusColor(data){
     if(data == 'Pending'){
       return Colors.orange;
@@ -122,6 +159,28 @@ class Subscription extends StatelessWidget {
     if(data == 'SubScription Ended'){
       return Colors.red;
     }
+    if(data == 'Cancelled'){
+      return Colors.orange;
+    }
+  }
+
+  showDialog(message,context,docid){
+    showCupertinoDialog(context: context, builder: (BuildContext context){
+      return CupertinoAlertDialog(
+        content: Text('$message'),
+        actions: [
+          FlatButton(onPressed: (){
+            Navigator.pop(context);
+          }, child: Text('Cancel')),
+          FlatButton(onPressed: (){
+            Navigator.pop(context);
+            //changestatus
+            subscription.doc(docid)
+                .update({'orderStatus': 'Cancelled'});
+          }, child: Text('Ok'))
+        ],
+      );
+    });
   }
 }
 

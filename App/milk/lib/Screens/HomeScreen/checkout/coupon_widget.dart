@@ -25,30 +25,37 @@ class _CoupunWidgetState extends State<CoupunWidget> {
       child: Row(children: [
         Expanded(child: SizedBox(
           height: 38,
-          child: TextField(
-            controller: _couponText,
-            decoration: InputDecoration(
-                border: InputBorder.none,
-                filled: true,
-                fillColor: Colors.grey[300],
-                hintText: 'Enter Coupon Code'
+          child: Container(
+            decoration: BoxDecoration(
+              border: Border(
+                bottom:BorderSide(width: 2.0, color: Colors.black45),
+              ),
             ),
-            onChanged: (String value){
-              if(value.length>3){
-                if(value.isNotEmpty){
+            child: TextFormField(
+              controller: _couponText,
+              decoration: InputDecoration(
+                  border: InputBorder.none,
+                  filled: true,
+                  fillColor: Colors.white,
+                  hintText: 'Enter Coupon Code'
+              ),
+              onChanged: (String value){
+                if(value.length>3){
+                  if(value.isNotEmpty){
+                    setState(() {
+                      color=Colors.green;
+                      _enable = true;
+                    });
+                  }
+                }else{
                   setState(() {
-                    color=Colors.green;
-                    _enable = true;
+                    color = Colors.grey;
+                    _enable = false;
+                    _coupon.discountrate = 0;
                   });
                 }
-              }else{
-                setState(() {
-                  color = Colors.grey;
-                  _enable = false;
-                  _coupon.discountrate = 0;
-                });
-              }
-            },
+              },
+            ),
           ),
         )),
         AbsorbPointer(

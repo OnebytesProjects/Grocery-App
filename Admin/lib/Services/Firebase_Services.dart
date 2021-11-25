@@ -37,6 +37,9 @@ class FirebaseServices {
   deleteBannerImageFrmDb(id) async {
     firestore.collection('slider').doc(id).delete();
   }
+  deleteCategoryFrmDb(id) async {
+    firestore.collection('category').doc(id).delete();
+  }
   //category
 
   Future<String> uploadCategoryImageToDb(url, catName) async {
@@ -99,6 +102,41 @@ class FirebaseServices {
               child: const Text('Delete'),
               onPressed: () {
                 deleteBannerImageFrmDb(id);
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> confirmDeleteCategory({title, message, context, id}) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text(message),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: const Text('Delete'),
+              onPressed: () {
+                print(id);
+                deleteCategoryFrmDb(id);
                 Navigator.of(context).pop();
               },
             ),

@@ -104,6 +104,7 @@ class AuthProvider with ChangeNotifier {
                         Navigator.pushReplacementNamed(context, UserRegistration.id);
                       }
                     });
+                    this.error = '';
                     // if (user != null) {
                     //   print('User Exist');
                     //   Navigator.of(context).pop();
@@ -141,6 +142,7 @@ class AuthProvider with ChangeNotifier {
       'refered': 'null',
       'preference': 'Ring Door Bell',
       'pincode':'',
+      'vip':'no'
     });
 
     _userServices.createReferalData({

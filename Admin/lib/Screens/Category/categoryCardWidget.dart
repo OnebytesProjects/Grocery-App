@@ -1,46 +1,69 @@
 import 'package:admin/Screens/Category/subcategory_widget.dart';
+import 'package:admin/Services/Firebase_Services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class CategoryCard extends StatelessWidget {
+  FirebaseServices _services = FirebaseServices();
   final DocumentSnapshot document;
   CategoryCard(this.document);
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      borderRadius: BorderRadius.circular(4),
-      onTap: (){
-        showDialog(
-          context: context,
-          builder: (BuildContext context){
-            return SubCategoryWidget(document['name']);
-          }
-        );
-      },
-      child: SizedBox(
-        height: 120,
-        width: 120,
-        child: Card(
-          elevation: 4,
-          child: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  SizedBox(
-                    height: 70,
-                    width: double.infinity,
-                    child: Image.network(document['image']),
+    return Stack(
+      children: [
+        InkWell(
+          borderRadius: BorderRadius.circular(4),
+          onTap: (){
+            showDialog(
+              context: context,
+              builder: (BuildContext context){
+                return SubCategoryWidget(document['name']);
+              }
+            );
+          },
+          child: SizedBox(
+            height: 120,
+            width: 120,
+            child: Card(
+              elevation: 4,
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Center(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      SizedBox(
+                        height: 70,
+                        width: double.infinity,
+                        child: Image.network(document['image']),
+                      ),
+                      FittedBox(fit: BoxFit.contain,child: Text(document['name'],style: TextStyle(fontWeight: FontWeight.bold),)),
+                    ],
                   ),
-                  FittedBox(fit: BoxFit.contain,child: Text(document['name'],style: TextStyle(fontWeight: FontWeight.bold),)),
-                ],
+                ),
               ),
             ),
           ),
         ),
-      ),
+        Positioned(
+            top: 10,
+            right: 10,
+            child: CircleAvatar(
+              backgroundColor: Colors.white,
+              child: IconButton(
+                onPressed: (){
+                  _services.confirmDeleteCategory(
+                    context: context,
+                    title: 'Confirm',
+                    message: 'Confirm Deletion?',
+                    id: document['name'],
+                  );
+                },
+                icon: Icon(Icons.delete,color: Colors.red,),
+              ),
+            ))
+      ],
     );
   }
 }

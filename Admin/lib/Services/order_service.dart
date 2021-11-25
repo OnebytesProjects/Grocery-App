@@ -4,6 +4,7 @@ class OrderService{
   CollectionReference product = FirebaseFirestore.instance.collection('products');
   CollectionReference order = FirebaseFirestore.instance.collection('orders');
   CollectionReference subscription = FirebaseFirestore.instance.collection('subscription');
+  CollectionReference users = FirebaseFirestore.instance.collection('users');
 
   Future<void>updateOrderStatus(documentId,status){
     var result = order.doc(documentId).update({
@@ -21,7 +22,7 @@ class OrderService{
     });
     return result;
   }
-  Future<void>endSubscriptionStatus(documentId,status){
+  Future<void>endSubscriptionStatus(documentId,status,userid){
     var result = subscription.doc(documentId).update({
       'orderStatus' : status,
       'endDate': DateTime.now().toString(),
@@ -31,8 +32,11 @@ class OrderService{
         'phone' : '',
       },
       'DeliveryDate' : '',
-
     });
+    //userdata
+    users
+        .doc(userid)
+        .update({'vip': 'no'});
     return result;
   }
 

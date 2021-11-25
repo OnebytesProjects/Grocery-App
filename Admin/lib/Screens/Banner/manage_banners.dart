@@ -67,15 +67,17 @@ class _BannerScreenState extends State<BannerScreen> {
               Container(
                 color: Colors.grey,
                 width: MediaQuery.of(context).size.width,
-                height: 80,
+                height: 100,
                 child: Padding(
                   padding: const EdgeInsets.only(left: 30),
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Visibility(
                         visible: _visible,
                         child: Container(
-                          child: Row(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
                               AbsorbPointer(
                                 absorbing: true,

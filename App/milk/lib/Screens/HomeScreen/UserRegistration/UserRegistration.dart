@@ -184,7 +184,6 @@ class _UserRegistrationState extends State<UserRegistration> {
                                   "Full Name", "Your Name", true, _name),
                               buildTextField(
                                   "Mobile Number", "number", false, _mobile),
-                              //buildTextField("Gender", "Gender", true, _gender),
                               //dropdown-gender
                               Container(
                                   width: double.infinity,
@@ -240,13 +239,11 @@ class _UserRegistrationState extends State<UserRegistration> {
                               SizedBox(
                                 height: 20,
                               ),
-                              // buildTextField(
-                              //     "Referral Code", "Enter here", true, _referral),
                               buildTextField("Email", "Enter here", true, _email),
-                              CheckReferalId(),
-                              SizedBox(
-                                height: 35,
-                              ),
+                              // CheckReferalId(),
+                              // SizedBox(
+                              //   height: 35,
+                              // ),
                               RaisedButton(
                                 onPressed: () {
                                   updateProfile().then((value) {

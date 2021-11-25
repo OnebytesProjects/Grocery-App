@@ -102,7 +102,43 @@ class _SubscriptionState extends State<Subscription> {
                         ),
                       ),
                       Divider(height: 3,),
-                      data['orderStatus']!='Pending'?Padding(
+                      data['orderStatus']=='SubScription Started'?Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          width: double.infinity,
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Text('Subscription Start date: ',style: TextStyle(fontWeight: FontWeight.bold),),
+                                  Text('${DateFormat.yMMMd().format(DateTime.parse(data['startdate']))}'),
+                                ],
+                              ),
+                              SizedBox(height: 5,),
+                              Row(
+                                children: [
+                                  Text('Subscription End date: ',style: TextStyle(fontWeight: FontWeight.bold),),
+                                  Text('${DateFormat.yMMMd().format(DateTime.parse(data['endDate']))}'),
+                                ],
+                              ),
+                              SizedBox(height: 5,),
+                              data['orderStatus']!='SubScription Ended'?Row(
+                                children: [
+                                  Text('Next Delivery date: ',style: TextStyle(fontWeight: FontWeight.bold),),
+                                  Text('${DateFormat.yMMMd().format(DateTime.parse(data['DeliveryDate']))}'),
+                                ],
+                              ):Container(),
+                              data['orderStatus']!='SubScription Ended'?Row(
+                                children: [
+                                  Text('DeliveryBoy Status: ',style: TextStyle(fontWeight: FontWeight.bold),),
+                                  Text(data['deliveryboystatus']),
+                                ],
+                              ):Container(),
+                            ],
+                          ),
+                        ),
+                      ):Container(),
+                      data['orderStatus']=='SubScription Ended'?Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Container(
                           width: double.infinity,
@@ -160,7 +196,7 @@ class _SubscriptionState extends State<Subscription> {
                           )
                         ],),
                       Divider(height: 3,),
-                      tasks(data['orderStatus'], document, document.id,data['deliverBoy']['name'],data['deliverBoy']['phone']),
+                      tasks(data['orderStatus'], document, document.id,data['deliverBoy']['name'],data['deliverBoy']['phone'],data['userId']),
 
                       Divider(height: 10,thickness: 3,),
 
@@ -174,7 +210,7 @@ class _SubscriptionState extends State<Subscription> {
       ),
     );
   }
-  showMyDialog(title,status,documentId){
+  showMyDialog(title,status,documentId,userid){
     showCupertinoDialog(context: context, builder: (BuildContext context){
       return CupertinoAlertDialog(
         title: Text(title),
@@ -186,7 +222,7 @@ class _SubscriptionState extends State<Subscription> {
           FlatButton(onPressed: (){
             EasyLoading.show(status: 'Updating');
             if(status == 'SubScription Ended'){
-              orderService.endSubscriptionStatus(documentId, status).then((value) {
+              orderService.endSubscriptionStatus(documentId, status,userid).then((value) {
                 EasyLoading.showSuccess("Subscription Ended");
               });
             }else{
@@ -213,10 +249,12 @@ class _SubscriptionState extends State<Subscription> {
     }
     if(data == 'SubScription Ended'){
       return Colors.red;
+    }if(data == 'Cancelled'){
+      return Colors.red;
     }
   }
 
-  tasks(data,document,documentId,name,number){
+  tasks(data,document,documentId,name,number,userid){
     if(data == 'Pending'){
       return Container(
         height: 40,
@@ -227,7 +265,7 @@ class _SubscriptionState extends State<Subscription> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Expanded(child: FlatButton(onPressed: (){
-                showMyDialog("Accept Order",'SubScription Started',documentId);
+                showMyDialog("Accept Order",'SubScription Started',documentId,userid);
               }, child: Text('Accept'),color: Colors.green,)),
             ),
           ],
@@ -252,7 +290,7 @@ class _SubscriptionState extends State<Subscription> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Expanded(child: FlatButton(onPressed: (){
-                showMyDialog("End Subscription",'SubScription Ended',documentId);
+                showMyDialog("End Subscription",'SubScription Ended',documentId,userid);
               }, child: Text('End Subscription'),color: Colors.red,)),
             ),
           ],
@@ -261,6 +299,9 @@ class _SubscriptionState extends State<Subscription> {
     }
 
     if(data == 'SubScription Ended'){
+      return Container();
+    }
+    if(data == 'Cancelled'){
       return Container();
     }
   }
