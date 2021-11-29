@@ -40,6 +40,9 @@ class _CheckoutState extends State<Checkout> {
   String _number = '';
   int delivryCharge = 0;
 
+
+
+
   @override
   Widget build(BuildContext context) {
     var _coupon = Provider.of<CouponProvider>(context);
@@ -60,21 +63,39 @@ class _CheckoutState extends State<Checkout> {
           this._number = documentSnapshot['number'];
           //name
           //number
+
+        });
+
+        FirebaseFirestore.instance
+            .collection('pincode')
+            .doc(_pincode)
+            .get()
+            .then((DocumentSnapshot documentSnapshot) {
+          if (documentSnapshot.exists) {
+            setState(() {
+              this.delivryCharge = documentSnapshot['deliverycharge'];
+            });
+          }
+        });
+
+        setState(() {
           total = (widget.cartValue+delivryCharge)-discountrate;
         });
+
       }
     });
-    FirebaseFirestore.instance
-        .collection('pincode')
-        .doc(_pincode)
-        .get()
-        .then((DocumentSnapshot documentSnapshot) {
-      if (documentSnapshot.exists) {
-        setState(() {
-          this.delivryCharge = documentSnapshot['deliverycharge'];
-        });
-      }
-    });
+
+    // FirebaseFirestore.instance
+    //     .collection('pincode')
+    //     .doc(_pincode)
+    //     .get()
+    //     .then((DocumentSnapshot documentSnapshot) {
+    //   if (documentSnapshot.exists) {
+    //     setState(() {
+    //       this.delivryCharge = documentSnapshot['deliverycharge'];
+    //     });
+    //   }
+    // });
 
     return Scaffold(
       appBar: AppBar(

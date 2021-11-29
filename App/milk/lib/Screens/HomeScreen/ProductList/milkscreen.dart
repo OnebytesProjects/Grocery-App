@@ -6,6 +6,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:intl/intl.dart';
 import 'package:milk/models/product_model.dart';
 import 'package:milk/services/cart_services.dart';
+import 'package:video_player/video_player.dart';
 
 class MilkDisplay extends StatefulWidget {
   var pname;
@@ -37,6 +38,28 @@ class _MilkDisplayState extends State<MilkDisplay> {
   FirebaseAuth _auth = FirebaseAuth.instance;
 
   static List<Product> product = [];
+
+  late VideoPlayerController videocontroller;
+
+  @override
+  void initState() {
+    //videoplayer
+    videocontroller = VideoPlayerController.network(
+        'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4')
+      ..initialize().then((_) {
+        // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
+        setState(() {});
+      })
+      ..setLooping(true)
+      ..initialize().then((_) => videocontroller.play());
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    videocontroller.dispose();
+    super.dispose();
+  }
 
 
   @override
@@ -112,7 +135,7 @@ class _MilkDisplayState extends State<MilkDisplay> {
                         width: double.infinity,
                         child: Card(
                           child: Center(
-                            child: Text('Video to be played'),
+                            child: Image.network('https://media.wired.com/photos/5b45021f3808c83da3503cc7/master/w_1600,c_limit/tumblr_inline_mjx5ioXh8l1qz4rgp.gif'),
                           ),
                         ),
                       ),

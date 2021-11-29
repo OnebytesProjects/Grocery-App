@@ -18,6 +18,9 @@ class _CartState extends State<Cart> {
   late double deliverycharge;
   double discount = 0.0;
   bool updating = false;
+  int delivryCharge = 0;
+
+
 
 
 

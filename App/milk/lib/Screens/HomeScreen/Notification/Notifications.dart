@@ -31,37 +31,39 @@ class _NotificationsState extends State<Notifications> {
                 return Text('Something went wrong');
               }
 
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Text("Loading");
-              }
               if(!snapshot.hasData){
-                return Center(child: CircularProgressIndicator(),);
+                return Center(child: Text('No Notifications'),);
               }
 
-              return _notificationProvider.size.toString() == '0'? ListView(
-                children: snapshot.data!.docs.map((DocumentSnapshot document) {
-                  Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
-                  return Container(
-                    decoration: BoxDecoration(
-                      border: Border(
-                        bottom:BorderSide(width: 2.0, color: Colors.black45),
-                      ),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ListTile(
-                        title: Text(data['content']),
-                        trailing: IconButton(
-                          icon: Icon(Icons.delete),
-                          onPressed: (){
-                            DeleteNotification(_auth.currentUser?.uid,document.id);
-                          },
+              if(snapshot.hasData){
+                return ListView(
+                  children: snapshot.data!.docs.map((DocumentSnapshot document) {
+                    Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
+                    return Container(
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom:BorderSide(width: 2.0, color: Colors.black45),
                         ),
                       ),
-                    ),
-                  );
-                }).toList(),
-              ):Container(child: Text('No Notifications...'),);
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ListTile(
+                          title: Text(data['content']),
+                          trailing: IconButton(
+                            icon: Icon(Icons.delete),
+                            onPressed: (){
+                              DeleteNotification(_auth.currentUser?.uid,document.id);
+                            },
+                          ),
+                        ),
+                      ),
+                    );
+                  }).toList(),
+                );
+              }
+
+              return Center(child: Text('No Notifications'),);
+
             },
           ),
         ),

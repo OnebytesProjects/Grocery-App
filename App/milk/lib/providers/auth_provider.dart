@@ -14,6 +14,7 @@ class AuthProvider with ChangeNotifier {
   UserServices _userServices = UserServices();
   late DocumentSnapshot snapshot;
 
+
   Future<void> verifyPhone(BuildContext context, String number) async {
     final PhoneVerificationCompleted verificationCompleted =
         (PhoneAuthCredential credential) async {

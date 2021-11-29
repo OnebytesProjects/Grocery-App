@@ -22,11 +22,13 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
       .map((list) => list.docs.map((doc) => doc.data()));
 
   late AnimationController _animationController;
+
   late Animation<double> _nextPage;
   int _currentPage = 0;
   final PageController _pcontroller = PageController(
     initialPage: 0,
   );
+
 
   @override
   void initState() {
@@ -50,6 +52,9 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
         }
       }
     });
+
+    CarouselView();
+
     super.initState();
   }
 
@@ -141,16 +146,19 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
         if (snap.hasError) {
           return Text("snap.error");
         }
-        if (snap.connectionState == ConnectionState.waiting) {
+        if (!snap.hasData) {
           return CircularProgressIndicator();
         }
-        return PageView.builder(
-            controller: _pcontroller,
-            scrollDirection: Axis.horizontal,
-            itemCount: slideList.length,
-            itemBuilder: (context, int index) {
-              return _buildCarousel(slideList[index]);
-            });
+        if (snap.hasData) {
+          return PageView.builder(
+              controller: _pcontroller,
+              scrollDirection: Axis.horizontal,
+              itemCount: slideList.length,
+              itemBuilder: (context, int index) {
+                return _buildCarousel(slideList[index]);
+              });
+        }
+        return CircularProgressIndicator();
       },
     );
   }

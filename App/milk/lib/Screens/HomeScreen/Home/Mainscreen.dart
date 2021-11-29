@@ -62,6 +62,15 @@ class _MainScreenState extends State<MainScreen> {
       });
     });
 
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(_auth.currentUser?.uid)
+        .get().then((DocumentSnapshot doc){
+          setState(() {
+            this._username = doc['name'];
+          });
+    });
+
     super.initState();
   }
 
@@ -71,10 +80,6 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var userDetails = Provider.of<AuthProvider>(context);
-     userDetails.getUserDetails();
-
-    _username = userDetails.snapshot['name'];
     _appbarname = 'Hi,$_username';
 
     var container;

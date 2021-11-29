@@ -48,6 +48,7 @@ dependencies:
   intl:
   search_page: ^2.0.0+1
   fluttertoast: ^8.0.8
+  video_player: ^2.2.7
 
 dev_dependencies:
   flutter_test:
