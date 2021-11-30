@@ -91,9 +91,7 @@ class _PreferenceState extends State<Preference> {
           onTap: () {
             users
                 .doc(_auth.currentUser?.uid)
-                .update({'preference': title})
-                .then((value) => print("User Updated"))
-                .catchError((error) => print("Failed to update user: $error"));
+                .update({'preference': title});
 
             setState(() {
               _deliveryOption = title;

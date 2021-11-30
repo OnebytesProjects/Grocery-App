@@ -22,15 +22,15 @@ class CartProvider with ChangeNotifier{
     snapshot.docs.forEach((doc) {
       if(!_newList.contains(doc.data())){
         _newList.add(doc.data());
-        this.cartList = _newList;
+        cartList = _newList;
         notifyListeners();
         getSubscriptionDetails();
       }
       cartTotal = cartTotal+doc['total'];
     });
-    this.subTotal = cartTotal;
-    this.cartQty = snapshot.size;
-    this.snapshot = snapshot;
+    subTotal = cartTotal;
+    cartQty = snapshot.size;
+    snapshot = snapshot;
     notifyListeners();
     return cartTotal;
   }
@@ -38,13 +38,13 @@ class CartProvider with ChangeNotifier{
     List _newsubList = [];
     QuerySnapshot snapshot = await _cart.cart.doc(_cart.user?.uid).collection('products').where('productName',isEqualTo: 'Milk').get();
     if(snapshot == null){
-      this.subExist = 'No';
+      subExist = 'No';
     }
     snapshot.docs.forEach((doc) {
       if(!_newsubList.contains(doc.data())){
         _newsubList.add(doc.data());
-        this.subscritionList = _newsubList;
-        this.subExist = 'Yes';
+        subscritionList = _newsubList;
+        subExist = 'Yes';
         notifyListeners();
       }
     });

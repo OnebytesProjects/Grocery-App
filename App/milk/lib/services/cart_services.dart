@@ -2,9 +2,6 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class CartService{
   CollectionReference cart = FirebaseFirestore.instance.collection('cart');
@@ -56,8 +53,6 @@ class CartService{
         products.doc(productid).update({
           'Inventory_max_qty': documentSnapshot['Inventory_max_qty'] - qty,
         });
-      } else {
-        print('Document does not exist on the database');
       }
     });
   }
@@ -81,9 +76,7 @@ class CartService{
 
       // Return the new count
       return qty;
-    })
-        .then((value) => print("Cart qty updated"))
-        .catchError((error) => print("Failed to update cart: $error"));
+    });
   }
 
   Future<void> removeFromCart({docId,qty,productid})async{

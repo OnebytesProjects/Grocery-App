@@ -21,7 +21,7 @@ class _NotificationsState extends State<Notifications> {
     return SizedBox(
       child: AlertDialog(
         title: const Text('Notifications'),
-        content: Container(
+        content: SizedBox(
           height: 100,
           child: StreamBuilder<QuerySnapshot>(
             stream: users.doc(_auth.currentUser?.uid).collection('notifications').snapshots(),

@@ -4,8 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:milk/Screens/HomeScreen/Home/Home.dart';
-import 'package:milk/Screens/HomeScreen/Home/Mainscreen.dart';
 import 'package:milk/Screens/HomeScreen/checkout/coupon_widget.dart';
 import 'package:milk/providers/cart__provider.dart';
 import 'package:milk/providers/coupon_provider.dart';
@@ -56,11 +54,11 @@ class _CheckoutState extends State<Checkout> {
         .then((DocumentSnapshot documentSnapshot) {
       if (documentSnapshot.exists) {
         setState(() {
-          this._address = documentSnapshot['address'];
-          this._pincode = documentSnapshot['pincode'];
-          this._deliverymode = documentSnapshot['preference'];
-          this._name = documentSnapshot['name'];
-          this._number = documentSnapshot['number'];
+          _address = documentSnapshot['address'];
+          _pincode = documentSnapshot['pincode'];
+          _deliverymode = documentSnapshot['preference'];
+          _name = documentSnapshot['name'];
+          _number = documentSnapshot['number'];
           //name
           //number
 
@@ -73,7 +71,7 @@ class _CheckoutState extends State<Checkout> {
             .then((DocumentSnapshot documentSnapshot) {
           if (documentSnapshot.exists) {
             setState(() {
-              this.delivryCharge = documentSnapshot['deliverycharge'];
+              delivryCharge = documentSnapshot['deliverycharge'];
             });
           }
         });
@@ -105,7 +103,7 @@ class _CheckoutState extends State<Checkout> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Container(
+            SizedBox(
               width: double.infinity,
               child: Column(
                 children: [
@@ -203,7 +201,7 @@ class _CheckoutState extends State<Checkout> {
                             onChanged: (SingingCharacter? value) {
                               setState(() {
                                 _paymentmode = value;
-                                this.payment = 'GooglePay';
+                                payment = 'GooglePay';
                               });
                             },
                           ),
@@ -216,7 +214,7 @@ class _CheckoutState extends State<Checkout> {
                             onChanged: (SingingCharacter? value) {
                               setState(() {
                                 _paymentmode = value;
-                                this.payment = 'Cod';
+                                payment = 'Cod';
                               });
                             },
                           ),
@@ -308,7 +306,6 @@ class _CheckoutState extends State<Checkout> {
         'phone': '',
       }
     }).then((value){
-      print(user?.uid);
       _orderService.deleteCart().then((value) {
         _orderService.checkData().then((value) {
           EasyLoading.showSuccess('OrederPlaced');

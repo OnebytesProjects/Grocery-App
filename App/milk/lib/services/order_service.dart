@@ -27,7 +27,7 @@ class OrderService{
     return result;
   }
   Future<void>deleteCart()async{
-    final result = await cart.doc(user?.uid).collection('products').get().then((snapshot){
+    cart.doc(user?.uid).collection('products').get().then((snapshot){
       for(DocumentSnapshot ds in snapshot.docs){
         ds.reference.delete();
       }
@@ -36,7 +36,7 @@ class OrderService{
 
   Future<void>checkData()async{
     final snapshot = await cart.doc(user?.uid).collection('products').get();
-    if(snapshot.docs.length==0){
+    if(snapshot.docs.isEmpty){
       cart.doc(user?.uid).delete();
     }
   }

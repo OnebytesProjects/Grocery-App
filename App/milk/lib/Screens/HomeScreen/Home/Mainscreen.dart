@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:milk/Screens/Drawercontent/Cancelation_and_Refund.dart';
 import 'package:milk/Screens/Drawercontent/Terms_of_use.dart';
@@ -15,9 +14,7 @@ import 'package:milk/Screens/HomeScreen/Referal/Referal.dart';
 import 'package:milk/Screens/HomeScreen/Notification/Notifications.dart';
 import 'package:milk/Screens/SplashScreen/WelcomeScreen.dart';
 import 'package:milk/models/product_model.dart';
-import 'package:milk/providers/auth_provider.dart';
 import 'package:milk/Screens/HomeScreen/UserRegistration/UserRegistration.dart';
-import 'package:provider/provider.dart';
 import 'package:search_page/search_page.dart';
 import '../../Drawercontent/Contact_us.dart';
 import '../Preference/Preference.dart';
@@ -58,7 +55,7 @@ class _MainScreenState extends State<MainScreen> {
         .get()
         .then((DocumentSnapshot doc) {
       setState(() {
-        this.Username = doc['name'];
+        Username = doc['name'];
       });
     });
 
@@ -67,7 +64,7 @@ class _MainScreenState extends State<MainScreen> {
         .doc(_auth.currentUser?.uid)
         .get().then((DocumentSnapshot doc){
           setState(() {
-            this._username = doc['name'];
+            _username = doc['name'];
           });
     });
 
@@ -137,7 +134,7 @@ class _MainScreenState extends State<MainScreen> {
                 showSearch(
                   context: context,
                   delegate: SearchPage<Product>(
-                    onQueryUpdate: (s) => print(s),
+                    // onQueryUpdate: (s) => print(s),
                     items: product,
                     searchLabel: 'Search Product',
                     suggestion: Center(
@@ -173,7 +170,7 @@ class _MainScreenState extends State<MainScreen> {
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
-                            Container(
+                            SizedBox(
                               height: 100,
                               width: 90,
                               child: Image.network(products.image),
@@ -216,13 +213,11 @@ class _MainScreenState extends State<MainScreen> {
         ),
         drawer: Drawer(
           child: SingleChildScrollView(
-            child: Container(
-              child: Column(
-                children: <Widget>[
-                  DrawerHeader(),
-                  DrawerList(),
-                ],
-              ),
+            child: Column(
+              children: <Widget>[
+                DrawerHeader(),
+                DrawerList(),
+              ],
             ),
           ),
         ),
@@ -240,7 +235,7 @@ class _MainScreenState extends State<MainScreen> {
         child: Column(
           children: [
             //logo
-            Container(
+            SizedBox(
               height: 125,
               width: double.infinity,
               child: Row(
@@ -294,7 +289,7 @@ class _MainScreenState extends State<MainScreen> {
                           height: 20,
                         ),
                         Text(
-                          '$_username',
+                          _username,
                           style: TextStyle(
                               fontSize: 18,
                               color: Colors.white,
@@ -337,43 +332,41 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   Widget DrawerList() {
-    return Container(
-      child: Column(
-        children: [
-          menuItem(1, "HOME", Icons.home,
-              currentPage == DrawerSection.HOME ? true : false),
-          menuItem(2, "CALENDAR", Icons.calendar_today,
-              currentPage == DrawerSection.CALENDAR ? true : false),
-          menuItem(3, "SUBSCRIPTION", Icons.autorenew,
-              currentPage == DrawerSection.SUBSCRIPTION ? true : false),
-          menuItem(4, "ORDER HISTORY", Icons.history_edu_outlined,
-              currentPage == DrawerSection.ORDER_HISTORY ? true : false),
-          menuItem(5, "PREFERENCE", Icons.settings,
-              currentPage == DrawerSection.PREFERENCE ? true : false),
-          menuItem(6, "REFER A FREIND", Icons.group_add_outlined,
-              currentPage == DrawerSection.REFER_A_FREIND ? true : false),
-          new Divider(
-            thickness: 3,
-            indent: 10,
-            endIndent: 10,
-          ),
-          menuItem(7, "ABOUT US", Icons.info,
-              currentPage == DrawerSection.ABOUT_US ? true : false),
-          menuItem(8, "CONTACT US ", Icons.phone,
-              currentPage == DrawerSection.CONTACT_US ? true : false),
-          menuItem(9, "TERMS OF USE ", Icons.sticky_note_2_outlined,
-              currentPage == DrawerSection.CONTACT_US ? true : false),
-          menuItem(
-              10,
-              "CANCELATION AND REFUND",
-              Icons.lock,
-              currentPage == DrawerSection.CANCELATION_AND_REFUND
-                  ? true
-                  : false),
-          menuItem(11, "LOGOUT", Icons.logout,
-              currentPage == DrawerSection.LOGOUT ? true : false),
-        ],
-      ),
+    return Column(
+      children: [
+        menuItem(1, "HOME", Icons.home,
+            currentPage == DrawerSection.HOME ? true : false),
+        menuItem(2, "CALENDAR", Icons.calendar_today,
+            currentPage == DrawerSection.CALENDAR ? true : false),
+        menuItem(3, "SUBSCRIPTION", Icons.autorenew,
+            currentPage == DrawerSection.SUBSCRIPTION ? true : false),
+        menuItem(4, "ORDER HISTORY", Icons.history_edu_outlined,
+            currentPage == DrawerSection.ORDER_HISTORY ? true : false),
+        menuItem(5, "PREFERENCE", Icons.settings,
+            currentPage == DrawerSection.PREFERENCE ? true : false),
+        menuItem(6, "REFER A FREIND", Icons.group_add_outlined,
+            currentPage == DrawerSection.REFER_A_FREIND ? true : false),
+         Divider(
+          thickness: 3,
+          indent: 10,
+          endIndent: 10,
+        ),
+        menuItem(7, "ABOUT US", Icons.info,
+            currentPage == DrawerSection.ABOUT_US ? true : false),
+        menuItem(8, "CONTACT US ", Icons.phone,
+            currentPage == DrawerSection.CONTACT_US ? true : false),
+        menuItem(9, "TERMS OF USE ", Icons.sticky_note_2_outlined,
+            currentPage == DrawerSection.CONTACT_US ? true : false),
+        menuItem(
+            10,
+            "CANCELATION AND REFUND",
+            Icons.lock,
+            currentPage == DrawerSection.CANCELATION_AND_REFUND
+                ? true
+                : false),
+        menuItem(11, "LOGOUT", Icons.logout,
+            currentPage == DrawerSection.LOGOUT ? true : false),
+      ],
     );
   }
 

@@ -22,8 +22,7 @@ class _SubscriptionState extends State<Subscription> {
         .doc(_auth.currentUser?.uid)
         .get()
         .then((DocumentSnapshot documentSnapshot) =>
-    {this.vip = documentSnapshot['vip']});
-    super.initState();
+    {vip = documentSnapshot['vip']});
     super.initState();
   }
 
@@ -32,136 +31,134 @@ class _SubscriptionState extends State<Subscription> {
 
     OrderService orderService = OrderService();
     User? user = FirebaseAuth.instance.currentUser;
-    return vip=='Yes'?Scaffold(
+    return Scaffold(
       backgroundColor: Colors.grey[100],
-      body: Container(
-        child: StreamBuilder<QuerySnapshot>(
-          stream: orderService.subscription.where('userId',isEqualTo: user?.uid).snapshots(),
-          builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-            if (snapshot.hasError) {
-              return Text('Something went wrong');
-            }
+      body: StreamBuilder<QuerySnapshot>(
+        stream: orderService.subscription.where('userId',isEqualTo: user?.uid).snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.hasError) {
+            return Text('Something went wrong');
+          }
 
-            if(snapshot.hasData){
-              return ListView(
-                children: snapshot.data!.docs.map((DocumentSnapshot document) {
-                  Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
-                  return Container(
-                    color: Colors.white,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(height: 5,),
-                        ListTile(
-                          leading: CircleAvatar(
-                            backgroundColor: Colors.white,
-                            radius: 14,
-                            child: Icon(CupertinoIcons.square_list,size: 18,
-                                color: statusColor(data['orderStatus'])
-                            ),
-
+          if(snapshot.hasData){
+            return ListView(
+              children: snapshot.data!.docs.map((DocumentSnapshot document) {
+                Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
+                return Container(
+                  color: Colors.white,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(height: 5,),
+                      ListTile(
+                        leading: CircleAvatar(
+                          backgroundColor: Colors.white,
+                          radius: 14,
+                          child: Icon(CupertinoIcons.square_list,size: 18,
+                              color: statusColor(data['orderStatus'])
                           ),
-                          title: Text(data['orderStatus'],
-                            style: TextStyle(fontSize: 12,color: statusColor(data['orderStatus']),fontWeight: FontWeight.bold),),
-                          subtitle: Text('Ordered On ${DateFormat.yMMMd().format(DateTime.parse(data['timestamp']))}',
-                            style: TextStyle(fontSize: 12),),
-                          trailing: Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            mainAxisSize: MainAxisSize.min,
+
+                        ),
+                        title: Text(data['orderStatus'],
+                          style: TextStyle(fontSize: 12,color: statusColor(data['orderStatus']),fontWeight: FontWeight.bold),),
+                        subtitle: Text('Ordered On ${DateFormat.yMMMd().format(DateTime.parse(data['timestamp']))}',
+                          style: TextStyle(fontSize: 12),),
+                        trailing: Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text('Amount : ₹ ${data['total']}',
+                              style: TextStyle(fontSize: 12,fontWeight: FontWeight.bold),),
+                            Text('Payment Type : ${data['payment']}',
+                              style: TextStyle(fontSize: 12,fontWeight: FontWeight.bold),),
+                          ],
+                        ),
+                      ),
+                      data['orderStatus']=='SubScription Started'?Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: SizedBox(
+                          width: double.infinity,
+                          child: Column(
                             children: [
-                              Text('Amount : \₹ ${data['total']}',
-                                style: TextStyle(fontSize: 12,fontWeight: FontWeight.bold),),
-                              Text('Payment Type : ${data['payment']}',
-                                style: TextStyle(fontSize: 12,fontWeight: FontWeight.bold),),
+                              Row(
+                                children: [
+                                  Text('Subscription Start date: ',style: TextStyle(fontWeight: FontWeight.bold),),
+                                  Text(DateFormat.yMMMd().format(DateTime.parse(data['startdate']))),
+                                ],
+                              ),
+                              SizedBox(height: 5,),
+                              Row(
+                                children: [
+                                  Text('Subscription End date: ',style: TextStyle(fontWeight: FontWeight.bold),),
+                                  Text(DateFormat.yMMMd().format(DateTime.parse(data['endDate']))),
+                                ],
+                              ),
                             ],
                           ),
                         ),
-                        data['orderStatus']=='SubScription Started'?Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            width: double.infinity,
-                            child: Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    Text('Subscription Start date: ',style: TextStyle(fontWeight: FontWeight.bold),),
-                                    Text('${DateFormat.yMMMd().format(DateTime.parse(data['startdate']))}'),
-                                  ],
-                                ),
-                                SizedBox(height: 5,),
-                                Row(
-                                  children: [
-                                    Text('Subscription End date: ',style: TextStyle(fontWeight: FontWeight.bold),),
-                                    Text('${DateFormat.yMMMd().format(DateTime.parse(data['endDate']))}'),
-                                  ],
-                                ),
-                              ],
-                            ),
+                      ):Container(),
+                      data['orderStatus']=='SubScription Ended'?Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: SizedBox(
+                          width: double.infinity,
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Text('Subscription Start date: ',style: TextStyle(fontWeight: FontWeight.bold),),
+                                  Text(DateFormat.yMMMd().format(DateTime.parse(data['startdate']))),
+                                ],
+                              ),
+                              SizedBox(height: 5,),
+                              Row(
+                                children: [
+                                  Text('Subscription End date: ',style: TextStyle(fontWeight: FontWeight.bold),),
+                                  Text(DateFormat.yMMMd().format(DateTime.parse(data['endDate']))),
+                                ],
+                              ),
+                            ],
                           ),
-                        ):Container(),
-                        data['orderStatus']=='SubScription Ended'?Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            width: double.infinity,
-                            child: Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    Text('Subscription Start date: ',style: TextStyle(fontWeight: FontWeight.bold),),
-                                    Text('${DateFormat.yMMMd().format(DateTime.parse(data['startdate']))}'),
-                                  ],
-                                ),
-                                SizedBox(height: 5,),
-                                Row(
-                                  children: [
-                                    Text('Subscription End date: ',style: TextStyle(fontWeight: FontWeight.bold),),
-                                    Text('${DateFormat.yMMMd().format(DateTime.parse(data['endDate']))}'),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ):Container(),
-                        ExpansionTile(title: Text('Subscription Details',style: TextStyle(fontSize: 12,color: Colors.black),),
-                          subtitle: Text('View subscription Details',style: TextStyle(fontSize: 12,color: Colors.grey)),
-                          children: [
-                            ListView.builder(
-                              shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
-                              itemBuilder: (BuildContext context,int index){
-                                return Column(
-                                  children: [
-                                    ListTile(
-                                      leading: CircleAvatar(
-                                        backgroundColor: Colors.white,
-                                        child: Image.network(data['products'][index]['productImage']),
-                                      ),
-                                      title: Text(data['products'][index]['productName']),
-                                      subtitle: Text('Quantity: ${data['products'][index]['qty'].toString()}   Price:₹ ${data['products'][index]['sellingPrice'].toString()}',
-                                        style: TextStyle(fontSize: 12,color: Colors.grey),),
+                        ),
+                      ):Container(),
+                      ExpansionTile(title: Text('Subscription Details',style: TextStyle(fontSize: 12,color: Colors.black),),
+                        subtitle: Text('View subscription Details',style: TextStyle(fontSize: 12,color: Colors.grey)),
+                        children: [
+                          ListView.builder(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemBuilder: (BuildContext context,int index){
+                              return Column(
+                                children: [
+                                  ListTile(
+                                    leading: CircleAvatar(
+                                      backgroundColor: Colors.white,
+                                      child: Image.network(data['products'][index]['productImage']),
                                     ),
-                                    data['orderStatus'] =='Pending'?RaisedButton(onPressed: (){
-                                      showDialog('Are you Sure?', context,document.id);
-                                    },child: Text('Cancel Subscription'),color: Colors.orange,):Container(),
-                                  ],
-                                );
-                              },
-                              itemCount: data['products'].length,
-                            )
-                          ],),
-                        Divider(height: 3,)
-                      ],
-                    ),
-                  );
-                }).toList(),
-              );
-            }
+                                    title: Text(data['products'][index]['productName']),
+                                    subtitle: Text('Quantity: ${data['products'][index]['qty'].toString()}   Price:₹ ${data['products'][index]['sellingPrice'].toString()}',
+                                      style: TextStyle(fontSize: 12,color: Colors.grey),),
+                                  ),
+                                  data['orderStatus'] =='Pending'?RaisedButton(onPressed: (){
+                                    showDialog('Are you Sure?', context,document.id);
+                                  },child: Text('Cancel Subscription'),color: Colors.orange,):Container(),
+                                ],
+                              );
+                            },
+                            itemCount: data['products'].length,
+                          )
+                        ],),
+                      Divider(height: 3,)
+                    ],
+                  ),
+                );
+              }).toList(),
+            );
+          }
 
-            return Center(child: Text('No subscription placed.Continue Shopping'),);
-          },
-        ),
+          return Center(child: Text('No subscription placed.Continue Shopping'),);
+        },
       ),
-    ):Container(child: Center(child: Text('No subscription placed.Continue Shopping'),),);
+    );
   }
 
   statusColor(data){

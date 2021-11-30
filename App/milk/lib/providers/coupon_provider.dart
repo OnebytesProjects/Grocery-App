@@ -13,7 +13,6 @@ class CouponProvider with ChangeNotifier{
 
     if(document.exists){
       CheckExpiry(document);
-      print('Exist');
     }
     return document;
   }
@@ -22,14 +21,14 @@ class CouponProvider with ChangeNotifier{
     DateTime date = document['Expiry'].toDate();
     var dateDiff = date.difference(DateTime.now()).inDays;
     if(dateDiff < 0){
-      print(dateDiff);
-      this.expired = true;
+
+      expired = true;
       notifyListeners();
     }
     else{
-      this.document = document;
-      this.expired = false;
-      this.discountrate = document['discountRate'];
+      document = document;
+      expired = false;
+      discountrate = document['discountRate'];
       notifyListeners();
     }
   }

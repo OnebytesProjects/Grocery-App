@@ -1,12 +1,9 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:milk/Screens/HomeScreen/Home/Mainscreen.dart';
-import 'package:milk/Screens/HomeScreen/UserRegistration/CheckReferalid.dart';
 import 'package:milk/providers/referal_provider.dart';
 import 'package:milk/services/user_service.dart';
 import 'package:provider/provider.dart';
@@ -100,178 +97,176 @@ class _UserRegistrationState extends State<UserRegistration> {
   Widget build(BuildContext context) {
     var _referalid = Provider.of<ReferalProvider>(context);
     setState(() {
-      this._referral.text = _referalid.referalid;
+      _referral.text = _referalid.referalid;
     });
 
     return SafeArea(
       child: Scaffold(
         body: Form(
           key: _fomrKey,
-          child: Container(
-            child: GestureDetector(
-              onTap: () {
-                FocusScope.of(context).unfocus();
-              },
-              child: SingleChildScrollView(
-                child: Column(children: [
-                  Container(
-                    color: Colors.grey[800],
-                    height: 150,
-                    child: Center(
-                      child: Stack(
-                        children: [
-                          Container(
-                            width: 130,
-                            height: 130,
-                            decoration: BoxDecoration(
-                                border: Border.all(
-                                    width: 4,
-                                    color: Theme.of(context)
-                                        .scaffoldBackgroundColor),
-                                boxShadow: [
-                                  BoxShadow(
-                                      spreadRadius: 2,
-                                      blurRadius: 10,
-                                      color: Colors.black.withOpacity(0.1),
-                                      offset: Offset(0, 10))
-                                ],
-                                shape: BoxShape.circle,
-                                image: DecorationImage(
-                                    fit: BoxFit.cover,
-                                    image: AssetImage("images/profile.jpg"))),
-                          ),
-                          // Positioned(
-                          //     bottom: 0,
-                          //     right: 0,
-                          //     child: Container(
-                          //       height: 45,
-                          //       width: 45,
-                          //       decoration: BoxDecoration(
-                          //         shape: BoxShape.circle,
-                          //         border: Border.all(
-                          //           width: 4,
-                          //           color:
-                          //               Theme.of(context).scaffoldBackgroundColor,
-                          //         ),
-                          //         color: Colors.orange[300],
-                          //       ),
-                          //       child: IconButton(
-                          //         onPressed: () {
-                          //           showModalBottomSheet(
-                          //             context: context,
-                          //             builder: ((builder) => bottomSheet()),
-                          //           );
-                          //         },
-                          //         icon: Icon(Icons.edit),
-                          //         color: Colors.white,
-                          //       ),
-                          //     )),
-                        ],
-                      ),
+          child: GestureDetector(
+            onTap: () {
+              FocusScope.of(context).unfocus();
+            },
+            child: SingleChildScrollView(
+              child: Column(children: [
+                Container(
+                  color: Colors.grey[800],
+                  height: 150,
+                  child: Center(
+                    child: Stack(
+                      children: [
+                        Container(
+                          width: 130,
+                          height: 130,
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                  width: 4,
+                                  color: Theme.of(context)
+                                      .scaffoldBackgroundColor),
+                              boxShadow: [
+                                BoxShadow(
+                                    spreadRadius: 2,
+                                    blurRadius: 10,
+                                    color: Colors.black.withOpacity(0.1),
+                                    offset: Offset(0, 10))
+                              ],
+                              shape: BoxShape.circle,
+                              image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: AssetImage("images/profile.jpg"))),
+                        ),
+                        // Positioned(
+                        //     bottom: 0,
+                        //     right: 0,
+                        //     child: Container(
+                        //       height: 45,
+                        //       width: 45,
+                        //       decoration: BoxDecoration(
+                        //         shape: BoxShape.circle,
+                        //         border: Border.all(
+                        //           width: 4,
+                        //           color:
+                        //               Theme.of(context).scaffoldBackgroundColor,
+                        //         ),
+                        //         color: Colors.orange[300],
+                        //       ),
+                        //       child: IconButton(
+                        //         onPressed: () {
+                        //           showModalBottomSheet(
+                        //             context: context,
+                        //             builder: ((builder) => bottomSheet()),
+                        //           );
+                        //         },
+                        //         icon: Icon(Icons.edit),
+                        //         color: Colors.white,
+                        //       ),
+                        //     )),
+                      ],
                     ),
                   ),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  Container(
-                      padding: EdgeInsets.only(left: 16, right: 16),
-                      child: Card(
-                        child: Container(
-                          padding: EdgeInsets.all(8),
-                          child: Column(
-                            children: [
-                              buildTextField(
-                                  "Full Name", "Your Name", true, _name),
-                              buildTextField(
-                                  "Mobile Number", "number", false, _mobile),
-                              //dropdown-gender
-                              Container(
-                                  width: double.infinity,
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "Choose Gender",
-                                        style: TextStyle(
-                                            fontSize: 13, color: Colors.grey),
-                                      ),
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-                                      Row(
-                                        crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                        children: [
-                                          DropDownField(),
-                                        ],
-                                      ),
-                                    ],
-                                  )),
-                              SizedBox(
-                                height: 20,
+                ),
+                SizedBox(
+                  height: 15,
+                ),
+                Container(
+                    padding: EdgeInsets.only(left: 16, right: 16),
+                    child: Card(
+                      child: Container(
+                        padding: EdgeInsets.all(8),
+                        child: Column(
+                          children: [
+                            buildTextField(
+                                "Full Name", "Your Name", true, _name),
+                            buildTextField(
+                                "Mobile Number", "number", false, _mobile),
+                            //dropdown-gender
+                            SizedBox(
+                                width: double.infinity,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Choose Gender",
+                                      style: TextStyle(
+                                          fontSize: 13, color: Colors.grey),
+                                    ),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Row(
+                                      crossAxisAlignment:
+                                      CrossAxisAlignment.center,
+                                      children: [
+                                        DropDownField(),
+                                      ],
+                                    ),
+                                  ],
+                                )),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            buildTextField(
+                                "Address", "Enter here", true, _address),
+                            //dropdown-pincode
+                            SizedBox(
+                                width: double.infinity,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Enter Pincode",
+                                      style: TextStyle(
+                                          fontSize: 13, color: Colors.grey),
+                                    ),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Row(
+                                      crossAxisAlignment:
+                                      CrossAxisAlignment.center,
+                                      children: [
+                                        //DropDownField(),
+                                        DropDownField1(),
+                                      ],
+                                    ),
+                                  ],
+                                )),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            buildTextField("Email", "Enter here", true, _email),
+                            // CheckReferalId(),
+                            // SizedBox(
+                            //   height: 35,
+                            // ),
+                            RaisedButton(
+                              onPressed: () {
+                                updateProfile().then((value) {
+                                  EasyLoading.showSuccess('Profile Updated');
+                                  Navigator.pushReplacementNamed(
+                                      context, MainScreen.id);
+                                });
+                              },
+                              color: Colors.orange[300],
+                              padding: EdgeInsets.symmetric(horizontal: 50),
+                              elevation: 2,
+                              child: Text(
+                                "SAVE",
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    letterSpacing: 2.2,
+                                    color: Colors.white),
                               ),
-                              buildTextField(
-                                  "Address", "Enter here", true, _address),
-                              //dropdown-pincode
-                              Container(
-                                  width: double.infinity,
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "Enter Pincode",
-                                        style: TextStyle(
-                                            fontSize: 13, color: Colors.grey),
-                                      ),
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-                                      Row(
-                                        crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                        children: [
-                                          //DropDownField(),
-                                          DropDownField1(),
-                                        ],
-                                      ),
-                                    ],
-                                  )),
-                              SizedBox(
-                                height: 20,
-                              ),
-                              buildTextField("Email", "Enter here", true, _email),
-                              // CheckReferalId(),
-                              // SizedBox(
-                              //   height: 35,
-                              // ),
-                              RaisedButton(
-                                onPressed: () {
-                                  updateProfile().then((value) {
-                                    EasyLoading.showSuccess('Profile Updated');
-                                    Navigator.pushReplacementNamed(
-                                        context, MainScreen.id);
-                                  });
-                                },
-                                color: Colors.orange[300],
-                                padding: EdgeInsets.symmetric(horizontal: 50),
-                                elevation: 2,
-                                child: Text(
-                                  "SAVE",
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      letterSpacing: 2.2,
-                                      color: Colors.white),
-                                ),
-                              ),
-                              SizedBox(
-                                height: 20,
-                              )
-                            ],
-                          ),
+                            ),
+                            SizedBox(
+                              height: 20,
+                            )
+                          ],
                         ),
-                      )),
-                ]),
-              ),
+                      ),
+                    )),
+              ]),
             ),
           ),
         ),
@@ -293,11 +288,11 @@ class _UserRegistrationState extends State<UserRegistration> {
         },
         enabled: isenabled,
         decoration: InputDecoration(
-            contentPadding: EdgeInsets.only(bottom: 3),
+            contentPadding: const EdgeInsets.only(bottom: 3),
             labelText: labelText,
             floatingLabelBehavior: FloatingLabelBehavior.always,
             hintText: placeholder,
-            hintStyle: TextStyle(
+            hintStyle: const TextStyle(
               fontSize: 16,
               color: Colors.grey,
             )),
@@ -306,7 +301,7 @@ class _UserRegistrationState extends State<UserRegistration> {
   }
 
   Widget DropDownField1(){
-    return Container(
+    return SizedBox(
       width: 300,
       child: DropdownButton<String>(
         value: dropdownValue,
@@ -333,7 +328,7 @@ class _UserRegistrationState extends State<UserRegistration> {
     );
   }
   Widget DropDownField(){
-    return Container(
+    return SizedBox(
       width: 300,
       child: DropdownButton<String>(
         value: dropdownValueGender,
@@ -361,7 +356,7 @@ class _UserRegistrationState extends State<UserRegistration> {
   }
 
   Widget normalChildButton() {
-    return Container(
+    return SizedBox(
       width: 150,
       height: 40,
       child: Padding(

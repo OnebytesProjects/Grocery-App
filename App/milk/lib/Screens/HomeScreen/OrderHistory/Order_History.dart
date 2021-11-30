@@ -22,88 +22,86 @@ class _OrderHistoryState extends State<OrderHistory> {
 
     return Scaffold(
       backgroundColor: Colors.grey[100],
-      body: Container(
-        child: StreamBuilder<QuerySnapshot>(
-          stream: orderService.order.where('userId',isEqualTo: user?.uid).snapshots(),
-          builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-            if (snapshot.hasError) {
-              return Text('Something went wrong');
-            }
-            if(!snapshot.hasData){
-              return Center(child: Text('No orders placed.Continue Shopping'),);
-            }
-
-            if(snapshot.hasData){
-              return ListView(
-                children: snapshot.data!.docs.map((DocumentSnapshot document) {
-                  Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
-                  return Container(
-                    color: Colors.white,
-                    child: Column(
-                      children: [
-                        ListTile(
-                          leading: CircleAvatar(
-                            backgroundColor: Colors.white,
-                            radius: 14,
-                            child: Icon(CupertinoIcons.square_list,size: 18,
-                                color: statusColor(data['orderStatus'])
-                            ),
-
-                          ),
-                          title: Text(data['orderStatus'],
-                            style: TextStyle(fontSize: 12,color: statusColor(data['orderStatus']),fontWeight: FontWeight.bold),),
-                          subtitle: Text('On ${DateFormat.yMMMd().format(DateTime.parse(data['timestamp']))}',
-                            style: TextStyle(fontSize: 12),),
-                          trailing: Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text('Amount : \₹ ${data['total']}',
-                                style: TextStyle(fontSize: 12,fontWeight: FontWeight.bold),),
-                              Text('Payment Type : ${data['payment']}',
-                                style: TextStyle(fontSize: 12,fontWeight: FontWeight.bold),),
-                            ],
-                          ),
-                        ),
-                        ExpansionTile(title: Text('Order Details',style: TextStyle(fontSize: 12,color: Colors.black),),
-                          subtitle: Text('View order Details',style: TextStyle(fontSize: 12,color: Colors.grey)),
-                          children: [
-                            ListView.builder(
-                              shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
-                              itemBuilder: (BuildContext context,int index){
-                                return Column(
-                                  children: [
-                                    ListTile(
-                                      leading: CircleAvatar(
-                                        backgroundColor: Colors.white,
-                                        child: Image.network(data['products'][index]['productImage']),
-                                      ),
-                                      title: Text(data['products'][index]['productName']),
-                                      subtitle: Text('Quantity: ${data['products'][index]['qty'].toString()}   Price:₹ ${data['products'][index]['sellingPrice'].toString()}',
-                                        style: TextStyle(fontSize: 12,color: Colors.grey),),
-                                    ),
-                                    data['orderStatus'] !='Cancelled'?RaisedButton(onPressed: (){
-                                      showDialog('Are you Sure?', context,document.id);
-                                    },child: Text('Cancel Order'),color: Colors.orange,):Container(),
-                                  ],
-                                );
-                              },
-                              itemCount: data['products'].length,
-                            )
-                          ],),
-                        Divider(height: 3,)
-                      ],
-                    ),
-                  );
-                }).toList(),
-              );
-            }
-
+      body: StreamBuilder<QuerySnapshot>(
+        stream: orderService.order.where('userId',isEqualTo: user?.uid).snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.hasError) {
+            return Text('Something went wrong');
+          }
+          if(!snapshot.hasData){
             return Center(child: Text('No orders placed.Continue Shopping'),);
+          }
 
-          },
-        ),
+          if(snapshot.hasData){
+            return ListView(
+              children: snapshot.data!.docs.map((DocumentSnapshot document) {
+                Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
+                return Container(
+                  color: Colors.white,
+                  child: Column(
+                    children: [
+                      ListTile(
+                        leading: CircleAvatar(
+                          backgroundColor: Colors.white,
+                          radius: 14,
+                          child: Icon(CupertinoIcons.square_list,size: 18,
+                              color: statusColor(data['orderStatus'])
+                          ),
+
+                        ),
+                        title: Text(data['orderStatus'],
+                          style: TextStyle(fontSize: 12,color: statusColor(data['orderStatus']),fontWeight: FontWeight.bold),),
+                        subtitle: Text('On ${DateFormat.yMMMd().format(DateTime.parse(data['timestamp']))}',
+                          style: TextStyle(fontSize: 12),),
+                        trailing: Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text('Amount : ₹ ${data['total']}',
+                              style: TextStyle(fontSize: 12,fontWeight: FontWeight.bold),),
+                            Text('Payment Type : ${data['payment']}',
+                              style: TextStyle(fontSize: 12,fontWeight: FontWeight.bold),),
+                          ],
+                        ),
+                      ),
+                      ExpansionTile(title: Text('Order Details',style: TextStyle(fontSize: 12,color: Colors.black),),
+                        subtitle: Text('View order Details',style: TextStyle(fontSize: 12,color: Colors.grey)),
+                        children: [
+                          ListView.builder(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemBuilder: (BuildContext context,int index){
+                              return Column(
+                                children: [
+                                  ListTile(
+                                    leading: CircleAvatar(
+                                      backgroundColor: Colors.white,
+                                      child: Image.network(data['products'][index]['productImage']),
+                                    ),
+                                    title: Text(data['products'][index]['productName']),
+                                    subtitle: Text('Quantity: ${data['products'][index]['qty'].toString()}   Price:₹ ${data['products'][index]['sellingPrice'].toString()}',
+                                      style: TextStyle(fontSize: 12,color: Colors.grey),),
+                                  ),
+                                  data['orderStatus'] !='Cancelled'?RaisedButton(onPressed: (){
+                                    showDialog('Are you Sure?', context,document.id);
+                                  },child: Text('Cancel Order'),color: Colors.orange,):Container(),
+                                ],
+                              );
+                            },
+                            itemCount: data['products'].length,
+                          )
+                        ],),
+                      Divider(height: 3,)
+                    ],
+                  ),
+                );
+              }).toList(),
+            );
+          }
+
+          return Center(child: Text('No orders placed.Continue Shopping'),);
+
+        },
       ),
     );
   }

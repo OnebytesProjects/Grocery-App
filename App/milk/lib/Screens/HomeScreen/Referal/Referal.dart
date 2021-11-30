@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:clipboard/clipboard.dart';
 import 'package:share_plus/share_plus.dart';
@@ -11,7 +10,7 @@ class Referal extends StatefulWidget {
 }
 
 class _ReferalState extends State<Referal> {
-  TextEditingController _controller = new TextEditingController();
+  TextEditingController _controller =  TextEditingController();
   FirebaseAuth _auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
@@ -47,7 +46,7 @@ class _ReferalState extends State<Referal> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Container(
+                  SizedBox(
                       width: 150,
                       child: TextField(
                         controller: _controller,

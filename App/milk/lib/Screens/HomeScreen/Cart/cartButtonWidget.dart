@@ -39,12 +39,10 @@ class _CartButtonWidgetState extends State<CartButtonWidget> {
                   ),
                 ),
               ),
-              Container(
-                child: Padding(
-                  padding:
-                      EdgeInsets.only(left: 20, right: 20, top: 8, bottom: 8),
-                  child: Text(cartvalue.toString()),
-                ),
+              Padding(
+                padding:
+                    EdgeInsets.only(left: 20, right: 20, top: 8, bottom: 8),
+                child: Text(cartvalue.toString()),
               ),
               InkWell(
                 onTap: (){
@@ -53,7 +51,6 @@ class _CartButtonWidgetState extends State<CartButtonWidget> {
                       cartvalue +=1;
                     });
                   }
-                  print('add');
                 },
                 child: Container(
                   decoration: BoxDecoration(

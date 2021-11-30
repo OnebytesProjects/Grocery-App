@@ -10,10 +10,10 @@ class ReferalProvider with ChangeNotifier {
         await FirebaseFirestore.instance.collection('referal').doc(title).get();
 
     if (document.exists) {
-      this.exist = true;
+      exist = true;
     }
     else{
-      this.exist = false;
+      exist = false;
     }
     return document;
   }

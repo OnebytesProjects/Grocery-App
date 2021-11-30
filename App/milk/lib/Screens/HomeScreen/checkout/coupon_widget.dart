@@ -20,7 +20,7 @@ class _CoupunWidgetState extends State<CoupunWidget> {
   @override
   Widget build(BuildContext context) {
     var _coupon = Provider.of<CouponProvider>(context);
-    return Container(
+    return SizedBox(
       height: 40,
       child: Row(children: [
         Expanded(child: SizedBox(

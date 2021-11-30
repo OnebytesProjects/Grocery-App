@@ -1,7 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:milk/providers/coupon_provider.dart';
 import 'package:milk/providers/referal_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -21,7 +19,7 @@ class _CheckReferalIdState extends State<CheckReferalId> {
   @override
   Widget build(BuildContext context) {
     var _referal = Provider.of<ReferalProvider>(context);
-    return Container(
+    return SizedBox(
       height: 40,
       child: Row(children: [
         Expanded(child: SizedBox(
@@ -69,7 +67,7 @@ class _CheckReferalIdState extends State<CheckReferalId> {
                 });
               }
             });
-          },child: Text('Apply'),),
+          },child: const Text('Apply'),),
         )
       ],),
     );
@@ -81,7 +79,7 @@ class _CheckReferalIdState extends State<CheckReferalId> {
         actions: [
           FlatButton(onPressed: (){
             Navigator.pop(context);
-          }, child: Text('Ok'))
+          }, child: const Text('Ok'))
         ],
       );
     });

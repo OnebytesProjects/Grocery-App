@@ -13,10 +13,10 @@ class NotificationProvider with ChangeNotifier{
     var notification = 0.0;
     QuerySnapshot snapshot = await users.doc(_auth.currentUser?.uid).collection('notifications').get();
     if(snapshot == null){
-      this.size = 0;
+      size = 0;
     }
     snapshot.docs.forEach((doc) {
-      this.size = snapshot.size;
+      size = snapshot.size;
       notifyListeners();
     });
     return notification;

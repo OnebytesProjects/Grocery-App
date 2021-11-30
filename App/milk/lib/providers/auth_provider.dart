@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:milk/Screens/HomeScreen/Home/Mainscreen.dart';
 import 'package:milk/Screens/HomeScreen/UserRegistration/UserRegistration.dart';
 import 'package:milk/services/user_service.dart';
@@ -38,18 +38,17 @@ class AuthProvider with ChangeNotifier {
           verificationCompleted: verificationCompleted,
           verificationFailed: verificationFailed,
           codeSent: (String verificationId, int? resendToken) async {
-            this.VerificationId = verificationId;
+            VerificationId = verificationId;
             smsOtpDialog(context, number);
           },
           codeAutoRetrievalTimeout: (String verId) {
-            this.VerificationId = verId;
+            VerificationId = verId;
           });
-    } catch (e) {
-      print(e);
-    }
+    }catch(e){}
   }
 
   Future<dynamic> smsOtpDialog(BuildContext context, String number) {
+    EasyLoading.dismiss();
     return showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -66,20 +65,21 @@ class AuthProvider with ChangeNotifier {
                 ),
               ],
             ),
-            content: Container(
+            content: SizedBox(
               height: 85,
               child: TextField(
                 textAlign: TextAlign.center,
                 keyboardType: TextInputType.number,
                 maxLength: 6,
                 onChanged: (value) {
-                  this.smsOtp = value;
+                  smsOtp = value;
                 },
               ),
             ),
             actions: [
               FlatButton(
                 onPressed: () async {
+                  EasyLoading.show(status:'');
                   try {
                     AuthCredential phoneAuthCredentials =
                         PhoneAuthProvider.credential(
@@ -105,7 +105,7 @@ class AuthProvider with ChangeNotifier {
                         Navigator.pushReplacementNamed(context, UserRegistration.id);
                       }
                     });
-                    this.error = '';
+                    error = '';
                     // if (user != null) {
                     //   print('User Exist');
                     //   Navigator.of(context).pop();
@@ -114,10 +114,11 @@ class AuthProvider with ChangeNotifier {
                     //   print('User Does not Exist');
                     //   _createUser(id: user.uid, number: user.phoneNumber);
                     // }
+                    EasyLoading.dismiss();
                   } catch (e) {
-                    this.error = 'Invalid OTP';
+                    error = 'Invalid OTP';
                     notifyListeners();
-                    print(error.toString());
+                    EasyLoading.dismiss();
                     Navigator.of(context).pop();
                   }
                 },
@@ -157,7 +158,7 @@ class AuthProvider with ChangeNotifier {
         .doc(_auth.currentUser?.uid)
         .get();
 
-    this.snapshot = result;
+    snapshot = result;
     notifyListeners();
 
     return result;

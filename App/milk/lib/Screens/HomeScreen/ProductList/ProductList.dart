@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:milk/Screens/HomeScreen/Product/ProductScreen.dart';
 import 'package:milk/Screens/HomeScreen/ProductList/milkscreen.dart';
-import 'package:milk/services/product_service.dart';
 
 class ProductList extends StatefulWidget {
   var condition ;
@@ -46,7 +45,7 @@ class _ProductListState extends State<ProductList> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      Container(
+                      SizedBox(
                         height: 100,
                         width: 90,
                         child: Image.network(data['productImage']),
@@ -93,7 +92,6 @@ class _ProductListState extends State<ProductList> {
                               MaterialPageRoute(
                                   builder: (context) => ProductScreen(pname: data['productName'],)),
                             );
-                            print("Products tapped");
                           },
                           child: Card(
                             color: Colors.orange[300],

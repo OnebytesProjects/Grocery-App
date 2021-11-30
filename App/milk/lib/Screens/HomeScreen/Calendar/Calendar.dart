@@ -2,7 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:intl/intl.dart';
+import 'package:milk/Screens/HomeScreen/Home/Mainscreen.dart';
 import 'package:milk/services/order_service.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -31,30 +33,38 @@ class _CalendarState extends State<Calendar> {
   CollectionReference subscription = FirebaseFirestore.instance.collection('subscription');
   @override
   void initState() {
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(_auth.currentUser?.uid)
-        .get()
-        .then((DocumentSnapshot documentSnapshot) =>
-    {this.vip = documentSnapshot['vip']});
+
+
     super.initState();
   }
   @override
   Widget build(BuildContext context) {
 
-    FirebaseFirestore.instance
-        .collection('subscription').where('userId',isEqualTo: _auth.currentUser?.uid)
-        .get()
-        .then((QuerySnapshot querySnapshot) {
-      querySnapshot.docs.forEach((doc) {
-        //startdate = (doc['startdate'] as Timestamp).toString();
-        enddate = doc['endDate'];
-        todayDelivery = DateFormat('yyyy,MM,dd').format(DateTime.parse(doc['DeliveryDate']));
+    setState(() {
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc(_auth.currentUser?.uid)
+          .get()
+          .then((DocumentSnapshot documentSnapshot) =>
+      {vip = documentSnapshot['vip']});
+
+
+      FirebaseFirestore.instance
+          .collection('subscription').where('userId',isEqualTo: _auth.currentUser?.uid)
+          .get()
+          .then((QuerySnapshot querySnapshot) {
+        querySnapshot.docs.forEach((doc) {
+          //startdate = (doc['startdate'] as Timestamp).toString();
+          enddate = doc['endDate'];
+          todayDelivery = DateFormat('yyyy,MM,dd').format(DateTime.parse(doc['DeliveryDate']));
+        });
       });
     });
 
 
-    return vip=='Yes'?Scaffold(
+
+
+    return Scaffold(
         body: ListView(
       children: [
         calendar(),
@@ -69,7 +79,7 @@ class _CalendarState extends State<Calendar> {
             )),
         cardVeiw("Milk"),
       ],
-    )):Container(child: Center(child: Text('Make a Subscription'),),);
+    ));
   }
 
   Widget calendar() {
@@ -119,7 +129,7 @@ class _CalendarState extends State<Calendar> {
     OrderService orderService = OrderService();
     User? user = FirebaseAuth.instance.currentUser;
 
-    return DateFormat('yyyy,MM,dd').format(_focusedDay) == todayDelivery ?Container(
+    return DateFormat('yyyy,MM,dd').format(_focusedDay) == todayDelivery ?SizedBox(
       height: MediaQuery.of(context).size.height,
       width: double.infinity,
       child: StreamBuilder<QuerySnapshot>(
@@ -128,65 +138,72 @@ class _CalendarState extends State<Calendar> {
           if (snapshot.hasError) {
             return Text('Something went wrong');
           }
-          return ListView(
-            children: snapshot.data!.docs.map((DocumentSnapshot document) {
-              Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
-              return Container(
-                color: Colors.white,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(height: 5,),
-                    ListTile(
-                      leading: CircleAvatar(
-                        backgroundColor: Colors.white,
-                        radius: 14,
-                        child: Icon(CupertinoIcons.square_list,size: 18,
+          if (!snapshot.hasData) {
+            return Center(child: CircularProgressIndicator(),);
+          }
+          if(snapshot.hasData){
+            return ListView(
+              children: snapshot.data!.docs.map((DocumentSnapshot document) {
+                Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
+                return Container(
+                  color: Colors.white,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(height: 5,),
+                      ListTile(
+                        leading: CircleAvatar(
+                          backgroundColor: Colors.white,
+                          radius: 14,
+                          child: Icon(CupertinoIcons.square_list,size: 18,
+                          ),
+
                         ),
+                        title: Text('Todays Delivery',
+                          style: TextStyle(fontSize: 12,fontWeight: FontWeight.bold),),
+                        subtitle: Text('Ordered On ${DateFormat.yMMMd().format(DateTime.parse(data['timestamp']))}',
+                          style: TextStyle(fontSize: 12),),
 
                       ),
-                      title: Text('Todays Delivery',
-                        style: TextStyle(fontSize: 12,fontWeight: FontWeight.bold),),
-                      subtitle: Text('Ordered On ${DateFormat.yMMMd().format(DateTime.parse(data['timestamp']))}',
-                        style: TextStyle(fontSize: 12),),
-
-                    ),
-                    ExpansionTile(title: Text('Subscription Details',style: TextStyle(fontSize: 12,color: Colors.black),),
-                      subtitle: Text('View subscription Details',style: TextStyle(fontSize: 12,color: Colors.grey)),
-                      children: [
-                        ListView.builder(
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          itemBuilder: (BuildContext context,int index){
-                            return Column(
-                              children: [
-                                ListTile(
-                                  leading: CircleAvatar(
-                                    backgroundColor: Colors.white,
-                                    child: Image.network(data['products'][index]['productImage']),
+                      ExpansionTile(title: Text('Subscription Details',style: TextStyle(fontSize: 12,color: Colors.black),),
+                        subtitle: Text('View subscription Details',style: TextStyle(fontSize: 12,color: Colors.grey)),
+                        children: [
+                          ListView.builder(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemBuilder: (BuildContext context,int index){
+                              return Column(
+                                children: [
+                                  ListTile(
+                                    leading: CircleAvatar(
+                                      backgroundColor: Colors.white,
+                                      child: Image.network(data['products'][index]['productImage']),
+                                    ),
+                                    title: Text(data['products'][index]['productName']),
+                                    subtitle: Text('Quantity: ${data['products'][index]['qty'].toString()}   Price:₹ ${data['products'][index]['sellingPrice'].toString()}',
+                                      style: TextStyle(fontSize: 12,color: Colors.grey),),
                                   ),
-                                  title: Text(data['products'][index]['productName']),
-                                  subtitle: Text('Quantity: ${data['products'][index]['qty'].toString()}   Price:₹ ${data['products'][index]['sellingPrice'].toString()}',
-                                    style: TextStyle(fontSize: 12,color: Colors.grey),),
-                                ),
-                                DateFormat('yyyy,MM,dd').format(_focusedDay) == DateFormat('yyyy,MM,dd').format(_today) ? RaisedButton(onPressed: (){
-                                  showDialog('Are you Sure?', context,document.id);
-                                },child: Text('Skip Todays Delivery'),color: Colors.orange,):Container(),
-                              ],
-                            );
-                          },
-                          itemCount: data['products'].length,
-                        )
-                      ],),
-                    Divider(height: 3,)
-                  ],
-                ),
-              );
-            }).toList(),
-          );
+                                  DateFormat('yyyy,MM,dd').format(_focusedDay) == DateFormat('yyyy,MM,dd').format(_today) ? RaisedButton(onPressed: (){
+                                    showDialog('Are you Sure?', context,document.id);
+
+                                  },child: Text('Skip Todays Delivery'),color: Colors.orange,):Container(),
+                                ],
+                              );
+                            },
+                            itemCount: data['products'].length,
+                          )
+                        ],),
+                      Divider(height: 3,)
+                    ],
+                  ),
+                );
+              }).toList(),
+            );
+          }
+          return Center(child: Text('No Delivery Today'),);
         },
       ),
-    ):Container(child: Center(child: Text('No Delivery Today'),),);
+    ):Center(child: Text('Select Delivery Date.'),);
   }
 
 
@@ -206,6 +223,8 @@ class _CalendarState extends State<Calendar> {
               'DeliveryDate': DateTime.now().add(Duration(days: 1)).toString(),
               'endDate':DateTime.parse(enddate!).add(Duration(days: 1)).toString(),
             });
+            EasyLoading.showSuccess('Skipped Todays Delivery');
+            Navigator.pushReplacementNamed(context, MainScreen.id);
           }, child: Text('Ok'))
         ],
       );

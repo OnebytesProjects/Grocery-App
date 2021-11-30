@@ -53,8 +53,7 @@ class _CartState extends State<Cart> {
             ],
           ),
         ),
-      bottomSheet: cartProvider.subTotal == 0.0 ?Container(child: Center(child: Text('Your Cart Is Empty.'),),
-      ) : BillDetails(),
+      bottomSheet: cartProvider.subTotal == 0.0 ?Center(child: Text('Your Cart Is Empty.'),) : BillDetails(),
     );
   }
 
@@ -76,9 +75,7 @@ class _CartState extends State<Cart> {
            return ListView(
              shrinkWrap: true,
              children: snapshot.data!.docs.map((DocumentSnapshot document) {
-               Map<String, dynamic> data = document.data()! as Map<String, dynamic>;;
-
-               int cartvalue = data['qty'];
+               Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
 
                return Container(
                  decoration: BoxDecoration(
@@ -93,7 +90,7 @@ class _CartState extends State<Cart> {
                    crossAxisAlignment: CrossAxisAlignment.center,
                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                    children: <Widget>[
-                     Container(
+                     SizedBox(
                        height: 100,
                        width: 90,
                        child: Image.network(data['productImage']),
@@ -215,7 +212,6 @@ class _CartState extends State<Cart> {
                            onTap: (){
                              _docId = document.id;
                              _cart.removeFromCart(docId: _docId,qty: data['qty'],productid: data['productid']);
-                             print(_docId);
                            },
                            child: Container(
                                height: 30,
@@ -252,7 +248,7 @@ class _CartState extends State<Cart> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            Container(
+            SizedBox(
               height: 90,
               width: 100,
               child: Column(
@@ -292,7 +288,7 @@ class _CartState extends State<Cart> {
                 ],
               ),
             ),
-            Container(
+            SizedBox(
               height: 80,
               width: 180,
               child: RaisedButton(

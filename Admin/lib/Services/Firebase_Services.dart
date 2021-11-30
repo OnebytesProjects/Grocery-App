@@ -37,12 +37,11 @@ class FirebaseServices {
   deleteBannerImageFrmDb(id) async {
     firestore.collection('slider').doc(id).delete();
   }
-  deleteCategoryFrmDb(id) async {
-    firestore.collection('category').doc(id).delete();
-  }
+
   //category
 
   Future<String> uploadCategoryImageToDb(url, catName) async {
+
     String downloadUrl = await storage.ref(url).getDownloadURL();
     if (downloadUrl != null) {
       category.doc(catName).set({
@@ -51,6 +50,10 @@ class FirebaseServices {
       });
     }
     return downloadUrl;
+  }
+
+  deleteCategoryFrmDb(id) async {
+    firestore.collection('category').doc(id).delete();
   }
 
   //Product settings
