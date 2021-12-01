@@ -27,6 +27,7 @@ class _MilkDisplayState extends State<MilkDisplay> {
   int _qty = 0;
   String volume = 'nil';
   String vip = '';
+  String gif = '';
   double chosenPrice = 0.0;
   bool _chosenprice = false;
   var total;
@@ -45,6 +46,16 @@ class _MilkDisplayState extends State<MilkDisplay> {
         .get()
         .then((DocumentSnapshot documentSnapshot) =>
     {this.vip = documentSnapshot['vip']});
+
+    //get milkgif
+    FirebaseFirestore.instance
+        .collection('milkscreen')
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((doc) {
+        this.gif = doc['image'];
+      });
+    });
 
     setState(() {
       if (_qty > 0 || volume != 'nil' || subscriptionType != '') {
@@ -105,11 +116,12 @@ class _MilkDisplayState extends State<MilkDisplay> {
                     SizedBox(
                       height: 240,
                       width: double.infinity,
-                      child: Card(
-                        child: Center(
-                          child: Image.network('https://media.wired.com/photos/5b45021f3808c83da3503cc7/master/w_1600,c_limit/tumblr_inline_mjx5ioXh8l1qz4rgp.gif'),
-                        ),
-                      ),
+                      child: MilkGif(),
+                      // child: Card(
+                      //   child: Center(
+                      //     child: Image.network(gif),
+                      //   ),
+                      // ),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -553,373 +565,30 @@ class _MilkDisplayState extends State<MilkDisplay> {
           );
         });
   }
-}
+  MilkGif(){
+    final Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance.collection('milkscreen').snapshots();
+    return StreamBuilder<QuerySnapshot>(
+      stream: _usersStream,
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (snapshot.hasError) {
+          return Text('Something went wrong');
+        }
 
-// Column(
-// children: [
-// Padding(
-// padding: const EdgeInsets.all(8.0),
-// child: Container(
-// width: double.infinity,
-// padding: EdgeInsets.all(8),
-// child: Column(
-// crossAxisAlignment: CrossAxisAlignment.start,
-// children: [
-// Padding(
-// padding: EdgeInsets.only(top: 8, bottom: 80),
-// //child: ExpandableText(data['productDescription'],expandText:'View More',collapseText: 'View Less',maxLines: 2,),
-// child: ExpandableText('description',expandText:'View More',collapseText: 'View Less',maxLines: 2,),
-// ),
-// ],
-// ),
-// ),
-// ),
-//
-// Padding(
-// padding: const EdgeInsets.all(8.0),
-// child: Text.rich(
-// TextSpan(
-// text: 'Order By ', // default text style
-// children: <TextSpan>[
-// TextSpan(text: todaydate, style: TextStyle(fontWeight: FontWeight.bold)),
-// TextSpan(text: ' today & get the delivery by ',),
-// TextSpan(text: tomorrowdate+' .', style: TextStyle(fontWeight: FontWeight.bold)),
-// ],
-// ),
-// ),
-// ),
-// Padding(
-// padding: const EdgeInsets.all(8.0),
-// child: Container(
-// height: 150,
-// width: double.infinity,
-// color: Colors.white,
-// child: Column(
-// children: [
-// Container(
-// child: Center(child: Text(
-// "Volume",
-// style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-// ),),
-// ),
-// Container(
-// height: 120,
-// padding: EdgeInsets.only(left: 20, right: 50),
-// child: Row(
-// mainAxisAlignment: MainAxisAlignment.spaceBetween,
-// children: [
-// Column(
-// crossAxisAlignment: CrossAxisAlignment.start,
-// children: [
-// Row(
-// children: [
-// Checkbox(
-// checkColor: Colors.white,
-// fillColor: MaterialStateProperty.resolveWith(getColor),
-// value: isChecked1,
-// onChanged: (value) {
-// setState(() {
-// isChecked1 = value!;
-// isChecked2 = false;
-// isChecked3 = false;
-// isChecked4 = false;
-// //volume = data['v1'];
-// volume = 'a';
-// //chosenPrice = double.parse(data['p1']);
-// });
-// if(value == false){
-// setState(() {
-// volume = 'nil';
-// chosenPrice = 0.0;
-// });
-// }
-// }),
-// //Text("${data['v1']} - ₹ ${data['p1']}")
-// ],
-// ),
-// SizedBox(
-// height: 10,
-// ),
-// Row(
-// children: [
-// Checkbox(
-// checkColor: Colors.white,
-// fillColor: MaterialStateProperty.resolveWith(getColor),
-// value: isChecked2,
-// onChanged: (bool? value) {
-// setState(() {
-// isChecked1 = false;
-// isChecked2 = value!;
-// isChecked3 = false;
-// isChecked4 = false;
-// // volume = data['v3'];
-// volume = 'a';
-// // chosenPrice = double.parse(data['p3']);
-// });
-// if(value == false){
-// setState(() {
-// volume = 'nil';
-// chosenPrice = 0.0;
-// });
-// }
-// }),
-// //Text("${data['v3']} - ₹ ${data['p3']}")
-// ],
-// ),
-// ],
-// ),
-// Column(
-// crossAxisAlignment: CrossAxisAlignment.start,
-// children: [
-// Container(
-// child: Row(
-// children: [
-// Checkbox(
-// checkColor: Colors.white,
-// fillColor: MaterialStateProperty.resolveWith(getColor),
-// value: isChecked3,
-// onChanged: (bool? value) {
-// setState(() {
-// isChecked1 = false;
-// isChecked2 = false;
-// isChecked3 = value!;
-// isChecked4 = false;
-// // volume = data['v2'];
-// volume = 'a';
-// // chosenPrice = double.parse(data['p2']);
-// });
-// if(value == false){
-// setState(() {
-// volume = 'nil';
-// chosenPrice = 0.0;
-// });
-// }
-// }),
-// //Text("${data['v2']} - ₹ ${data['p2']}")
-// ],
-// ),
-// ),
-// SizedBox(
-// height: 10,
-// ),
-// Container(
-// child: Row(
-// children: [
-// Checkbox(
-// checkColor: Colors.white,
-// fillColor: MaterialStateProperty.resolveWith(getColor),
-// value: isChecked4,
-// onChanged: (bool? value) {
-// setState(() {
-// isChecked1 = false;
-// isChecked2 = false;
-// isChecked3 = false;
-// isChecked4 = value!;
-// // volume = data['v4'];
-// volume = 'a';
-// // chosenPrice = double.parse(data['p4']);
-// });
-// if(value == false){
-// setState(() {
-// volume = 'nil';
-// chosenPrice = 0.0;
-// });
-// }
-// }),
-// //Text("${data['v4']} - ₹ ${data['p4']}")
-// ],
-// ),
-// ),
-// ],
-// )
-// ],
-// ),
-// ),
-// ],
-// ),
-// ),
-// ),
-// Padding(
-// padding: const EdgeInsets.all(8.0),
-// child: Container(
-// height: 80,
-// width: double.infinity,
-// color: Colors.white,
-// child: Column(
-// children: [
-// Text('Subscription',style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
-// Container(
-// height: 50,
-// padding: EdgeInsets.only(left: 20, right: 50),
-// child: Row(
-// mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-// children: [
-// Row(
-// children: [
-// Checkbox(
-// checkColor: Colors.white,
-// fillColor: MaterialStateProperty.resolveWith(getColor),
-// value: isChecked1sub,
-// onChanged: (value) {
-// setState(() {
-// isChecked1sub = value!;
-// isChecked2sub = false;
-// subscriptionType = 'Monthly';
-// });
-// if(value == false){
-// setState(() {
-// subscriptionType = '';
-// });
-// }
-// }),
-// Text("Monthly")
-// ],
-// ),
-// Row(
-// children: [
-// Checkbox(
-// checkColor: Colors.white,
-// fillColor: MaterialStateProperty.resolveWith(getColor),
-// value: isChecked2sub,
-// onChanged: (value) {
-// setState(() {
-// isChecked1sub = false;
-// isChecked2sub = value!;
-// subscriptionType = 'Yearly';
-// });
-// if(value == false){
-// setState(() {
-// subscriptionType = '';
-// });
-// }
-// }),
-// Text("Yearly")
-// ],
-// ),
-// ],
-// ),
-// ),
-// ],
-// ),
-// ),
-// ),
-// Padding(
-// padding: const EdgeInsets.all(8.0),
-// child: Container(
-// height: 100,
-// width: double.infinity,
-// color: Colors.white,
-// child: Column(
-// children: [
-// Container(
-// margin: EdgeInsets.only(left: 10, right: 10),
-// height: 50,
-// child: Padding(
-// padding: const EdgeInsets.all(10.0),
-// child: FittedBox(
-// child: Row(
-// children: [
-// InkWell(
-// onTap: (){
-// if(_qty>=1){
-// setState(() {
-// _qty -=1;
-// });
-// if(_chosenprice){
-// total = _qty * chosenPrice;
-// }else{
-// //total = _qty * data['sellingPrice'];
-// }
-// }
-// },
-// child: Container(
-// decoration: BoxDecoration(
-// borderRadius: BorderRadius.circular(50),
-// border: Border.all(
-// color: Colors.orange,
-// )),
-// child: Padding(
-// padding: EdgeInsets.all(8.0),
-// child: Icon(Icons.remove),
-// ),
-// ),
-// ),
-// Container(
-// child: Padding(
-// padding:
-// EdgeInsets.only(left: 20, right: 20, top: 8, bottom: 8),
-// child:Text(_qty.toString()),
-// ),
-// ),
-// InkWell(
-// onTap: (){
-// if(_qty >= 0){
-// setState(() {
-// _qty+=1;
-// });
-// if(_chosenprice){
-// total = _qty * chosenPrice;
-// }else{
-// //total = _qty * data['sellingPrice'];
-// }
-//
-// }
-// },
-// child: Container(
-// decoration: BoxDecoration(
-// borderRadius: BorderRadius.circular(50),
-// border: Border.all(
-// color: Colors.orange,
-// )),
-// child: Padding(
-// padding: EdgeInsets.all(8.0),
-// child: Icon(Icons.add),
-// ),
-// ),
-// ),
-// ],
-// ),
-// ),
-// ),
-// ),
-// Row(
-// mainAxisAlignment: MainAxisAlignment.spaceAround,
-// children: [
-// RaisedButton(
-// onPressed: _cartbutton ? (){
-// // EasyLoading.show(status: 'Adding to Cart...');
-// // _cart.addToCartSubscription(data: data,volume: volume,qty: _qty,total: total,subscription: subscriptionType).then((value){
-// //   EasyLoading.showSuccess('Added to Cart');
-// // });
-// // print('added to cart');
-// }:(){
-// showDialog<String>(
-// context: context,
-// builder: (BuildContext context) => AlertDialog(
-// content: const Text('Please select the required details'),
-// actions: <Widget>[
-// TextButton(
-// onPressed: () => Navigator.pop(context, 'OK'),
-// child: const Text('OK'),
-// ),
-// ],
-// ),
-// );
-// },
-// color: _cartbutton? Colors.orange[300]:Colors.grey,
-// padding: EdgeInsets.symmetric(horizontal: 50),
-// elevation: 2,
-// child: Text(
-// "Add to Cart",
-// style: TextStyle(
-// fontSize: 14, letterSpacing: 2.2, color: Colors.black),
-// ),
-// ),
-// ],
-// )
-// ],
-// ),
-// ),
-// )
-// ],
-//),
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator(),);
+        }
+
+        return ListView(
+          children: snapshot.data!.docs.map((DocumentSnapshot document) {
+            Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
+            return Card(
+              child: Center(
+                child: Image.network(data['image']),
+              ),
+            );
+          }).toList(),
+        );
+      },
+    );
+  }
+}

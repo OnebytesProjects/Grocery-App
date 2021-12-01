@@ -1,6 +1,7 @@
 import 'package:admin/Screens/Home/HomeScreen.dart';
 import 'package:admin/Screens/Category/category_screen.dart';
 import 'package:admin/Screens/Banner/manage_banners.dart';
+import 'package:admin/Screens/MilkScreen/MilkScreen.dart';
 import 'package:admin/Screens/Notification/notification_screen.dart';
 import 'package:admin/Screens/Vendor/vendor_screen.dart';
 import 'package:admin/Screens/Login/LoginScreen.dart';
@@ -25,6 +26,11 @@ class SidebarWidget {
         MenuItem(
           title: 'Categories',
           route: CategoryScreen.id,
+          icon: Icons.category,
+        ),
+        MenuItem(
+          title: 'Milk Screen',
+          route: MilkScreen.id,
           icon: Icons.category,
         ),
         MenuItem(

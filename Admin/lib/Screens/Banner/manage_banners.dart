@@ -4,10 +4,12 @@ import 'package:admin/Services/Firebase_Services.dart';
 import 'package:admin/Services/sidebar.dart';
 import 'package:admin/Screens/Banner/banner_widget.dart';
 import 'package:ars_progress_dialog/ars_progress_dialog.dart';
+import 'package:firebase/firebase.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_admin_scaffold/admin_scaffold.dart';
 import 'package:firebase/firebase.dart' as db;
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class BannerScreen extends StatefulWidget {
   static const String id = 'banner-screen';
@@ -23,6 +25,7 @@ class _BannerScreenState extends State<BannerScreen> {
   bool _visible = false;
   bool _imageSelected = true;
   late String _url;
+  bool _enable = false;
 
   @override
   Widget build(BuildContext context) {
@@ -105,36 +108,40 @@ class _BannerScreenState extends State<BannerScreen> {
                                   style: TextStyle(color: Colors.white),
                                 ),
                                 onPressed: () {
-                                  uploadStorage();
+                                  EasyLoading.show(status: 'Please Wait');
+                                  uploadStorage(context);
                                 },
                                 color: Colors.black54,
                               ),
                               SizedBox(
                                 width: 10,
                               ),
-                              AbsorbPointer(
-                                  absorbing: _imageSelected,
-                                  child: FlatButton(
-                                      onPressed: () {
-                                        progressDialog.show();
-                                        _services
-                                            .uploadBannerImageToDb(_url)
-                                            .then((downloadUrl) {
-                                          if (downloadUrl != null) {
-                                            progressDialog.dismiss();
-                                            _services.showMyDialog(
-                                                title: 'New Banner Image',
-                                                message: "Savd Successfully",
-                                                context: context);
-                                          }
-                                        });
-                                      },
-                                      child: Text("Save Image",
-                                          style:
-                                          TextStyle(color: Colors.white)),
-                                      color: _imageSelected
-                                          ? Colors.black12
-                                          : Colors.black54))
+                              Visibility(
+                                visible: _enable,
+                                child: AbsorbPointer(
+                                    absorbing: _imageSelected,
+                                    child: FlatButton(
+                                        onPressed: () {
+                                          progressDialog.show();
+                                          _services
+                                              .uploadBannerImageToDb(_url)
+                                              .then((downloadUrl) {
+                                            if (downloadUrl != null) {
+                                              progressDialog.dismiss();
+                                              _services.showMyDialog(
+                                                  title: 'New Banner Image',
+                                                  message: "Savd Successfully",
+                                                  context: context);
+                                            }
+                                          });
+                                        },
+                                        child: Text("Save Image",
+                                            style:
+                                            TextStyle(color: Colors.white)),
+                                        color: _imageSelected
+                                            ? Colors.black12
+                                            : Colors.black54)),
+                              )
                             ],
                           ),
                         ),
@@ -179,21 +186,25 @@ class _BannerScreenState extends State<BannerScreen> {
     });
   }
 
-  void uploadStorage() {
+  uploadStorage(context) async{
     final dateTime = DateTime.now();
     final path = 'bannerImage/$dateTime';
-    uploadImage(onSelected: (file) {
+    uploadImage(onSelected: (file) async {
       if (file != null) {
         setState(() {
           _fileNameTextController.text = file.name;
           _imageSelected = false;
           _url = path;
         });
-        db
-            .storage()
-            .refFromURL('gs://application-1c3c2.appspot.com')
-            .child(path)
-            .put(file);
+        db.StorageReference ref = db.storage().refFromURL('gs://application-1c3c2.appspot.com').child(path);
+        db.UploadTask uploadTask = ref.put(file);
+
+        await uploadTask.future.then((UploadTaskSnapshot snapshot) {
+          EasyLoading.dismiss();
+          setState(() {
+            _enable = true;
+          });
+        });
       }
     });
   }

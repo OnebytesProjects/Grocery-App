@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 class FirebaseServices {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   CollectionReference banners = FirebaseFirestore.instance.collection('slider');
+  CollectionReference milkscreen = FirebaseFirestore.instance.collection('milkscreen');
   CollectionReference category =
   FirebaseFirestore.instance.collection('category');
   CollectionReference products =
@@ -38,17 +39,31 @@ class FirebaseServices {
     firestore.collection('slider').doc(id).delete();
   }
 
+  //Milkscreen
+  Future<String> uploadMilkImageToDb(url) async {
+    String downloadUrl = await storage.ref(url).getDownloadURL();
+    if (downloadUrl != null) {
+      firestore.collection('milkscreen').add({
+        'image': downloadUrl,
+      });
+    }
+    return downloadUrl;
+  }
+
+  deleteMilkImageFrmDb(id) async {
+    firestore.collection('milkscreen').doc(id).delete();
+  }
+
   //category
 
   Future<String> uploadCategoryImageToDb(url, catName) async {
 
     String downloadUrl = await storage.ref(url).getDownloadURL();
-    if (downloadUrl != null) {
-      category.doc(catName).set({
-        'image': downloadUrl,
-        'name': catName,
-      });
-    }
+    print('Url:${url},Catname${catName},Download Url 1:${downloadUrl}');
+    category.doc(catName).set({
+      'image': downloadUrl,
+      'name': catName,
+    });
     return downloadUrl;
   }
 
@@ -105,6 +120,40 @@ class FirebaseServices {
               child: const Text('Delete'),
               onPressed: () {
                 deleteBannerImageFrmDb(id);
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> confirmDeleteMilk({title, message, context, id}) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text(message),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: const Text('Delete'),
+              onPressed: () {
+                deleteMilkImageFrmDb(id);
                 Navigator.of(context).pop();
               },
             ),

@@ -2,6 +2,7 @@
 import 'package:admin/Screens/Home/HomeScreen.dart';
 import 'package:admin/Screens/Category/category_screen.dart';
 import 'package:admin/Screens/Banner/manage_banners.dart';
+import 'package:admin/Screens/MilkScreen/MilkScreen.dart';
 import 'package:admin/Screens/Notification/notification_screen.dart';
 import 'package:admin/Screens/Vendor/vendor%20service/product_provider.dart';
 import 'package:admin/Screens/Vendor/vendor_products/add_new_product.dart';
@@ -44,6 +45,7 @@ class MyApp extends StatelessWidget {
         VendorScreen.id:(context)=>VendorScreen(),
         AddNewProduct.id:(context)=>AddNewProduct(),
         Subscription.id:(context)=>Subscription(),
+        MilkScreen.id:(context)=>MilkScreen(),
       },
     );
   }

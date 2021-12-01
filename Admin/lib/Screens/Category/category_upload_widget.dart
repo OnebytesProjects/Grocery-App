@@ -1,11 +1,13 @@
 import 'dart:html';
-
 import 'package:admin/Services/Firebase_Services.dart';
 import 'package:ars_progress_dialog/ars_progress_dialog.dart';
+import 'package:firebase/firebase.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase/firebase.dart' as db;
-import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+
 
 
 
@@ -24,6 +26,7 @@ class _CategorycreateWidgetState extends State<CategorycreateWidget> {
   bool _visible = false;
   bool _imageSelected = true;
   late String _url;
+  bool _enable = false;
 
   @override
   Widget build(BuildContext context) {
@@ -93,7 +96,8 @@ class _CategorycreateWidgetState extends State<CategorycreateWidget> {
                         style: TextStyle(color: Colors.white),
                       ),
                       onPressed: () {
-                        uploadStorage();
+                        EasyLoading.show(status: 'Please Wait');
+                        uploadStorage(context);
                       },
                       color: Colors.black54,
                     ),
@@ -102,38 +106,40 @@ class _CategorycreateWidgetState extends State<CategorycreateWidget> {
                     ),
                     AbsorbPointer(
                         absorbing: _imageSelected,
-                        child: FlatButton(
-                            onPressed: () {
-                              if(_categoryNameTextController.text.isEmpty){
-                                _services.showMyDialog(
-                                  context: context,
-                                  title: 'Add New Category',
-                                  message: 'New Category Name not given',
-                                );
-                              }else{
-                                progressDialog.show();
-                                _services
-                                    .uploadCategoryImageToDb(_url, _categoryNameTextController.text)
-                                    .then((downloadUrl) {
-                                  if (downloadUrl != null) {
-                                    progressDialog.dismiss();
-                                    _services.showMyDialog(
-                                        title: 'New Category',
-                                        message: "Saved New Category Successfully",
-                                        context: context);
-                                  }
-                                });
-                                _categoryNameTextController.clear();
-                                _fileNameTextController.clear();
-                              }
+                        child: Visibility(
+                          visible: _enable,
+                          child: FlatButton(
+                              onPressed: () {
+                                if(_categoryNameTextController.text.isEmpty){
+                                  _services.showMyDialog(
+                                    context: context,
+                                    title: 'Add New Category',
+                                    message: 'New Category Name not given',
+                                  );
+                                }else{
+                                  progressDialog.show();
+                                  _services
+                                      .uploadCategoryImageToDb(_url, _categoryNameTextController.text)
+                                      .then((downloadUrl) {
+                                        print('Download Url:${downloadUrl}');
+                                        progressDialog.dismiss();
+                                        _services.showMyDialog(
+                                            title: 'New Category',
+                                            message: "Saved New Category Successfully",
+                                            context: context);
+                                  });
+                                  _categoryNameTextController.clear();
+                                  _fileNameTextController.clear();
+                                }
 
-                            },
-                            child: Text("Save New Category ",
-                                style:
-                                TextStyle(color: Colors.white)),
-                            color: _imageSelected
-                                ? Colors.black12
-                                : Colors.black54))
+                              },
+                              child: Text("Save New Category ",
+                                  style:
+                                  TextStyle(color: Colors.white)),
+                              color: _imageSelected
+                                  ? Colors.black12
+                                  : Colors.black54),
+                        ))
                   ],
                 ),
               ),
@@ -173,22 +179,28 @@ class _CategorycreateWidgetState extends State<CategorycreateWidget> {
     });
   }
 
-  void uploadStorage() {
+  uploadStorage(context) async{
     final dateTime = DateTime.now();
     final path = 'CategoryImage/$dateTime';
-    uploadImage(onSelected: (file) {
-      if (file != null) {
+    uploadImage(onSelected: (file) async {
+      setState(() {
+        _fileNameTextController.text = file.name;
+        _imageSelected = false;
+        _url = path;
+      });
+
+      db.StorageReference ref = db.storage().refFromURL('gs://application-1c3c2.appspot.com').child(path);
+      db.UploadTask uploadTask = ref.put(file);
+
+      await uploadTask.future.then((UploadTaskSnapshot snapshot) {
+        EasyLoading.dismiss();
         setState(() {
-          _fileNameTextController.text = file.name;
-          _imageSelected = false;
-          _url = path;
+          _enable = true;
         });
-        db
-            .storage()
-            .refFromURL('gs://application-1c3c2.appspot.com')
-            .child(path)
-            .put(file);
-      }
+      });
+
     });
+
   }
+
 }
