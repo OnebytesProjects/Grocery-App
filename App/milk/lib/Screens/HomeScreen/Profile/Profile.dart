@@ -90,11 +90,11 @@ class _ProfileState extends State<Profile> {
 
   @override
   void initState() {
-    _user.getUserById(user!.uid).then((value) {
-      if (mounted) {
-        setState(() {});
-      }
-    });
+    // _user.getUserById(user!.uid).then((value) {
+    //   if (mounted) {
+    //     setState(() {});
+    //   }
+    // });
     FirebaseFirestore.instance
         .collection('pincode')
         .get()

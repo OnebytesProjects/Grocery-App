@@ -23,6 +23,7 @@ class _NotificationsState extends State<Notifications> {
         title: const Text('Notifications'),
         content: SizedBox(
           height: 100,
+          width: 50,
           child: StreamBuilder<QuerySnapshot>(
             stream: users.doc(_auth.currentUser?.uid).collection('notifications').snapshots(),
             builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {

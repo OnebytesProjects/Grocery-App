@@ -140,11 +140,11 @@ class _ProductScreenState extends State<ProductScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: widget.pname!= null ? Text(widget.pname):Text("productname"),
+        title: widget.pname!= null ? Text(widget.pname,style: TextStyle(color: Colors.white,),):Text("Product",style: TextStyle(color: Colors.white),),
         backgroundColor: Colors.grey[800],
         actions: [
           IconButton(
-            icon: Icon(Icons.search_outlined),
+            icon: Icon(Icons.search_outlined,color: Colors.white,),
             onPressed: () {
               showSearch(
                 context: context,
@@ -203,7 +203,7 @@ class _ProductScreenState extends State<ProductScreen> {
             },
           ),
           IconButton(
-            icon: Icon(Icons.notifications),
+            icon: Icon(Icons.notifications,color: Colors.white,),
             onPressed: () => showDialog<String>(
               context: context,
               builder: (BuildContext context) => Notifications(),
@@ -211,7 +211,7 @@ class _ProductScreenState extends State<ProductScreen> {
           ),
 
           IconButton(
-            icon: Icon(Icons.shopping_cart),
+            icon: Icon(Icons.shopping_cart,color: Colors.white,),
             onPressed: () {
               Navigator.push(
                 context,

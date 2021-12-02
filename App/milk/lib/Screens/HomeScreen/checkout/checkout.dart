@@ -97,7 +97,7 @@ class _CheckoutState extends State<Checkout> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Payment"),
+        title: Text("Payment",style: TextStyle(color: Colors.white,),),
         backgroundColor: Colors.grey[800],
       ),
       body: SingleChildScrollView(

@@ -37,7 +37,7 @@ class _CartState extends State<Cart> {
 
     return Scaffold(
         appBar: AppBar(
-          title: const Text("Cart"),
+          title: const Text("Cart",style: TextStyle(color: Colors.white,),),
           backgroundColor: Colors.grey[800],
         ),
         body: GestureDetector(

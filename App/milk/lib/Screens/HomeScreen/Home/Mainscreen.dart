@@ -111,7 +111,7 @@ class _MainScreenState extends State<MainScreen> {
           backgroundColor: Colors.grey[800],
           title: Text(
             _appbarname,
-            style: TextStyle(fontSize: 15, fontStyle: FontStyle.italic),
+            style: TextStyle(fontSize: 15, fontStyle: FontStyle.italic,color: Colors.white),
           ),
           leading: Builder(
             builder: (BuildContext context) {
@@ -129,11 +129,12 @@ class _MainScreenState extends State<MainScreen> {
           ),
           actions: [
             IconButton(
-              icon: Icon(Icons.search_outlined),
+              icon: Icon(Icons.search_outlined,color: Colors.white,),
               onPressed: () {
                 showSearch(
                   context: context,
                   delegate: SearchPage<Product>(
+                    // barTheme: ThemeData(primaryColor: Colors.orange[300]),
                     // onQueryUpdate: (s) => print(s),
                     items: product,
                     searchLabel: 'Search Product',
@@ -191,14 +192,14 @@ class _MainScreenState extends State<MainScreen> {
               },
             ),
             IconButton(
-              icon: Icon(Icons.notifications),
+              icon: Icon(Icons.notifications,color: Colors.white,),
               onPressed: () => showDialog<String>(
                 context: context,
                 builder: (BuildContext context) => Notifications(),
               ),
             ),
             IconButton(
-              icon: Icon(Icons.shopping_cart),
+              icon: Icon(Icons.shopping_cart,color: Colors.white,),
               onPressed: () {
                 Navigator.push(
                   context,
@@ -273,7 +274,9 @@ class _MainScreenState extends State<MainScreen> {
                   ),
                   onTap: () {
                     Navigator.pop(context);
-                    currentPage = DrawerSection.PROFILE;
+                    setState(() {
+                      currentPage = DrawerSection.PROFILE;
+                    });
                   },
                 ),
                 SizedBox(
@@ -320,7 +323,9 @@ class _MainScreenState extends State<MainScreen> {
                   ),
                   onTap: () {
                     Navigator.pop(context);
-                    currentPage = DrawerSection.PROFILE;
+                    setState(() {
+                      currentPage = DrawerSection.PROFILE;
+                    });
                   },
                 )
               ],
