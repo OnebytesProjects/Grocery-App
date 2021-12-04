@@ -133,8 +133,8 @@ class _InventoryState extends State<Inventory> {
                 MaterialPageRoute(
                     builder: (context) => UpdateInventory(
                       title:  data['productName'],
-                      minqty: data['Inventory_min_qty'],
-                      maxqty: data['Inventory_max_qty'],
+                      minqty: data['Inventory_min_qty'].toString(),
+                      maxqty: data['Inventory_max_qty'].toString(),
                       dataid: docid,
                     )));
           }

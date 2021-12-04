@@ -173,7 +173,7 @@ class _CouponScreenMainState extends State<CouponScreenMain> {
                 MaterialPageRoute(
                     builder: (context) => EditCoupon(
                       title:  data['title'],
-                      discount: data['discountRate'],
+                      discount: data['discountRate'].toString(),
                       coupondetail: data['details'],
                       expdate: expiry.toString(),
                       status: data['active'],

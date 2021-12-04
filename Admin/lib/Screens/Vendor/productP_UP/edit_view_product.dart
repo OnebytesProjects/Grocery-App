@@ -247,43 +247,7 @@ class _EditViewProductState extends State<EditViewProduct> {
                   Divider(
                     thickness: 3,
                   ),
-                  Text(
-                    "Quantity",
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  Container(
-                    height: 20,
-                    width: 50,
-                    child: TextFormField(
-                      controller: _qty,
-                      decoration: InputDecoration(
-                        hintText: 'Quantity',
-                        hintStyle: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Text(
-                    "Minimum-Quantity",
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  Container(
-                    height: 20,
-                    width: 50,
-                    child: TextFormField(
-                      controller: _minqty,
-                      decoration: InputDecoration(
-                        hintText: 'Quantity',
-                        hintStyle: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
+
                   SizedBox(
                     height: 10,
                   ),
