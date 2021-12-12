@@ -20,6 +20,7 @@ class _LocationScreenMainState extends State<LocationScreenMain> {
       appBar: AppBar(
         title: Text('Manage Pincode'),
         backgroundColor: Colors.black87,
+        automaticallyImplyLeading: false,
       ),
       body: Container(
           child: Column(

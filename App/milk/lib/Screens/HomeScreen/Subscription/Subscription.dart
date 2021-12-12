@@ -14,6 +14,7 @@ class _SubscriptionState extends State<Subscription> {
   String vip = '';
   CollectionReference subscription = FirebaseFirestore.instance.collection('subscription');
   FirebaseAuth _auth = FirebaseAuth.instance;
+  CollectionReference users = FirebaseFirestore.instance.collection('users');
 
   @override
   void initState() {
@@ -189,6 +190,9 @@ class _SubscriptionState extends State<Subscription> {
             //changestatus
             subscription.doc(docid)
                 .update({'orderStatus': 'Cancelled'});
+            //user subscription cancel
+            users.doc(_auth.currentUser?.uid)
+                .update({'vip': 'no'});
           }, child: Text('Ok'))
         ],
       );

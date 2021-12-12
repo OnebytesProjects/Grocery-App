@@ -22,7 +22,7 @@ class _NotificationsState extends State<Notifications> {
       child: AlertDialog(
         title: const Text('Notifications'),
         content: SizedBox(
-          height: 100,
+          height: 200,
           width: 50,
           child: StreamBuilder<QuerySnapshot>(
             stream: users.doc(_auth.currentUser?.uid).collection('notifications').snapshots(),

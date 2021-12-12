@@ -31,7 +31,9 @@ class _SubscriptionState extends State<Subscription> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.black87,
         title: Text('Subscriptions'),
+        automaticallyImplyLeading: false,
       ),
       backgroundColor: Colors.grey[100],
       body: Container(

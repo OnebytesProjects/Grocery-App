@@ -10,7 +10,6 @@ class CartProvider with ChangeNotifier{
   late QuerySnapshot snapshot;
   List cartList = [];
   List subscritionList = [];
-  String subExist = 'No';
 
   Future<double> getCartTotal()async{
     var cartTotal = 0.0;
@@ -37,14 +36,11 @@ class CartProvider with ChangeNotifier{
   getSubscriptionDetails()async{
     List _newsubList = [];
     QuerySnapshot snapshot = await _cart.cart.doc(_cart.user?.uid).collection('products').where('productName',isEqualTo: 'Milk').get();
-    if(snapshot == null){
-      subExist = 'No';
-    }
+
     snapshot.docs.forEach((doc) {
       if(!_newsubList.contains(doc.data())){
         _newsubList.add(doc.data());
         subscritionList = _newsubList;
-        subExist = 'Yes';
         notifyListeners();
       }
     });

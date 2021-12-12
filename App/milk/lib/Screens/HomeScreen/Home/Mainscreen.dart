@@ -31,6 +31,10 @@ class _MainScreenState extends State<MainScreen> {
   static List<Product> product = [];
   FirebaseAuth _auth = FirebaseAuth.instance;
   String Username = '';
+  String _notification = '';
+  var currentPage = DrawerSection.HOME;
+  String _username = '';
+  String _appbarname = '';
 
   @override
   void initState() {
@@ -62,21 +66,54 @@ class _MainScreenState extends State<MainScreen> {
     FirebaseFirestore.instance
         .collection('users')
         .doc(_auth.currentUser?.uid)
-        .get().then((DocumentSnapshot doc){
-          setState(() {
-            _username = doc['name'];
-          });
+        .get()
+        .then((DocumentSnapshot doc) {
+      setState(() {
+        _username = doc['name'];
+      });
     });
+
+    //check for notification
+    // FirebaseFirestore.instance
+    //     .collection('users')
+    //     .doc(_auth.currentUser?.uid).collection('notifications').doc()
+    //     .get()
+    //     .then((DocumentSnapshot documentSnapshot) {
+    //   if (documentSnapshot.exists) {
+    //     setState(() {
+    //       _notification = 'Present';
+    //     });
+    //   }
+    //   else{
+    //     _notification = 'Not';
+    //   }
+    // });
 
     super.initState();
   }
 
-  var currentPage = DrawerSection.HOME;
-  String _username = '';
-  String _appbarname = '';
-
   @override
   Widget build(BuildContext context) {
+    // final Stream<QuerySnapshot> _notificationStream = FirebaseFirestore.instance
+    //     .collection('users')
+    //     .doc(_auth.currentUser?.uid)
+    //     .collection('notifications')
+    //     .snapshots();
+    //
+    // FirebaseFirestore.instance
+    //     .collection('users')
+    //     .doc(_auth.currentUser?.uid)
+    //     .collection('notifications')
+    //     .doc()
+    //     .get()
+    //     .then((DocumentSnapshot documentSnapshot) {
+    //   if (documentSnapshot.exists) {
+    //     print('Notification Document exists on the database');
+    //   } else {
+    //     print('Notification Document does not exists on the database');
+    //   }
+    // });
+
     _appbarname = 'Hi,$_username';
 
     var container;
@@ -104,127 +141,237 @@ class _MainScreenState extends State<MainScreen> {
       container = Profile();
     }
 
-    return _username == 'null'? UserRegistration() :SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          elevation: 1.5,
-          backgroundColor: Colors.grey[800],
-          title: Text(
-            _appbarname,
-            style: TextStyle(fontSize: 15, fontStyle: FontStyle.italic,color: Colors.white),
-          ),
-          leading: Builder(
-            builder: (BuildContext context) {
-              return IconButton(
-                icon: Image.asset(
-                  'images/drawericon.png',
-                  height: 25,
-                  width: 34,
+    return _username == 'null'
+        ? UserRegistration()
+        : SafeArea(
+            child: Scaffold(
+              appBar: AppBar(
+                elevation: 1.5,
+                backgroundColor: Colors.grey[800],
+                title: Text(
+                  _appbarname,
+                  style: TextStyle(
+                      fontSize: 15,
+                      fontStyle: FontStyle.italic,
+                      color: Colors.white),
                 ),
-                onPressed: () {
-                  Scaffold.of(context).openDrawer();
-                },
-              );
-            },
-          ),
-          actions: [
-            IconButton(
-              icon: Icon(Icons.search_outlined,color: Colors.white,),
-              onPressed: () {
-                showSearch(
-                  context: context,
-                  delegate: SearchPage<Product>(
-                    // barTheme: ThemeData(primaryColor: Colors.orange[300]),
-                    // onQueryUpdate: (s) => print(s),
-                    items: product,
-                    searchLabel: 'Search Product',
-                    suggestion: Center(
-                      child: Text('Filter Product by name or Category'),
-                    ),
-                    failure: Center(
-                      child: Text('No Product found :('),
-                    ),
-                    filter: (products) => [
-                      products.productName,
-                      products.category,
-                    ],
-                    builder: (products) => InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ProductScreen(
-                                    pname: products.productName,
-                                  )),
-                        );
+                leading: Builder(
+                  builder: (BuildContext context) {
+                    return IconButton(
+                      icon: Image.asset(
+                        'images/drawericon.png',
+                        height: 25,
+                        width: 34,
+                      ),
+                      onPressed: () {
+                        Scaffold.of(context).openDrawer();
                       },
-                      child: Container(
-                        decoration: BoxDecoration(
-                          border: Border(
-                            bottom:
-                                BorderSide(width: 2.0, color: Colors.black45),
+                    );
+                  },
+                ),
+                actions: [
+                  IconButton(
+                    icon: Icon(
+                      Icons.search_outlined,
+                      color: Colors.white,
+                    ),
+                    onPressed: () {
+                      showSearch(
+                        context: context,
+                        delegate: SearchPage<Product>(
+                          // barTheme: ThemeData(primaryColor: Colors.orange[300]),
+                          // onQueryUpdate: (s) => print(s),
+                          items: product,
+                          searchLabel: 'Search Product',
+                          suggestion: Center(
+                            child: Text('Filter Product by name or Category'),
+                          ),
+                          failure: Center(
+                            child: Text('No Product found :('),
+                          ),
+                          filter: (products) => [
+                            products.productName,
+                            products.category,
+                          ],
+                          builder: (products) => InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ProductScreen(
+                                          pname: products.productName,
+                                        )),
+                              );
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                border: Border(
+                                  bottom: BorderSide(
+                                      width: 2.0, color: Colors.black45),
+                                ),
+                              ),
+                              padding: EdgeInsets.all(10),
+                              width: double.infinity,
+                              height: 80,
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  SizedBox(
+                                    height: 100,
+                                    width: 90,
+                                    child: Image.network(products.image),
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    products.productName,
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
                         ),
-                        padding: EdgeInsets.all(10),
-                        width: double.infinity,
-                        height: 80,
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            SizedBox(
-                              height: 100,
-                              width: 90,
-                              child: Image.network(products.image),
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              products.productName,
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                          ],
-                        ),
-                      ),
+                      );
+                    },
+                  ),
+
+                  //check for notification
+                  // StreamBuilder<QuerySnapshot>(
+                  //   stream: _notificationStream,
+                  //   builder: (BuildContext context,
+                  //       AsyncSnapshot<QuerySnapshot> snapshot) {
+                  //
+                  //     if(!snapshot.hasData){
+                  //       return IconButton(
+                  //         icon: Icon(
+                  //           Icons.notifications,
+                  //           color: Colors.white,
+                  //         ),
+                  //         onPressed: () => showDialog<String>(
+                  //           context: context,
+                  //           builder: (BuildContext context) => Notifications(),
+                  //         ),
+                  //       );
+                  //     }
+                  //
+                  //     if (snapshot.hasData) {
+                  //       return Stack(
+                  //         children: [
+                  //           IconButton(
+                  //             icon: Icon(
+                  //               Icons.notifications,
+                  //               color: Colors.white,
+                  //             ),
+                  //             onPressed: () => showDialog<String>(
+                  //               context: context,
+                  //               builder: (BuildContext context) =>
+                  //                   Notifications(),
+                  //             ),
+                  //           ),
+                  //           Padding(
+                  //             padding: const EdgeInsets.all(8.0),
+                  //             child: Container(
+                  //               height: 10,
+                  //               width: 10,
+                  //               color: Colors.red,
+                  //             ),
+                  //           )
+                  //         ],
+                  //       );
+                  //     }
+                  //
+                  //     return IconButton(
+                  //       icon: Icon(
+                  //         Icons.notifications,
+                  //         color: Colors.white,
+                  //       ),
+                  //       onPressed: () => showDialog<String>(
+                  //         context: context,
+                  //         builder: (BuildContext context) => Notifications(),
+                  //       ),
+                  //     );
+                  //   },
+                  // ),
+
+                  // _notification == 'Present'
+                  //     ? Stack(
+                  //         children: [
+                  //           IconButton(
+                  //             icon: Icon(
+                  //               Icons.notifications,
+                  //               color: Colors.white,
+                  //             ),
+                  //             onPressed: () => showDialog<String>(
+                  //               context: context,
+                  //               builder: (BuildContext context) =>
+                  //                   Notifications(),
+                  //             ),
+                  //           ),
+                  //           Padding(
+                  //             padding: const EdgeInsets.all(8.0),
+                  //             child: Container(
+                  //               height: 10,
+                  //               width: 10,
+                  //               color: Colors.red,
+                  //             ),
+                  //           )
+                  //         ],
+                  //       )
+                  //     : IconButton(
+                  //         icon: Icon(
+                  //           Icons.notifications,
+                  //           color: Colors.white,
+                  //         ),
+                  //         onPressed: () => showDialog<String>(
+                  //           context: context,
+                  //           builder: (BuildContext context) => Notifications(),
+                  //         ),
+                  //       ),
+
+                  IconButton(
+                    icon: Icon(
+                      Icons.notifications,
+                      color: Colors.white,
+                    ),
+                    onPressed: () => showDialog<String>(
+                      context: context,
+                      builder: (BuildContext context) => Notifications(),
                     ),
                   ),
-                );
-              },
-            ),
-            IconButton(
-              icon: Icon(Icons.notifications,color: Colors.white,),
-              onPressed: () => showDialog<String>(
-                context: context,
-                builder: (BuildContext context) => Notifications(),
+
+                  IconButton(
+                    icon: Icon(
+                      Icons.shopping_cart,
+                      color: Colors.white,
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => Cart()),
+                      );
+                    },
+                  ),
+                  SizedBox(
+                    width: 5,
+                  ),
+                ],
               ),
+              drawer: Drawer(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: <Widget>[
+                      DrawerHeader(),
+                      DrawerList(),
+                    ],
+                  ),
+                ),
+              ),
+              body: container,
             ),
-            IconButton(
-              icon: Icon(Icons.shopping_cart,color: Colors.white,),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Cart()),
-                );
-              },
-            ),
-            SizedBox(
-              width: 5,
-            ),
-          ],
-        ),
-        drawer: Drawer(
-          child: SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                DrawerHeader(),
-                DrawerList(),
-              ],
-            ),
-          ),
-        ),
-        body: container,
-      ),
-    );
+          );
   }
 
   Widget DrawerHeader() {
@@ -351,7 +498,7 @@ class _MainScreenState extends State<MainScreen> {
             currentPage == DrawerSection.PREFERENCE ? true : false),
         menuItem(6, "REFER A FREIND", Icons.group_add_outlined,
             currentPage == DrawerSection.REFER_A_FREIND ? true : false),
-         Divider(
+        Divider(
           thickness: 3,
           indent: 10,
           endIndent: 10,
@@ -362,13 +509,8 @@ class _MainScreenState extends State<MainScreen> {
             currentPage == DrawerSection.CONTACT_US ? true : false),
         menuItem(9, "TERMS OF USE ", Icons.sticky_note_2_outlined,
             currentPage == DrawerSection.CONTACT_US ? true : false),
-        menuItem(
-            10,
-            "CANCELATION AND REFUND",
-            Icons.lock,
-            currentPage == DrawerSection.CANCELATION_AND_REFUND
-                ? true
-                : false),
+        menuItem(10, "CANCELATION AND REFUND", Icons.lock,
+            currentPage == DrawerSection.CANCELATION_AND_REFUND ? true : false),
         menuItem(11, "LOGOUT", Icons.logout,
             currentPage == DrawerSection.LOGOUT ? true : false),
       ],

@@ -134,6 +134,10 @@ class _MilkScreenState extends State<MilkScreen> {
                                               _fileNameTextController.clear();
                                             }
                                           });
+                                          setState(() {
+                                            _enable = false;
+                                            _visible = false;
+                                          });
                                         },
                                         child: Text("Save Image",
                                             style:

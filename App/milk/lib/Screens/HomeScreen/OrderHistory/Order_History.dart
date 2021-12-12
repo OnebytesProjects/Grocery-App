@@ -82,14 +82,14 @@ class _OrderHistoryState extends State<OrderHistory> {
                                     subtitle: Text('Quantity: ${data['products'][index]['qty'].toString()}   Price:₹ ${data['products'][index]['sellingPrice'].toString()}',
                                       style: TextStyle(fontSize: 12,color: Colors.grey),),
                                   ),
-                                  data['orderStatus'] !='Cancelled'?RaisedButton(onPressed: (){
-                                    showDialog('Are you Sure?', context,document.id);
-                                  },child: Text('Cancel Order'),color: Colors.orange,):Container(),
                                 ],
                               );
                             },
                             itemCount: data['products'].length,
-                          )
+                          ),
+                          data['orderStatus'] =='Pending'?RaisedButton(onPressed: (){
+                            showDialog('Are you Sure?', context,document.id);
+                          },child: Text('Cancel Order'),color: Colors.orange,):Container(),
                         ],),
                       Divider(height: 3,)
                     ],

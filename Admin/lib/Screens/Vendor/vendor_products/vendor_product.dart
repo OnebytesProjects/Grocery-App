@@ -13,7 +13,9 @@ class VendorProduct extends StatelessWidget {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
+          backgroundColor: Colors.black87,
           title: Text('Products'),
+          automaticallyImplyLeading: false,
         ),
         body: Column(
           children: [

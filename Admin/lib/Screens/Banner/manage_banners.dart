@@ -134,6 +134,10 @@ class _BannerScreenState extends State<BannerScreen> {
                                                   context: context);
                                             }
                                           });
+                                          setState(() {
+                                            _enable = false;
+                                            _visible = false;
+                                          });
                                         },
                                         child: Text("Save Image",
                                             style:

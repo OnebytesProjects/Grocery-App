@@ -29,23 +29,37 @@ class _MilkDisplayState extends State<MilkDisplay> {
   String vip = '';
   String gif = '';
   double chosenPrice = 0.0;
-  bool _chosenprice = false;
   var total;
 
   CartService _cart = CartService();
   User? user = FirebaseAuth.instance.currentUser;
   FirebaseAuth _auth = FirebaseAuth.instance;
 
+  //check vip
   @override
-  Widget build(BuildContext context) {
-    
-    //check vip
+  void initState() {
     FirebaseFirestore.instance
         .collection('users')
         .doc(_auth.currentUser?.uid)
         .get()
         .then((DocumentSnapshot documentSnapshot) =>
     {this.vip = documentSnapshot['vip']});
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    
+    //check vip
+    // setState(() {
+    //   FirebaseFirestore.instance
+    //       .collection('users')
+    //       .doc(_auth.currentUser?.uid)
+    //       .get()
+    //       .then((DocumentSnapshot documentSnapshot) =>
+    //   {this.vip = documentSnapshot['vip']});
+    // });
+
 
     //get milkgif
     FirebaseFirestore.instance
@@ -421,12 +435,8 @@ class _MilkDisplayState extends State<MilkDisplay> {
                                             setState(() {
                                               _qty -= 1;
                                             });
-                                            if (_chosenprice) {
-                                              total = _qty * chosenPrice;
-                                            } else {
-                                              total =
-                                                  _qty * data['sellingPrice'];
-                                            }
+
+                                            total = _qty * chosenPrice;
                                           }
                                         },
                                         child: Container(
@@ -456,12 +466,7 @@ class _MilkDisplayState extends State<MilkDisplay> {
                                             setState(() {
                                               _qty += 1;
                                             });
-                                            if (_chosenprice) {
-                                              total = _qty * chosenPrice;
-                                            } else {
-                                              total =
-                                                  _qty * data['sellingPrice'];
-                                            }
+                                            total = _qty * chosenPrice;
                                           }
                                         },
                                         child: Container(

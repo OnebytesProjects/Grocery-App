@@ -21,6 +21,7 @@ class _InventoryState extends State<Inventory> {
       appBar: AppBar(
         title: Text('Manage Inventory'),
         backgroundColor: Colors.black87,
+        automaticallyImplyLeading: false,
       ),
       body: Container(
           child: Column(

@@ -20,6 +20,7 @@ class _CouponScreenMainState extends State<CouponScreenMain> {
       appBar: AppBar(
         title: Text('Manage Coupon'),
         backgroundColor: Colors.black87,
+        automaticallyImplyLeading: false,
       ),
             body: Container(
                 child: Column(

@@ -37,9 +37,7 @@ class _CheckoutState extends State<Checkout> {
   String _name = '';
   String _number = '';
   int delivryCharge = 0;
-
-
-
+  String subStatus = '';
 
   @override
   Widget build(BuildContext context) {
@@ -59,8 +57,7 @@ class _CheckoutState extends State<Checkout> {
           _deliverymode = documentSnapshot['preference'];
           _name = documentSnapshot['name'];
           _number = documentSnapshot['number'];
-          //name
-          //number
+          subStatus = documentSnapshot['vip'];
 
         });
 
@@ -231,11 +228,11 @@ class _CheckoutState extends State<Checkout> {
                       onTap: (){
                         if(payment == 'GooglePay'){
                           EasyLoading.show(status: 'Placing Order');
-                          saveOrder(cartProvider);
+                          saveOrder(cartProvider,_coupon);
                         }
                         if(payment == 'Cod'){
                           EasyLoading.show(status: 'Placing Order');
-                          saveOrder(cartProvider);
+                          saveOrder(cartProvider,_coupon);
                         }
                       },
                       child: Container(
@@ -267,8 +264,35 @@ class _CheckoutState extends State<Checkout> {
       );
     });
   }
-  saveOrder(CartProvider cartProvider){
-    if(cartProvider.subExist == 'Yes'){
+  saveOrder(CartProvider cartProvider,_coupon){
+
+    if(subStatus == 'Yes'){
+      _orderService.saveorder({
+        'products':cartProvider.cartList,
+        'userId':user?.uid,
+        'total':total,
+        'name':_name,
+        'number':_number,
+        'address':_address,
+        'deliveryMode': _deliverymode,
+        'payment':payment,
+        'timestamp': DateTime.now().toString(),
+        'orderStatus':'Pending',
+        'deliverBoy':{
+          'name' : '',
+          'phone': '',
+        }
+      }).then((value){
+        _orderService.deleteCart().then((value) {
+          _orderService.checkData().then((value) {
+            _coupon.discountrate = 0;
+            EasyLoading.showSuccess('OrederPlaced');
+            Navigator.pop(context);
+            Navigator.pop(context);
+          });
+        });
+      });
+    }if(subStatus == 'no'){
       _orderService.saveSubscription({
         'products':cartProvider.subscritionList,
         'userId':user?.uid,
@@ -288,31 +312,19 @@ class _CheckoutState extends State<Checkout> {
         'endDate':'',
         'DeliveryDate':'',
         'deliveryboystatus':'',
-      });
-    }
-    _orderService.saveorder({
-      'products':cartProvider.cartList,
-      'userId':user?.uid,
-      'total':total,
-      'name':_name,
-      'number':_number,
-      'address':_address,
-      'deliveryMode': _deliverymode,
-      'payment':payment,
-      'timestamp': DateTime.now().toString(),
-      'orderStatus':'Pending',
-      'deliverBoy':{
-        'name' : '',
-        'phone': '',
-      }
-    }).then((value){
-      _orderService.deleteCart().then((value) {
-        _orderService.checkData().then((value) {
-          EasyLoading.showSuccess('OrederPlaced');
-          Navigator.pop(context);
-          Navigator.pop(context);
+      }).then((value){
+        _orderService.deleteCart().then((value) {
+          _orderService.checkData().then((value) {
+            _coupon.discountrate = 0;
+            EasyLoading.showSuccess('OrederPlaced');
+            Navigator.pop(context);
+            Navigator.pop(context);
+          });
         });
       });
-    });
+
+    }
+
   }
 }
+

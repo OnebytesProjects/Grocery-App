@@ -55,7 +55,6 @@ class _SendNotificatonState extends State<SendNotificaton> {
                       ),
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
-                          print(notificationcontroller.text);
                           setState(() {
                             this.notificationData = notificationcontroller.text;
                           });
@@ -73,8 +72,6 @@ class _SendNotificatonState extends State<SendNotificaton> {
                               .get()
                               .then((QuerySnapshot querySnapshot) {
                             querySnapshot.docs.forEach((doc) {
-
-                              print('data: ${doc["id"]}\n');
                               UpdateUserNotification(doc['id'].toString(),notificationData);
                             });
                           });

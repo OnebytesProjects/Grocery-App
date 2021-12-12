@@ -3,4 +3,5 @@ Bug and toDo List:
 To be implemented:
 mail sending - https://www.youtube.com/watch?v=9HW3MZ_tsdo
 Google Pay
-service
+service - https://pub.dev/packages/flutter_background_service/example
+app notification
