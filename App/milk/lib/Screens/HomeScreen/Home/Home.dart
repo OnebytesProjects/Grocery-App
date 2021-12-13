@@ -221,6 +221,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                             height: 10,
                           ),
                           document['name']=='0'?Text('Milk'):
+                          document['name']=='Z'?Text('All Products'):
                           Text(document['name'])
                         ],
                       ),

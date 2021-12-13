@@ -3,6 +3,7 @@ import 'package:admin/Screens/Category/category_screen.dart';
 import 'package:admin/Screens/Banner/manage_banners.dart';
 import 'package:admin/Screens/MilkScreen/MilkScreen.dart';
 import 'package:admin/Screens/Notification/notification_screen.dart';
+import 'package:admin/Screens/SideBar/SideBarContent.dart';
 import 'package:admin/Screens/Vendor/vendor_screen.dart';
 import 'package:admin/Screens/Login/LoginScreen.dart';
 import 'package:flutter/cupertino.dart';
@@ -31,7 +32,12 @@ class SidebarWidget {
         MenuItem(
           title: 'Milk Screen',
           route: MilkScreen.id,
-          icon: Icons.category,
+          icon: Icons.ad_units_outlined,
+        ),
+        MenuItem(
+          title: 'Side Bar',
+          route: SideBarContent.id,
+          icon: Icons.add_chart_rounded,
         ),
         MenuItem(
           title: 'Vendor',

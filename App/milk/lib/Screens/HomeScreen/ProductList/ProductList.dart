@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:milk/Screens/HomeScreen/Product/ProductScreen.dart';
+import 'package:milk/Screens/HomeScreen/ProductList/AllProducts.dart';
 import 'package:milk/Screens/HomeScreen/ProductList/milkscreen.dart';
 
 class ProductList extends StatefulWidget {
@@ -19,7 +20,9 @@ class _ProductListState extends State<ProductList> {
 
     final Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance.collection('products').where('category.mainCategory',isEqualTo:widget.condition).where('published',isEqualTo:true).snapshots();
 
-    return widget.condition=='0'?MilkDisplay():StreamBuilder<QuerySnapshot>(
+    return widget.condition=='0'?MilkDisplay():
+    widget.condition=='Z'?AllProducts():
+    StreamBuilder<QuerySnapshot>(
         stream: _usersStream,
         builder:  (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot){
           if (snapshot.hasError) {

@@ -24,7 +24,7 @@ class _UserRegistrationState extends State<UserRegistration> {
     'Choose Gender',
     'Male',
     'Female',
-    'Not Prefered to say'
+    'Not Prefered to say',
   ];
 
   final List<String> regionList = <String>[

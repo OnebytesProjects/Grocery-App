@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expandable_text/expandable_text.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:intl/intl.dart';
@@ -584,11 +585,12 @@ class _MilkDisplayState extends State<MilkDisplay> {
         }
 
         return ListView(
+            physics: const NeverScrollableScrollPhysics(),
           children: snapshot.data!.docs.map((DocumentSnapshot document) {
             Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
             return Card(
               child: Center(
-                child: Image.network(data['image']),
+                child: Image.network(data['image'],fit: BoxFit.fill,),
               ),
             );
           }).toList(),
