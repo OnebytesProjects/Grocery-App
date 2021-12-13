@@ -266,9 +266,9 @@ class _SubscriptionState extends State<Subscription> {
           children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Expanded(child: FlatButton(onPressed: (){
+              child: FlatButton(onPressed: (){
                 showMyDialog("Accept Order",'SubScription Started',documentId,userid);
-              }, child: Text('Accept'),color: Colors.green,)),
+              }, child: Text('Accept'),color: Colors.green,),
             ),
           ],
         ),
@@ -283,17 +283,17 @@ class _SubscriptionState extends State<Subscription> {
           children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Expanded(child: FlatButton(onPressed: (){
+              child: FlatButton(onPressed: (){
                 showDialog(context: context, builder: (BuildContext context){
                   return DelivermanSub(documentId);
                 });
-              }, child: Text('Assign Delivery Boy'),color: Colors.orange,)),
+              }, child: Text('Assign Delivery Boy'),color: Colors.orange,),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Expanded(child: FlatButton(onPressed: (){
+              child: FlatButton(onPressed: (){
                 showMyDialog("End Subscription",'SubScription Ended',documentId,userid);
-              }, child: Text('End Subscription'),color: Colors.red,)),
+              }, child: Text('End Subscription'),color: Colors.red,),
             ),
           ],
         ),

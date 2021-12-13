@@ -187,11 +187,11 @@ class _VendorsOrdersState extends State<VendorsOrders> {
           children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Expanded(child: FlatButton(onPressed: (){
+              child: FlatButton(onPressed: (){
                 showDialog(context: context, builder: (BuildContext context){
                   return DeliveryBoyList(document);
                 });
-              }, child: Text('Assign Delivery Boy'),color: Colors.orange,)),
+              }, child: Text('Assign Delivery Boy'),color: Colors.orange,),
             ),
           ],
         ),
@@ -206,9 +206,9 @@ class _VendorsOrdersState extends State<VendorsOrders> {
           children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Expanded(child: FlatButton(onPressed: (){
+              child: FlatButton(onPressed: (){
                 showMyDialog("Accept Order",'Accepted',documentId);
-              }, child: Text('Accept'),color: Colors.green,)),
+              }, child: Text('Accept'),color: Colors.green,),
             ),
           ],
         ),
