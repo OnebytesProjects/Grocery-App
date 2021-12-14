@@ -49,6 +49,8 @@ dependencies:
   search_page: ^2.0.0+1
   fluttertoast: ^8.0.8
   carousel_slider: ^4.0.0
+  firebase_messaging: ^10.0.7
+  flutter_local_notifications: ^8.2.0
 
 dev_dependencies:
   flutter_test:
