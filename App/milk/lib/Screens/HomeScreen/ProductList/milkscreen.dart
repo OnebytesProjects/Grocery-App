@@ -24,6 +24,7 @@ class _MilkDisplayState extends State<MilkDisplay> {
   bool _cartbutton = false;
   bool isChecked1sub = false;
   bool isChecked2sub = false;
+  bool incdisplay = false;
   String subscriptionType = '';
   int _qty = 0;
   String volume = 'nil';
@@ -219,12 +220,14 @@ class _MilkDisplayState extends State<MilkDisplay> {
                                                   isChecked2 = false;
                                                   isChecked3 = false;
                                                   isChecked4 = false;
+                                                  incdisplay = true;
                                                   volume = data['v1'];
                                                   chosenPrice = double.parse(
                                                       data['p1']);
                                                 });
                                                 if (value == false) {
                                                   setState(() {
+                                                    incdisplay = false;
                                                     volume = 'nil';
                                                     chosenPrice = 0.0;
                                                   });
@@ -251,11 +254,13 @@ class _MilkDisplayState extends State<MilkDisplay> {
                                                   isChecked3 = false;
                                                   isChecked4 = false;
                                                   volume = data['v3'];
+                                                  incdisplay = true;
                                                   chosenPrice = double.parse(
                                                       data['p3']);
                                                 });
                                                 if (value == false) {
                                                   setState(() {
+                                                    incdisplay = false;
                                                     volume = 'nil';
                                                     chosenPrice = 0.0;
                                                   });
@@ -286,6 +291,7 @@ class _MilkDisplayState extends State<MilkDisplay> {
                                                   isChecked2 = false;
                                                   isChecked3 = value!;
                                                   isChecked4 = false;
+                                                  incdisplay = true;
                                                   volume = data['v2'];
                                                   chosenPrice =
                                                       double.parse(
@@ -293,6 +299,7 @@ class _MilkDisplayState extends State<MilkDisplay> {
                                                 });
                                                 if (value == false) {
                                                   setState(() {
+                                                    incdisplay = false;
                                                     volume = 'nil';
                                                     chosenPrice = 0.0;
                                                   });
@@ -320,6 +327,7 @@ class _MilkDisplayState extends State<MilkDisplay> {
                                                   isChecked2 = false;
                                                   isChecked3 = false;
                                                   isChecked4 = value!;
+                                                  incdisplay = true;
                                                   volume = data['v4'];
                                                   chosenPrice =
                                                       double.parse(
@@ -327,6 +335,7 @@ class _MilkDisplayState extends State<MilkDisplay> {
                                                 });
                                                 if (value == false) {
                                                   setState(() {
+                                                    incdisplay = false;
                                                     volume = 'nil';
                                                     chosenPrice = 0.0;
                                                   });
@@ -422,68 +431,71 @@ class _MilkDisplayState extends State<MilkDisplay> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            Container(
-                              margin: EdgeInsets.only(left: 10, right: 10),
-                              height: 50,
-                              child: Padding(
-                                padding: const EdgeInsets.all(10.0),
-                                child: FittedBox(
-                                  child: Row(
-                                    children: [
-                                      InkWell(
-                                        onTap: () {
-                                          if (_qty >= 1) {
-                                            setState(() {
-                                              _qty -= 1;
-                                            });
+                            Visibility(
+                              visible: incdisplay,
+                              child: Container(
+                                margin: EdgeInsets.only(left: 10, right: 10),
+                                height: 50,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: FittedBox(
+                                    child: Row(
+                                      children: [
+                                        InkWell(
+                                          onTap: () {
+                                            if (_qty >= 1) {
+                                              setState(() {
+                                                _qty -= 1;
+                                              });
 
-                                            total = _qty * chosenPrice;
-                                          }
-                                        },
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(50),
-                                              border: Border.all(
-                                                color: Colors.orange,
-                                              )),
-                                          child: Padding(
-                                            padding: EdgeInsets.all(8.0),
-                                            child: Icon(Icons.remove),
+                                              total = _qty * chosenPrice;
+                                            }
+                                          },
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(50),
+                                                border: Border.all(
+                                                  color: Colors.orange,
+                                                )),
+                                            child: Padding(
+                                              padding: EdgeInsets.all(8.0),
+                                              child: Icon(Icons.remove),
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsets.only(
-                                            left: 20,
-                                            right: 20,
-                                            top: 8,
-                                            bottom: 8),
-                                        child: Text(_qty.toString()),
-                                      ),
-                                      InkWell(
-                                        onTap: () {
-                                          if (_qty >= 0) {
-                                            setState(() {
-                                              _qty += 1;
-                                            });
-                                            total = _qty * chosenPrice;
-                                          }
-                                        },
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(50),
-                                              border: Border.all(
-                                                color: Colors.orange,
-                                              )),
-                                          child: Padding(
-                                            padding: EdgeInsets.all(8.0),
-                                            child: Icon(Icons.add),
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                              left: 20,
+                                              right: 20,
+                                              top: 8,
+                                              bottom: 8),
+                                          child: Text(_qty.toString()),
+                                        ),
+                                        InkWell(
+                                          onTap: () {
+                                            if (_qty >= 0) {
+                                              setState(() {
+                                                _qty += 1;
+                                              });
+                                              total = _qty * chosenPrice;
+                                            }
+                                          },
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(50),
+                                                border: Border.all(
+                                                  color: Colors.orange,
+                                                )),
+                                            child: Padding(
+                                              padding: EdgeInsets.all(8.0),
+                                              child: Icon(Icons.add),
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),

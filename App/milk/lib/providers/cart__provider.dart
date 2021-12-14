@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:milk/services/cart_services.dart';
 
 class CartProvider with ChangeNotifier{
   CartService _cart = CartService();
+  FirebaseAuth _auth = FirebaseAuth.instance;
   double subTotal = 0.0;
   int cartQty = 0;
   double deliverycharge  = 40;
@@ -14,7 +16,7 @@ class CartProvider with ChangeNotifier{
   Future<double> getCartTotal()async{
     var cartTotal = 0.0;
     List _newList = [];
-    QuerySnapshot snapshot = await _cart.cart.doc(_cart.user?.uid).collection('products').get();
+    QuerySnapshot snapshot = await _cart.cart.doc(_auth.currentUser?.uid).collection('products').get();
     if(snapshot == null){
       return cartTotal;
     }

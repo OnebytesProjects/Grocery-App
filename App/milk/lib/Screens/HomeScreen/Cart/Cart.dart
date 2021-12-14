@@ -21,9 +21,6 @@ class _CartState extends State<Cart> {
   int delivryCharge = 0;
 
 
-
-
-
   @override
   Widget build(BuildContext context) {
 
@@ -272,12 +269,11 @@ class _CartState extends State<Cart> {
                                   Text("Convenience Fee",style: TextStyle(fontSize: 20),),
                                   SizedBox(height: 5,),
                                   Divider(),
-                                  Row(
-                                    children: [
-                                      Text("Lorem Ipsum adgbahjdikaj"),
-                                    ],
+                                  Container(
+                                    width: double.infinity,
+                                    height: 500,
+                                    child: Content(),
                                   )
-
                                 ],
                               ),
                             ),
@@ -315,6 +311,31 @@ class _CartState extends State<Cart> {
           ],
         ),
       ),
+    );
+  }
+  Content(){
+    CollectionReference sidebarcontent =
+    FirebaseFirestore.instance.collection('sidebarcontent');
+    return StreamBuilder<QuerySnapshot>(
+      stream: sidebarcontent.where('type', isEqualTo: 'ConvenienceFee').snapshots(),
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (snapshot.hasError) {
+          return Text('Something went wrong');
+        }
+
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        }
+
+        return ListView(
+          children: snapshot.data!.docs.map((DocumentSnapshot document) {
+            Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
+            return Container(
+              child: Text(data['Content']),
+            );
+          }).toList(),
+        );
+      },
     );
   }
 }

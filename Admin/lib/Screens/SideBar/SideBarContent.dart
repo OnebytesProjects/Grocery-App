@@ -1,3 +1,8 @@
+import 'package:admin/Screens/SideBar/AboutUs/AboutUs.dart';
+import 'package:admin/Screens/SideBar/Cancelation/Cancellation.dart';
+import 'package:admin/Screens/SideBar/ContactUs/ContactUs.dart';
+import 'package:admin/Screens/SideBar/ConvenienceFee/Conveniencefee.dart';
+import 'package:admin/Screens/SideBar/TermOfUse/Termsofuse.dart';
 import 'package:admin/Services/sidebar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_admin_scaffold/admin_scaffold.dart';
@@ -17,12 +22,13 @@ class _SideBarContentState extends State<SideBarContent> {
       backgroundColor: Colors.grey[100],
       appBar: AppBar(
         backgroundColor: Colors.black87,
-        iconTheme: IconThemeData(
-            color: Colors.white
+        iconTheme: IconThemeData(color: Colors.white),
+        title: const Text(
+          'Dashboard',
+          style: TextStyle(color: Colors.white),
         ),
-        title: const Text('Dashboard' ,style: TextStyle(color: Colors.white),),
       ),
-      sideBar: _sideBar.sideBarmenus(context,SideBarContent.id),
+      sideBar: _sideBar.sideBarmenus(context, SideBarContent.id),
       body: ListView(
         children: [
           Container(
@@ -32,11 +38,13 @@ class _SideBarContentState extends State<SideBarContent> {
               padding: const EdgeInsets.all(8.0),
               child: Card(
                 elevation: 10,
-                //child: Inventory(),
+                child: AboutUs(),
               ),
             ),
           ),
-          Divider(thickness: 3,),
+          Divider(
+            thickness: 3,
+          ),
           Container(
             height: 450,
             width: double.infinity,
@@ -44,11 +52,13 @@ class _SideBarContentState extends State<SideBarContent> {
               padding: const EdgeInsets.all(8.0),
               child: Card(
                 elevation: 10,
-                //child: CouponScreenMain(),
+                child: ContactUs(),
               ),
             ),
           ),
-          Divider(thickness: 3,),
+          Divider(
+            thickness: 3,
+          ),
           Container(
             height: 450,
             width: double.infinity,
@@ -56,11 +66,38 @@ class _SideBarContentState extends State<SideBarContent> {
               padding: const EdgeInsets.all(8.0),
               child: Card(
                 elevation: 10,
-                //child: LocationScreenMain(),
+                child: TermsOfUse(),
               ),
             ),
           ),
-
+          Divider(
+            thickness: 3,
+          ),
+          Container(
+            height: 450,
+            width: double.infinity,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Card(
+                elevation: 10,
+                child: Cancelation(),
+              ),
+            ),
+          ),
+          Divider(
+            thickness: 3,
+          ),
+          Container(
+            height: 450,
+            width: double.infinity,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Card(
+                elevation: 10,
+                child: Conveniencefee(),
+              ),
+            ),
+          ),
         ],
       ),
     );

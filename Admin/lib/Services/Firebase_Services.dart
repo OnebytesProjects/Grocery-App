@@ -5,19 +5,24 @@ import 'package:flutter/material.dart';
 class FirebaseServices {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   CollectionReference banners = FirebaseFirestore.instance.collection('slider');
-  CollectionReference milkscreen = FirebaseFirestore.instance.collection('milkscreen');
+  CollectionReference milkscreen =
+      FirebaseFirestore.instance.collection('milkscreen');
   CollectionReference category =
-  FirebaseFirestore.instance.collection('category');
+      FirebaseFirestore.instance.collection('category');
   CollectionReference products =
-  FirebaseFirestore.instance.collection('products');
+      FirebaseFirestore.instance.collection('products');
+  CollectionReference sidebarcontent =
+      FirebaseFirestore.instance.collection('sidebarcontent');
   CollectionReference deliveryboy =
-  FirebaseFirestore.instance.collection('deliveryBoy');
+      FirebaseFirestore.instance.collection('deliveryBoy');
   FirebaseStorage storage = FirebaseStorage.instance;
   CollectionReference order = FirebaseFirestore.instance.collection('orders');
-  CollectionReference coupons = FirebaseFirestore.instance.collection('coupons');
-  CollectionReference pincode = FirebaseFirestore.instance.collection('pincode');
-  CollectionReference subscription = FirebaseFirestore.instance.collection('subscription');
-
+  CollectionReference coupons =
+      FirebaseFirestore.instance.collection('coupons');
+  CollectionReference pincode =
+      FirebaseFirestore.instance.collection('pincode');
+  CollectionReference subscription =
+      FirebaseFirestore.instance.collection('subscription');
 
   Future<QuerySnapshot> getAdminCredentials() {
     var result = FirebaseFirestore.instance.collection('Admin').get();
@@ -57,7 +62,6 @@ class FirebaseServices {
   //category
 
   Future<String> uploadCategoryImageToDb(url, catName) async {
-
     String downloadUrl = await storage.ref(url).getDownloadURL();
     print('Url:${url},Catname${catName},Download Url 1:${downloadUrl}');
     category.doc(catName).set({
@@ -73,25 +77,19 @@ class FirebaseServices {
 
   //Product settings
   Future<void> publishProduct({id}) {
-    return products
-        .doc(id)
-        .update({
+    return products.doc(id).update({
       'published': true,
     });
   }
 
   Future<void> unPublishProduct({id}) {
-    return products
-        .doc(id)
-        .update({
+    return products.doc(id).update({
       'published': false,
     });
   }
 
   Future<void> deleteProduct({id}) {
-    return products
-        .doc(id)
-        .delete();
+    return products.doc(id).delete();
   }
 
   //services
@@ -225,72 +223,76 @@ class FirebaseServices {
     );
   }
 
-  Future<void>selectDeliveryMan(orderId,name,number,orderstatus){
+  Future<void> selectDeliveryMan(orderId, name, number, orderstatus) {
     var result = order.doc(orderId).update({
-      'deliverBoy':{
-        'name' : name,
-        'phone' : number,
+      'deliverBoy': {
+        'name': name,
+        'phone': number,
       },
       'orderStatus': orderstatus,
     });
     return result;
   }
 
-  Future<void>selectDeliveryManForSubscription(orderId,name,number){
+  Future<void> selectDeliveryManForSubscription(orderId, name, number) {
     var result = subscription.doc(orderId).update({
-      'deliverBoy':{
-        'name' : name,
-        'phone' : number,
+      'deliverBoy': {
+        'name': name,
+        'phone': number,
       },
-      'deliveryboystatus':'Assigned',
+      'deliveryboystatus': 'Assigned',
     });
     return result;
   }
 
-  Future<void>saveCoupon({title,discountRate,expiry,details,active}) async {
+  Future<void> saveCoupon(
+      {title, discountRate, expiry, details, active}) async {
     return coupons.doc(title).set({
-      'title' : title,
-      'discountRate' : discountRate,
-      'Expiry' : expiry,
-      'details' : details,
-      'active' : active,
+      'title': title,
+      'discountRate': discountRate,
+      'Expiry': expiry,
+      'details': details,
+      'active': active,
     });
   }
 
-  Future<void>updateCoupon({title,discountRate,expiry,details,active}) async {
+  Future<void> updateCoupon(
+      {title, discountRate, expiry, details, active}) async {
     return coupons.doc(title).update({
-      'title' : title,
-      'discountRate' : discountRate,
-      'Expiry' : expiry,
-      'details' : details,
-      'active' : active,
+      'title': title,
+      'discountRate': discountRate,
+      'Expiry': expiry,
+      'details': details,
+      'active': active,
     });
   }
 
   Future<void> deleteCoupon({id}) {
-    return coupons
-        .doc(id)
-        .delete();
+    return coupons.doc(id).delete();
   }
 
-  Future<void>savePincode({setpincode,deliverycharge}) async {
+  Future<void> savePincode({setpincode, deliverycharge}) async {
     return pincode.doc(setpincode).set({
-      'pincode' : setpincode,
-      'deliverycharge' : deliverycharge,
+      'pincode': setpincode,
+      'deliverycharge': deliverycharge,
     });
   }
 
   Future<void> deletePincode({id}) {
-    return pincode
-        .doc(id)
-        .delete();
+    return pincode.doc(id).delete();
   }
 
-  Future<void>updateInventory({data,minqty,maxqty}) async {
+  Future<void> updateInventory({data, minqty, maxqty}) async {
     return products.doc(data).update({
-      'Inventory_min_qty' : minqty,
-      'Inventory_max_qty' : maxqty,
+      'Inventory_min_qty': minqty,
+      'Inventory_max_qty': maxqty,
+    });
+  }
 
+  Future<void> updateSideBarContent({content, title}) async {
+    return sidebarcontent.doc(title).set({
+      'type': title,
+      'Content': content,
     });
   }
 }
