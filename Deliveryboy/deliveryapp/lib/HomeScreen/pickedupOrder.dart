@@ -226,14 +226,13 @@ class _PickedupOrderState extends State<PickedupOrder> {
           children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Expanded(
-                  child: FlatButton(
+              child: FlatButton(
                 onPressed: () {
-                  showMyDialog("Delivered Order", 'Delivered', documentId);
+              showMyDialog("Delivered Order", 'Delivered', documentId);
                 },
                 child: Text('Delivered'),
                 color: Colors.green,
-              )),
+              ),
             ),
           ],
         ),

@@ -172,10 +172,10 @@ class _PendingOrderState extends State<PendingOrder> {
           children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Expanded(child: FlatButton(onPressed: (){
+              child: FlatButton(onPressed: (){
                 showMyDialog("Pickup Order",'On The Way',documentId);
                 print('Picked Up');
-              }, child: Text('Pickup Order'),color: Colors.orange,)),
+              }, child: Text('Pickup Order'),color: Colors.orange,),
             ),
           ],
         ),

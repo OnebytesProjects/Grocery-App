@@ -172,10 +172,10 @@ class _PendingMilkOrderState extends State<PendingMilkOrder> {
           children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Expanded(child: FlatButton(onPressed: (){
+              child: FlatButton(onPressed: (){
                 showMyDialog("Delivered Order",'Delivered',documentId);
                 print('Picked Up');
-              }, child: Text('Delivered'),color: Colors.green,)),
+              }, child: Text('Delivered'),color: Colors.green,),
             ),
           ],
         ),
