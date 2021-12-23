@@ -4,25 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:intl/intl.dart';
 
-class EditCoupon extends StatefulWidget {
-  String title;
-  String expdate;
-  String discount;
-  String coupondetail;
-  bool status;
-
-  EditCoupon(
-      {required this.title,
-        required this.discount,
-        required this.expdate,
-        required this.coupondetail,
-      required this.status});
+class CouponScreen extends StatefulWidget {
 
   @override
-  _EditCouponState createState() => _EditCouponState();
+  State<CouponScreen> createState() => _CouponScreenState();
 }
 
-class _EditCouponState extends State<EditCoupon> {
+class _CouponScreenState extends State<CouponScreen> {
   final _formKey =GlobalKey<FormState>();
   FirebaseServices _services = FirebaseServices();
   DateTime _selectedDate = DateTime.now();
@@ -30,6 +18,8 @@ class _EditCouponState extends State<EditCoupon> {
   var titleText = TextEditingController();
   var detailsText = TextEditingController();
   var discountRate = TextEditingController();
+
+
   bool _active = false;
 
   _selectDate(context)async{
@@ -48,20 +38,10 @@ class _EditCouponState extends State<EditCoupon> {
   }
 
   @override
-  void initState() {
-    this.titleText.text = widget.title;
-    this.detailsText.text = widget.coupondetail;
-    this.discountRate.text = widget.discount;
-    this.dateText.text = widget.expdate;
-    this._active = widget.status;
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Edit Coupon'),
+        title: Text('Add Coupon'),
         backgroundColor: Colors.black87,
       ),
       body: Container(
@@ -72,7 +52,6 @@ class _EditCouponState extends State<EditCoupon> {
             child: Column(
               children: [
                 TextFormField(
-                  enabled: false,
                   controller: titleText,
                   validator: (value){
                     if(value!.isEmpty){
@@ -157,20 +136,20 @@ class _EditCouponState extends State<EditCoupon> {
                         onPressed: (){
                           if(_formKey.currentState!.validate()){
                             EasyLoading.show(status: 'Please wait..');
-                            _services.updateCoupon(
+                            _services.saveCoupon(
                               title: titleText.text.toUpperCase(),
                               details: detailsText.text,
-                              discountRate: discountRate.text,
+                              discountRate: int.parse(discountRate.text),
                               expiry: _selectedDate,
                               active: _active,
                             ).then((value) {
-                              EasyLoading.showSuccess('Updated coupon Successfully');
                               Navigator.pop(context);
+                              EasyLoading.showSuccess('Saved coupon Successfully');
                             });
                           }
                         },
                         child: Text(
-                          'Update',
+                          'Submit',
                           style: TextStyle(
                               color: Colors.white,fontWeight: FontWeight.bold),
                         ),

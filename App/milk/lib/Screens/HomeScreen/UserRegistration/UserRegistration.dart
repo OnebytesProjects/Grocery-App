@@ -30,23 +30,45 @@ class _UserRegistrationState extends State<UserRegistration> {
   final List<String> regionList = <String>[
     'Choose Pincode',];
 
-
-
-
   final _fomrKey = GlobalKey<FormState>();
   User? user = FirebaseAuth.instance.currentUser;
   UserServices _user = UserServices();
   TextEditingController _name = TextEditingController();
   TextEditingController _mobile = TextEditingController();
   TextEditingController _address = TextEditingController();
+  TextEditingController _pincode = TextEditingController();
   TextEditingController _referral = TextEditingController();
   TextEditingController _email = TextEditingController();
+  String unknownloc = '';
 
   File? image;
   var profileimgpath = 'images/profile.jpg';
 
+  checkPincode() async{
+    setState(() {
+      unknownloc = 'NewLocation: '+_pincode.text;
+    });
+    //check pincode
+    FirebaseFirestore.instance
+        .collection('pincode')
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((doc) {
+        print(doc['pincode']);
+        print('to check: ${_pincode.text}');
+        if(_pincode.text == doc['pincode']){
+          setState(() {
+            unknownloc = '';
+          });
+        }
+      });
+    });
+
+    return unknownloc;
+  }
+
   updateProfile() async{
-    String address = "${_address.text} - ${dropdownValue}";
+    String address = "${_address.text} - ${_pincode.text}";
     if (_fomrKey.currentState!.validate()) {
       return FirebaseFirestore.instance
           .collection('users')
@@ -55,10 +77,11 @@ class _UserRegistrationState extends State<UserRegistration> {
         'name': _name.text,
         'gender': dropdownValueGender,
         'address': address,
-        'zip': dropdownValue,
+        'zip': _pincode.text,
         'refered' : _referral.text,
         'mail': _email.text,
-        'pincode':dropdownValue,
+        'pincode':_pincode.text,
+        'NewLocation': unknownloc,
       });
     }
   }
@@ -208,30 +231,32 @@ class _UserRegistrationState extends State<UserRegistration> {
                             ),
                             buildTextField(
                                 "Address", "Enter here", true, _address),
+
+                            buildTextField(
+                                "Pincode", "Enter here", true, _pincode),
                             //dropdown-pincode
-                            SizedBox(
-                                width: double.infinity,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Enter Pincode",
-                                      style: TextStyle(
-                                          fontSize: 13, color: Colors.grey),
-                                    ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    Row(
-                                      crossAxisAlignment:
-                                      CrossAxisAlignment.center,
-                                      children: [
-                                        //DropDownField(),
-                                        DropDownField1(),
-                                      ],
-                                    ),
-                                  ],
-                                )),
+                            // SizedBox(
+                            //     width: double.infinity,
+                            //     child: Column(
+                            //       crossAxisAlignment: CrossAxisAlignment.start,
+                            //       children: [
+                            //         Text(
+                            //           "Enter Pincode",
+                            //           style: TextStyle(
+                            //               fontSize: 13, color: Colors.grey),
+                            //         ),
+                            //         SizedBox(
+                            //           height: 10,
+                            //         ),
+                            //         Row(
+                            //           crossAxisAlignment:
+                            //           CrossAxisAlignment.center,
+                            //           children: [
+                            //             DropDownField1(),
+                            //           ],
+                            //         ),
+                            //       ],
+                            //     )),
                             SizedBox(
                               height: 20,
                             ),
@@ -242,10 +267,12 @@ class _UserRegistrationState extends State<UserRegistration> {
                             // ),
                             RaisedButton(
                               onPressed: () {
-                                updateProfile().then((value) {
-                                  EasyLoading.showSuccess('Profile Updated');
-                                  Navigator.pushReplacementNamed(
-                                      context, MainScreen.id);
+                                checkPincode().then((value){
+                                  updateProfile().then((value) {
+                                    EasyLoading.showSuccess('Profile Updated');
+                                    Navigator.pushReplacementNamed(
+                                        context, MainScreen.id);
+                                  });
                                 });
                               },
                               color: Colors.orange[300],
@@ -273,6 +300,7 @@ class _UserRegistrationState extends State<UserRegistration> {
       ),
     );
   }
+
 
   Widget buildTextField(String labelText, String placeholder, bool isenabled,
       TextEditingController _controllerValue) {

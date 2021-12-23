@@ -4,12 +4,15 @@ To be implemented:
 mail sending - https://www.youtube.com/watch?v=9HW3MZ_tsdo
 Google Pay
 
-pincode edit
-publish edit
-app check yearly
-extra delivery today
-product check
-subscrption check in cart
-cancel subscription notification
-milk subscribe button
-contact us
+subscription:
+history
+
+ordering:
+cancel inventory update
+
+additional:
+order history order
+notification ui
+
+To Check:
+OTP

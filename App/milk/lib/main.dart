@@ -12,6 +12,7 @@ import 'package:milk/providers/notificationProvider.dart';
 import 'package:milk/providers/referal_provider.dart';
 import 'package:milk/providers/store_provider.dart';
 import 'package:milk/Screens/HomeScreen/UserRegistration/UserRegistration.dart';
+import 'package:milk/services/UpdateAvailable.dart';
 import 'package:provider/provider.dart';
 import 'Screens/SplashScreen/SplashScreen.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -113,6 +114,7 @@ class _MyAppState extends State<MyApp> {
         WelcomeScreen.id: (context) => WelcomeScreen(),
         MainScreen.id: (context) => MainScreen(),
         UserRegistration.id: (context) => UserRegistration(),
+        UpdateAvailable.id: (context) => UpdateAvailable(),
       },
     );
   }

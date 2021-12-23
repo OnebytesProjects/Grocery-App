@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:milk/Screens/HomeScreen/checkout/checkout.dart';
 import 'package:milk/providers/cart__provider.dart';
@@ -12,6 +13,7 @@ class Cart extends StatefulWidget {
 }
 
 class _CartState extends State<Cart> {
+  FirebaseAuth _auth = FirebaseAuth.instance;
 
   late String _docId;
   late double carttotal;
@@ -19,6 +21,7 @@ class _CartState extends State<Cart> {
   double discount = 0.0;
   bool updating = false;
   int delivryCharge = 0;
+
 
 
   @override
@@ -289,11 +292,8 @@ class _CartState extends State<Cart> {
               width: 180,
               child: RaisedButton(
                 onPressed: () {
-                  // print("proceed to buy");
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => Checkout(cartValue: carttotal)),
-                  );
+                  //check pincode
+                  checkpincode();
                 },
                 color: Colors.orange[300],
                 padding: const EdgeInsets.symmetric(horizontal: 50),
@@ -337,5 +337,36 @@ class _CartState extends State<Cart> {
         );
       },
     );
+  }
+
+  checkpincode() async{
+    return FirebaseFirestore.instance
+        .collection('users')
+        .doc(_auth.currentUser?.uid)
+        .get()
+        .then((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists) {
+        if(documentSnapshot['NewLocation'] == ''){
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => Checkout(cartValue: carttotal)),
+          );
+        }
+        else{
+          showDialog<String>(
+            context: context,
+            builder: (BuildContext context) => AlertDialog(
+              content: const Text('Uh Oh... We are currently not providing service to your region.'),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () => Navigator.pop(context, 'OK'),
+                  child: const Text('OK'),
+                ),
+              ],
+            ),
+          );
+      }
+      }
+    });
   }
 }

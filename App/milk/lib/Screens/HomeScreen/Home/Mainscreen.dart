@@ -19,6 +19,7 @@ import 'package:search_page/search_page.dart';
 import '../../Drawercontent/Contact_us.dart';
 import '../Preference/Preference.dart';
 import '../Subscription/Subscription.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MainScreen extends StatefulWidget {
   static const String id = 'home';
@@ -238,99 +239,6 @@ class _MainScreenState extends State<MainScreen> {
                     },
                   ),
 
-                  //check for notification
-                  // StreamBuilder<QuerySnapshot>(
-                  //   stream: _notificationStream,
-                  //   builder: (BuildContext context,
-                  //       AsyncSnapshot<QuerySnapshot> snapshot) {
-                  //
-                  //     if(!snapshot.hasData){
-                  //       return IconButton(
-                  //         icon: Icon(
-                  //           Icons.notifications,
-                  //           color: Colors.white,
-                  //         ),
-                  //         onPressed: () => showDialog<String>(
-                  //           context: context,
-                  //           builder: (BuildContext context) => Notifications(),
-                  //         ),
-                  //       );
-                  //     }
-                  //
-                  //     if (snapshot.hasData) {
-                  //       return Stack(
-                  //         children: [
-                  //           IconButton(
-                  //             icon: Icon(
-                  //               Icons.notifications,
-                  //               color: Colors.white,
-                  //             ),
-                  //             onPressed: () => showDialog<String>(
-                  //               context: context,
-                  //               builder: (BuildContext context) =>
-                  //                   Notifications(),
-                  //             ),
-                  //           ),
-                  //           Padding(
-                  //             padding: const EdgeInsets.all(8.0),
-                  //             child: Container(
-                  //               height: 10,
-                  //               width: 10,
-                  //               color: Colors.red,
-                  //             ),
-                  //           )
-                  //         ],
-                  //       );
-                  //     }
-                  //
-                  //     return IconButton(
-                  //       icon: Icon(
-                  //         Icons.notifications,
-                  //         color: Colors.white,
-                  //       ),
-                  //       onPressed: () => showDialog<String>(
-                  //         context: context,
-                  //         builder: (BuildContext context) => Notifications(),
-                  //       ),
-                  //     );
-                  //   },
-                  // ),
-
-                  // _notification == 'Present'
-                  //     ? Stack(
-                  //         children: [
-                  //           IconButton(
-                  //             icon: Icon(
-                  //               Icons.notifications,
-                  //               color: Colors.white,
-                  //             ),
-                  //             onPressed: () => showDialog<String>(
-                  //               context: context,
-                  //               builder: (BuildContext context) =>
-                  //                   Notifications(),
-                  //             ),
-                  //           ),
-                  //           Padding(
-                  //             padding: const EdgeInsets.all(8.0),
-                  //             child: Container(
-                  //               height: 10,
-                  //               width: 10,
-                  //               color: Colors.red,
-                  //             ),
-                  //           )
-                  //         ],
-                  //       )
-                  //     : IconButton(
-                  //         icon: Icon(
-                  //           Icons.notifications,
-                  //           color: Colors.white,
-                  //         ),
-                  //         onPressed: () => showDialog<String>(
-                  //           context: context,
-                  //           builder: (BuildContext context) => Notifications(),
-                  //         ),
-                  //       ),
-
                   IconButton(
                     icon: Icon(
                       Icons.notifications,
@@ -513,6 +421,42 @@ class _MainScreenState extends State<MainScreen> {
             currentPage == DrawerSection.CANCELATION_AND_REFUND ? true : false),
         menuItem(11, "LOGOUT", Icons.logout,
             currentPage == DrawerSection.LOGOUT ? true : false),
+        GestureDetector(
+          onTap: (){
+            launch('https://www.onebytes.in');
+          },
+          child: Container(
+            height: 80,
+            width: double.infinity,
+            color:  Color(0xff444444),
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Container(
+                      height: 50,
+                      width: 50,
+                      //color: Colors.green
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        image: DecorationImage(
+                          image: AssetImage('images/ob.jpeg'),
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                    ),
+                    Text(
+                      "Developed By OneBytes",
+                      style: TextStyle(color: Colors.white),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ),
+        )
       ],
     );
   }

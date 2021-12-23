@@ -152,8 +152,10 @@ class ProductProvider with ChangeNotifier {
       v2,
       v3,
       v4,
-      qty,
-      minQty,
+        p1,
+        p2,
+        p3,
+        p4,
       productid,
       context}) {
     CollectionReference _products =
@@ -170,9 +172,12 @@ class ProductProvider with ChangeNotifier {
         'v2': v2,
         'v3': v3,
         'v4': v4,
+        'p1': p1,
+        'p2': p2,
+        'p3': p3,
+        'p4': p4,
+
         'productId': productid,
-        'qty': qty,
-        'min_qty': minQty,
       });
       this.alertDialog(
           context: context,

@@ -28,9 +28,13 @@ class _CalendarState extends State<Calendar> {
   String? todayDelivery;
   bool enable = true;
   String vip = '';
+  int _qty = 0;
+  bool _skipenable = false;
+  bool _assigned = false;
 
   FirebaseAuth _auth = FirebaseAuth.instance;
   CollectionReference subscription = FirebaseFirestore.instance.collection('subscription');
+  CollectionReference subscription2 = FirebaseFirestore.instance.collection('Activesubscription');
   @override
   void initState() {
 
@@ -60,9 +64,6 @@ class _CalendarState extends State<Calendar> {
         });
       });
     });
-
-
-
 
     return Scaffold(
         body: ListView(
@@ -133,7 +134,7 @@ class _CalendarState extends State<Calendar> {
       height: MediaQuery.of(context).size.height,
       width: double.infinity,
       child: StreamBuilder<QuerySnapshot>(
-        stream: orderService.subscription.where('userId',isEqualTo: user?.uid).snapshots(),
+        stream: orderService.subscription2.where('userId',isEqualTo: user?.uid).snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
             return Text('Something went wrong');
@@ -183,10 +184,86 @@ class _CalendarState extends State<Calendar> {
                                     subtitle: Text('Quantity: ${data['products'][index]['qty'].toString()}   Price:₹ ${data['products'][index]['sellingPrice'].toString()}',
                                       style: TextStyle(fontSize: 12,color: Colors.grey),),
                                   ),
-                                  DateFormat('yyyy,MM,dd').format(_focusedDay) == DateFormat('yyyy,MM,dd').format(_today) ? RaisedButton(onPressed: (){
-                                    showDialog('Are you Sure?', context,document.id);
+                                  DateFormat('yyyy,MM,dd').format(_focusedDay) == DateFormat('yyyy,MM,dd').format(_today) ?
+                                  Row(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            InkWell(
+                                              onTap: () {
+                                                if (_qty >= 1) {
+                                                  setState(() {
+                                                    _qty -= 1;
+                                                  });
+                                                }
+                                                if(_qty == 0){
+                                                  setState(() {
+                                                    _skipenable = false;
+                                                  });
+                                                }
+                                              },
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                    borderRadius:
+                                                    BorderRadius.circular(50),
+                                                    border: Border.all(
+                                                      color: Colors.orange,
+                                                    )),
+                                                child: Padding(
+                                                  padding: EdgeInsets.all(8.0),
+                                                  child: Icon(Icons.remove),
+                                                ),
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: EdgeInsets.only(
+                                                  left: 20,
+                                                  right: 20,
+                                                  top: 8,
+                                                  bottom: 8),
+                                              child: Text(_qty.toString()),
+                                            ),
+                                            InkWell(
+                                              onTap: () {
+                                                if (_qty >= 0) {
+                                                  setState(() {
+                                                    _qty += 1;
+                                                  });
+                                                }
+                                                if(_qty > 0){
+                                                  setState(() {
+                                                    _skipenable = true;
+                                                  });
+                                                }
+                                              },
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                    borderRadius:
+                                                    BorderRadius.circular(50),
+                                                    border: Border.all(
+                                                      color: Colors.orange,
+                                                    )),
+                                                child: Padding(
+                                                  padding: EdgeInsets.all(8.0),
+                                                  child: Icon(Icons.add),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      RaisedButton(
+                                        onPressed: _skipenable?(){
+                                        showDialog('Are you Sure?', context,document.id);
 
-                                  },child: Text('Skip Todays Delivery'),color: Colors.orange,):Container(),
+                                      }:null,child: Text('Skip Delivery'),
+                                        color: _skipenable?Colors.orange:Colors.grey,),
+                                    ],
+                                  ):Container(),
                                 ],
                               );
                             },
@@ -218,10 +295,15 @@ class _CalendarState extends State<Calendar> {
           FlatButton(onPressed: (){
             Navigator.pop(context);
             //SkipOrder
-            subscription.doc(docid)
+            subscription.doc(_auth.currentUser?.uid)
                 .update({
-              'DeliveryDate': DateTime.now().add(Duration(days: 1)).toString(),
-              'endDate':DateTime.parse(enddate!).add(Duration(days: 1)).toString(),
+              'DeliveryDate': DateTime.now().add(Duration(days: _qty)).toString(),
+              'endDate':DateTime.parse(enddate!).add(Duration(days: _qty)).toString(),
+            });
+            subscription2.doc(_auth.currentUser?.uid)
+                .update({
+              'DeliveryDate': DateTime.now().add(Duration(days: _qty)).toString(),
+              'endDate':DateTime.parse(enddate!).add(Duration(days: _qty)).toString(),
             });
             EasyLoading.showSuccess('Skipped Todays Delivery');
             Navigator.pushReplacementNamed(context, MainScreen.id);
@@ -231,3 +313,5 @@ class _CalendarState extends State<Calendar> {
     });
   }
 }
+
+//doc id to userid

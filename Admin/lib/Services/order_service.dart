@@ -4,6 +4,7 @@ class OrderService{
   CollectionReference product = FirebaseFirestore.instance.collection('products');
   CollectionReference order = FirebaseFirestore.instance.collection('orders');
   CollectionReference subscription = FirebaseFirestore.instance.collection('subscription');
+  CollectionReference subscription2 = FirebaseFirestore.instance.collection('Activesubscription');
   CollectionReference users = FirebaseFirestore.instance.collection('users');
 
   Future<void>updateOrderStatus(documentId,status){
@@ -15,6 +16,12 @@ class OrderService{
   Future<void>updateSubscriptionStatus(documentId,status){
     //condition to assign delivery date
     var result = subscription.doc(documentId).update({
+      'orderStatus' : status,
+      'startdate': DateTime.now().toString(),
+      'endDate': DateTime.now().add(Duration(days: 30)).toString(),
+      'DeliveryDate' : DateTime.now().toString(),
+    });
+    subscription2.doc(documentId).update({
       'orderStatus' : status,
       'startdate': DateTime.now().toString(),
       'endDate': DateTime.now().add(Duration(days: 30)).toString(),
@@ -33,6 +40,8 @@ class OrderService{
       },
       'DeliveryDate' : '',
     });
+    //delete
+    subscription2.doc(documentId).delete();
     //userdata
     users
         .doc(userid)

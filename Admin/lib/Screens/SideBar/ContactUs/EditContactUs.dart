@@ -12,7 +12,11 @@ class EditContactUS extends StatefulWidget {
 
 class _EditContactUSState extends State<EditContactUS> {
   final _formKey = GlobalKey<FormState>();
-  var content = TextEditingController();
+  var address = TextEditingController();
+  var number = TextEditingController();
+  var whatsapp = TextEditingController();
+  var email = TextEditingController();
+
   FirebaseServices _services = FirebaseServices();
 
   @override
@@ -24,7 +28,10 @@ class _EditContactUSState extends State<EditContactUS> {
         .then((DocumentSnapshot documentSnapshot) {
       if (documentSnapshot.exists) {
         setState(() {
-          this.content.text = documentSnapshot['Content'];
+          this.address.text = documentSnapshot['Address'];
+          this.number.text = documentSnapshot['Number'];
+          this.whatsapp.text = documentSnapshot['Whatsapp'];
+          this.email.text = documentSnapshot['Email'];
         });
       }
     });
@@ -50,7 +57,7 @@ class _EditContactUSState extends State<EditContactUS> {
                 child: Column(
                   children: [
                     TextFormField(
-                      controller: content,
+                      controller: address,
                       keyboardType: TextInputType.number,
                       validator: (value) {
                         if (value!.isEmpty) {
@@ -60,7 +67,52 @@ class _EditContactUSState extends State<EditContactUS> {
                       },
                       decoration: InputDecoration(
                         contentPadding: EdgeInsets.zero,
-                        labelText: 'Contact Us Content',
+                        labelText: 'Address',
+                        labelStyle: TextStyle(color: Colors.grey),
+                      ),
+                    ),
+                    TextFormField(
+                      controller: number,
+                      keyboardType: TextInputType.number,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Enter Content';
+                        }
+                        return null;
+                      },
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.zero,
+                        labelText: 'Mobile Number',
+                        labelStyle: TextStyle(color: Colors.grey),
+                      ),
+                    ),
+                    TextFormField(
+                      controller: whatsapp,
+                      keyboardType: TextInputType.number,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Enter Content';
+                        }
+                        return null;
+                      },
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.zero,
+                        labelText: 'Whatsapp Number',
+                        labelStyle: TextStyle(color: Colors.grey),
+                      ),
+                    ),
+                    TextFormField(
+                      controller: email,
+                      keyboardType: TextInputType.number,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Enter Content';
+                        }
+                        return null;
+                      },
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.zero,
+                        labelText: 'Email address',
                         labelStyle: TextStyle(color: Colors.grey),
                       ),
                     ),
@@ -74,7 +126,10 @@ class _EditContactUSState extends State<EditContactUS> {
                                 EasyLoading.show(status: 'Please wait..');
                                 _services
                                     .updateSideBarContent(
-                                        content: content.text,
+                                  address: address.text,
+                                        number: number.text,
+                                        whatsapp: whatsapp.text,
+                                        email: email.text,
                                         title: 'ContactUs')
                                     .then((value) {
                                   EasyLoading.showSuccess(

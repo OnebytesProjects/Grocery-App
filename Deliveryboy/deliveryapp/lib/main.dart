@@ -1,5 +1,6 @@
 // @dart=2.9
 import 'package:deliveryapp/HomeScreen/HomeScreen.dart';
+import 'package:deliveryapp/services/UpdateAvaliable.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'SplashScreen/SplashScreen.dart';
@@ -24,6 +25,7 @@ class MyApp extends StatelessWidget {
       routes: {
         SplashScreen.id: (context) => SplashScreen(),
         HomeScreen.id: (context) => HomeScreen(),
+        UpdateAvailable.id: (context) => UpdateAvailable(),
       },
       initialRoute: SplashScreen.id,
     );

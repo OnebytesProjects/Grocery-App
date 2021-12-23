@@ -29,10 +29,7 @@ class _ProductScreenState extends State<ProductScreen> {
   bool _v3visible = false;
   bool _v4visible = false;
   bool _subscription = false;
-  bool  isChecked1sub = false;
-  bool isChecked2sub = false;
   bool incdisplay = false;
-  String subscriptionType = '';
   int _qty = 0;
   String vip = '';
   late String _docId;
@@ -93,7 +90,11 @@ class _ProductScreenState extends State<ProductScreen> {
              _v1visible = true;
              _chosenprice = true;
            });
-         }else{volume = doc['ProductQuantity'];}
+         }else{setState(() {
+           volume = doc['ProductQuantity'];
+           _cartbutton =true;
+           incdisplay = true;
+         });}
          if(doc['v2'] !=""  && doc['p2'] !=""){
            setState(() {
              _v2visible = true;
@@ -106,6 +107,7 @@ class _ProductScreenState extends State<ProductScreen> {
              _chosenprice = true;
            });
          }
+
          if(doc['v4'] !=""  && doc['p4'] !=""){
            setState(() {
              _v4visible = true;
@@ -121,22 +123,12 @@ class _ProductScreenState extends State<ProductScreen> {
     });
 
     setState(() {
-      if(widget.pname == 'Milk'){
-        if(_qty>0 || volume !='nil' || subscriptionType != ''){
-          _cartbutton = true;
-        }
-        if(_qty == 0 || volume =='nil'|| subscriptionType == ''){
-          _cartbutton = false;
-        }
-      }else{
         if(_qty>0 || volume !='nil'){
           _cartbutton = true;
         }
         if(_qty == 0 || volume =='nil'){
           _cartbutton = false;
         }
-      }
-
     });
 
     return Scaffold(
@@ -522,63 +514,6 @@ class _ProductScreenState extends State<ProductScreen> {
                         ],
                       ),
                     ),
-                    _subscription ?
-                    Column(
-                      children: [
-                        Text('Subscription',style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
-                        Container(
-                          height: 50,
-                          padding: EdgeInsets.only(left: 20, right: 50),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Row(
-                                children: [
-                                  Checkbox(
-                                      checkColor: Colors.white,
-                                      fillColor: MaterialStateProperty.resolveWith(getColor),
-                                      value: isChecked1sub,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          isChecked1sub = value!;
-                                          isChecked2sub = false;
-                                          subscriptionType = 'Monthly';
-                                        });
-                                        if(value == false){
-                                          setState(() {
-                                            subscriptionType = '';
-                                          });
-                                        }
-                                      }),
-                                  Text("Monthly")
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  Checkbox(
-                                      checkColor: Colors.white,
-                                      fillColor: MaterialStateProperty.resolveWith(getColor),
-                                      value: isChecked2sub,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          isChecked1sub = false;
-                                          isChecked2sub = value!;
-                                          subscriptionType = 'Yearly';
-                                        });
-                                        if(value == false){
-                                          setState(() {
-                                            subscriptionType = '';
-                                          });
-                                        }
-                                      }),
-                                  Text("Yearly")
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ):Container(),
                     SizedBox(
                       height: 10,
                     ),
@@ -666,19 +601,12 @@ class _ProductScreenState extends State<ProductScreen> {
                       children: [
                         RaisedButton(
                           onPressed: _cartbutton ? (){
-                            if(widget.pname == 'Milk'){
-                              EasyLoading.show(status: 'Adding to Cart...');
-                              _cart.addToCartSubscription(data: data,volume: volume,qty: _qty,total: total,subscription: subscriptionType).then((value){
-                                EasyLoading.showSuccess('Added to Cart');
-                              });
 
-                            }else{
                               EasyLoading.show(status: 'Adding to Cart...');
                               _cart.addToCart(data: data,volume: volume,qty: _qty,total: total).then((value){
                                 EasyLoading.showSuccess('Added to Cart');
                               });
 
-                            }
 
                           }:(){
                             showDialog<String>(

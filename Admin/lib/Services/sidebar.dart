@@ -6,9 +6,11 @@ import 'package:admin/Screens/Notification/notification_screen.dart';
 import 'package:admin/Screens/SideBar/SideBarContent.dart';
 import 'package:admin/Screens/Vendor/vendor_screen.dart';
 import 'package:admin/Screens/Login/LoginScreen.dart';
+import 'package:admin/Screens/payment/Payment.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_admin_scaffold/admin_scaffold.dart';
+import '../Screens/Manage/Manage.dart';
 
 class SidebarWidget {
   sideBarmenus(context, selectedRoutes) {
@@ -18,6 +20,11 @@ class SidebarWidget {
           title: 'Dashboard',
           route: HomeScreen.id,
           icon: Icons.dashboard,
+        ),
+        MenuItem(
+          title: 'Manage',
+          route: Manage.id,
+          icon: Icons.manage_accounts,
         ),
         MenuItem(
           title: 'Banners',
@@ -43,6 +50,11 @@ class SidebarWidget {
           title: 'Vendor',
           route: VendorScreen.id,
           icon: CupertinoIcons.shopping_cart,
+        ),
+        MenuItem(
+          title: 'Payment',
+          route: Payment.id,
+          icon: CupertinoIcons.money_pound,
         ),
         MenuItem(
           title: 'Send Notification',

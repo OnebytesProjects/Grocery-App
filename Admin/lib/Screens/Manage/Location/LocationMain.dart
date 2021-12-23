@@ -1,31 +1,54 @@
-import 'dart:html';
-
-import 'package:admin/Screens/Home/Inventory/updateInventory.dart';
+import 'package:admin/Screens/Manage/Location/LocationAdd.dart';
 import 'package:admin/Services/Firebase_Services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase/firebase.dart';
 import 'package:flutter/material.dart';
 
-class Inventory extends StatefulWidget {
-  const Inventory({Key? key}) : super(key: key);
+class LocationScreenMain extends StatefulWidget {
+  const LocationScreenMain({Key? key}) : super(key: key);
 
   @override
-  _InventoryState createState() => _InventoryState();
+  _LocationScreenMainState createState() => _LocationScreenMainState();
 }
 
-class _InventoryState extends State<Inventory> {
+class _LocationScreenMainState extends State<LocationScreenMain> {
+  String defaultscreen = '1';
   var docid ;
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Manage Inventory'),
+        title: Text('Manage Pincode'),
         backgroundColor: Colors.black87,
         automaticallyImplyLeading: false,
       ),
       body: Container(
           child: Column(
             children: [
+              Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: FlatButton(
+                        color: Theme.of(context).primaryColor,
+                        child: Text(
+                          'Add New Pincode',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => LocationAdd()));
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
               Divider(
                 thickness: 3,
               ),
@@ -35,13 +58,10 @@ class _InventoryState extends State<Inventory> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Text(
-                        'Product',
+                        'Pincode',
                       ),
                       Text(
-                        'Min Qantity',
-                      ),
-                      Text(
-                        'Max Quantity',
+                        'Delivery Charge',
                       ),
                       Text(
                         'Options',
@@ -54,19 +74,19 @@ class _InventoryState extends State<Inventory> {
                 thickness: 3,
               ),
               Container(
-                child: InventoryList(context),
+                child: pincodeList(),
               )
             ],
           )),
     );
   }
 
-  Widget InventoryList(BuildContext context) {
+  Widget pincodeList() {
     FirebaseServices _services = FirebaseServices();
 
     return Container(
         child: StreamBuilder(
-          stream: _services.products.snapshots(),
+          stream: _services.pincode.snapshots(),
           builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (snapshot.hasError) {
               return Text('Something went wrong');
@@ -83,6 +103,7 @@ class _InventoryState extends State<Inventory> {
                     Map<String, dynamic> data =
                     document.data()! as Map<String, dynamic>;
                     docid = document.id;
+
                     return Container(
                       height: 80,
                       width: double.infinity,
@@ -95,20 +116,15 @@ class _InventoryState extends State<Inventory> {
                               children: [
                                 Container(
                                   child: Text(
-                                    data['productName'],
+                                    data['pincode'],
                                   ),
                                 ),
                                 Container(
                                   child: Text(
-                                    data['Inventory_min_qty'].toString(),
+                                    data['deliverycharge'].toString(),
                                   ),
                                 ),
-                                Container(
-                                  child: Text(
-                                    data['Inventory_max_qty'].toString(),
-                                  ),
-                                ),
-                                 popUpButton(data,context),
+                                popUpButton(data),
                               ],
                             ),
                           ),
@@ -125,28 +141,34 @@ class _InventoryState extends State<Inventory> {
           },
         ));
   }
-  Widget popUpButton(data,BuildContext context){
+  Widget popUpButton(data){
+    FirebaseServices _services = FirebaseServices();
     return PopupMenuButton<String>(
         onSelected: (String value){
-          if(value == 'update'){
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => UpdateInventory(
-                      title:  data['productName'],
-                      minqty: data['Inventory_min_qty'].toString(),
-                      maxqty: data['Inventory_max_qty'].toString(),
-                      dataid: docid,
-                    )));
+          // if(value == 'edit'){
+          //   Navigator.push(
+          //       context,
+          //       MaterialPageRoute(
+          //           builder: (context) => EditLocation(code: data['pincode'],charge: data['deliverycharge'].toString(),dataid: docid,)));
+          // }
+          if(value == 'delete'){
+            _services.deletePincode(id: data['pincode']);
           }
         },
         itemBuilder: (BuildContext context)=><PopupMenuEntry<String>>[
+          // const PopupMenuItem(
+          //   value: 'edit',
+          //   child: ListTile(
+          //     leading: Icon(Icons.info_outline),
+          //     title: Text('Preview/Edit'),
+          //   ),),
           const PopupMenuItem(
-            value: 'update',
+            value: 'delete',
             child: ListTile(
-              leading: Icon(Icons.info_outline),
-              title: Text('Update Inventory'),
+              leading: Icon(Icons.delete_outlined),
+              title: Text('Delete Pincode'),
             ),),
         ]);
   }
 }
+

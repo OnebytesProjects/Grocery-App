@@ -7,6 +7,8 @@ class FirebaseServices {
   CollectionReference banners = FirebaseFirestore.instance.collection('slider');
   CollectionReference milkscreen =
       FirebaseFirestore.instance.collection('milkscreen');
+  CollectionReference Ad =
+  FirebaseFirestore.instance.collection('ad');
   CollectionReference category =
       FirebaseFirestore.instance.collection('category');
   CollectionReference products =
@@ -23,6 +25,10 @@ class FirebaseServices {
       FirebaseFirestore.instance.collection('pincode');
   CollectionReference subscription =
       FirebaseFirestore.instance.collection('subscription');
+  CollectionReference subscription2 =
+  FirebaseFirestore.instance.collection('Activesubscription');
+  CollectionReference users =
+  FirebaseFirestore.instance.collection('users');
 
   Future<QuerySnapshot> getAdminCredentials() {
     var result = FirebaseFirestore.instance.collection('Admin').get();
@@ -57,6 +63,20 @@ class FirebaseServices {
 
   deleteMilkImageFrmDb(id) async {
     firestore.collection('milkscreen').doc(id).delete();
+  }
+  //Adscreen
+  Future<String> uploadAdImageToDb(url) async {
+    String downloadUrl = await storage.ref(url).getDownloadURL();
+    if (downloadUrl != null) {
+      firestore.collection('ad').add({
+        'image': downloadUrl,
+      });
+    }
+    return downloadUrl;
+  }
+
+  deleteAdImageFrmDb(id) async {
+    firestore.collection('ad').doc(id).delete();
   }
 
   //category
@@ -242,6 +262,13 @@ class FirebaseServices {
       },
       'deliveryboystatus': 'Assigned',
     });
+    subscription2.doc(orderId).update({
+      'deliverBoy': {
+        'name': name,
+        'phone': number,
+      },
+      'deliveryboystatus': 'Assigned',
+    });
     return result;
   }
 
@@ -277,6 +304,12 @@ class FirebaseServices {
       'deliverycharge': deliverycharge,
     });
   }
+  Future<void> updatePincode({data,code, charge}) async {
+    return pincode.doc(data).update({
+      'pincode': code,
+      'deliverycharge': charge,
+    });
+  }
 
   Future<void> deletePincode({id}) {
     return pincode.doc(id).delete();
@@ -289,10 +322,21 @@ class FirebaseServices {
     });
   }
 
-  Future<void> updateSideBarContent({content, title}) async {
-    return sidebarcontent.doc(title).set({
-      'type': title,
-      'Content': content,
-    });
+  Future<void> updateSideBarContent({address,number,whatsapp,email,content, title}) async {
+    if(title == 'ContactUs'){
+      return sidebarcontent.doc(title).set({
+        'type': title,
+        'Address':address,
+        'Number':number,
+        'Whatsapp':whatsapp,
+        'Email':email,
+      });
+    }else{
+      return sidebarcontent.doc(title).set({
+        'type': title,
+        'Content': content,
+      });
+    }
+
   }
 }

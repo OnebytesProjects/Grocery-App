@@ -33,8 +33,7 @@ class _EditViewProductState extends State<EditViewProduct> {
   var _p2 = TextEditingController();
   var _p3 = TextEditingController();
   var _p4 = TextEditingController();
-  var _qty = TextEditingController();
-  var _minqty = TextEditingController();
+
   bool _editing = true;
 
   dynamic data;
@@ -66,8 +65,6 @@ class _EditViewProductState extends State<EditViewProduct> {
         _p2.text = data['p2'].toString();
         _p3.text = data['p3'].toString();
         _p4.text = data['p4'].toString();
-        _qty.text = data['qty'].toString();
-        _minqty.text = data['min_qty'].toString();
       } else {
         print('Document does not exist on the database');
       }
@@ -278,7 +275,7 @@ class _EditViewProductState extends State<EditViewProduct> {
                                       }),
                                   Container(
                                     height: 20,
-                                    width: 50,
+                                    width: 100,
                                     child: TextFormField(
                                       controller: _v1,
                                       decoration: InputDecoration(
@@ -318,11 +315,11 @@ class _EditViewProductState extends State<EditViewProduct> {
                                       }),
                                   Container(
                                     height: 20,
-                                    width: 50,
+                                    width: 100,
                                     child: TextFormField(
-                                      controller: _v2,
+                                      controller: _v3,
                                       decoration: InputDecoration(
-                                          hintText: 'v2',
+                                          hintText: 'v3',
                                           hintStyle: TextStyle(
                                             fontWeight: FontWeight.bold,
                                           )),
@@ -332,7 +329,7 @@ class _EditViewProductState extends State<EditViewProduct> {
                                     height: 20,
                                     width: 50,
                                     child: TextFormField(
-                                      controller: _p2,
+                                      controller: _p3,
                                       decoration: InputDecoration(
                                           hintText: 'price',
                                           hintStyle: TextStyle(
@@ -359,11 +356,11 @@ class _EditViewProductState extends State<EditViewProduct> {
                                       }),
                                   Container(
                                     height: 20,
-                                    width: 50,
+                                    width: 100,
                                     child: TextFormField(
-                                      controller: _v3,
+                                      controller: _v2,
                                       decoration: InputDecoration(
-                                          hintText: 'v3',
+                                          hintText: 'v2',
                                           hintStyle: TextStyle(
                                             fontWeight: FontWeight.bold,
                                           )),
@@ -373,7 +370,7 @@ class _EditViewProductState extends State<EditViewProduct> {
                                     height: 20,
                                     width: 50,
                                     child: TextFormField(
-                                      controller: _p3,
+                                      controller: _p2,
                                       decoration: InputDecoration(
                                           hintText: 'price',
                                           hintStyle: TextStyle(
@@ -384,6 +381,7 @@ class _EditViewProductState extends State<EditViewProduct> {
                                 ],
                               ),
                             ),
+
                             SizedBox(
                               height: 10,
                             ),
@@ -399,7 +397,7 @@ class _EditViewProductState extends State<EditViewProduct> {
                                       }),
                                   Container(
                                     height: 20,
-                                    width: 50,
+                                    width: 100,
                                     child: TextFormField(
                                       controller: _v4,
                                       decoration: InputDecoration(
@@ -464,6 +462,7 @@ class _EditViewProductState extends State<EditViewProduct> {
                       onTap: () {
                         if (_formKey.currentState!.validate()) {
                           EasyLoading.show(status: 'Saving...');
+                          //print('${_productname.text},${_brandName.text},${_productQuantity.text},${_sellingPrice.text},${_comparedPrice.text},${_productDescription.text},${_v1.text},${_v2.text},${_v3.text},${_v4.text},${_p1.text},${_p2.text},${_p3.text},${_p4.text}');
                           _provider.updateProductDatatoDb(
                             context: context,
                             productName: _productname.text,
@@ -472,12 +471,14 @@ class _EditViewProductState extends State<EditViewProduct> {
                             sellingPrice: double.parse(_sellingPrice.text),
                             comparedPrice: double.parse(_comparedPrice.text),
                             productDescription: _productDescription.text,
-                            qty: int.parse(_qty.text),
-                            minQty: int.parse(_minqty.text),
                             v1: _v1.text,
                             v2: _v2.text,
                             v3: _v3.text,
                             v4: _v4.text,
+                            p1: _p1.text,
+                            p2: _p2.text,
+                            p3: _p3.text,
+                            p4: _p4.text,
                             productid: widget.productId,
                           );
                         }

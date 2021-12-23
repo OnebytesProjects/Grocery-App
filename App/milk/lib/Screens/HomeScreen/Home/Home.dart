@@ -14,63 +14,63 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
 
   var _productList = '0';
-  //Stream function
-  // late Stream slides;
-  // Future<Stream> _queryDb() async => slides = FirebaseFirestore.instance
-  //     .collection('slider')
-  //     .snapshots()
-  //     .map((list) => list.docs.map((doc) => doc.data()));
-  //
-  // late AnimationController _animationController;
-  //
-  // late Animation<double> _nextPage;
-  // int _currentPage = 0;
-  // final PageController _pcontroller = PageController(
-  //   initialPage: 0,
-  //   viewportFraction: 0.8
-  // );
-  // List slideList = [];
+  bool showAd = true;
+  String adimage = '';
 
-
-  // @override
-  // void initState() {
-  //   _queryDb();
-  //
-  //   //Start at the controller and set the time to switch pages
-  //   _animationController =
-  //    AnimationController(vsync: this, duration: Duration(seconds: 5));
-  //   _nextPage = Tween(begin: 0.0, end: 1.0).animate(_animationController);
-  //
-  //   _animationController.addListener(() {
-  //     if (_animationController.status == AnimationStatus.completed) {
-  //       _animationController.reset(); //Reset the controller
-  //       final int page = 4; //Number of pages in your PageView
-  //       if (_currentPage < page) {
-  //         _currentPage++;
-  //         _pcontroller.animateToPage(_currentPage,
-  //             duration: Duration(milliseconds: 300), curve: Curves.easeInSine);
-  //       } else {
-  //         _currentPage = 0;
-  //       }
-  //     }
-  //   });
-  //   //CarouselView();
-  //   super.initState();
-  // }
-
-  // @override
-  // void dispose() {
-  //   _animationController.dispose();
-  //   _pcontroller.dispose();
-  //   super.dispose();
-  // }
   DateTime timeBackPressed = DateTime.now();
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    //get milkgif
+    FirebaseFirestore.instance
+        .collection('ad')
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((doc) {
+        this.adimage = doc['image'];
+      });
+    });
 
-    //_animationController.forward(); //Start controller with widget
-    //print(_nextPage.value);
+    // TODO: implement initState
+    super.initState();
+    if(showAd){
+      WidgetsBinding.instance?.addPostFrameCallback(
+              (_) => _showStartDialog()
+      );
+    }
+  }
+
+  Future<void> _showStartDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return Padding(
+          padding: const EdgeInsets.fromLTRB(8, 50, 8, 215),
+          child: Card(
+            child: Stack(
+              children: [
+                Container(
+                  child: AdImage(),
+                ),
+                Positioned(top:10,right: 10,
+                    child:IconButton(
+                      icon: Icon(Icons.close),
+                      onPressed: (){
+                        Navigator.of(context).pop();
+                      },
+                    )
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
 
     return WillPopScope(
       onWillPop: ()async{
@@ -233,6 +233,31 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
           }
           return Center(child: CircularProgressIndicator());
         });
+  }
+  AdImage(){
+    final Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance.collection('ad').snapshots();
+    return StreamBuilder<QuerySnapshot>(
+      stream: _usersStream,
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (snapshot.hasError) {
+          return Text('Something went wrong');
+        }
+
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator(),);
+        }
+
+        return ListView(
+          physics: const NeverScrollableScrollPhysics(),
+          children: snapshot.data!.docs.map((DocumentSnapshot document) {
+            Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
+            return Container(
+              child: Image.network(data['image'],fit: BoxFit.fill,),
+            );
+          }).toList(),
+        );
+      },
+    );
   }
 
 }

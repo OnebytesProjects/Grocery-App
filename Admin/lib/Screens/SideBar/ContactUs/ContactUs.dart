@@ -86,8 +86,15 @@ class _ContactUsState extends State<ContactUs> {
             children: snapshot.data!.docs.map((DocumentSnapshot document) {
               Map<String, dynamic> data =
                   document.data()! as Map<String, dynamic>;
-              return ListTile(
-                title: Text(data['Content']),
+              return Container(
+                child: Column(
+                  children: [
+                    Text('Address: ${data['Address']}'),
+                    Text('Number: ${data['Number']}'),
+                    Text('Whatsapp: ${data['Whatsapp']}'),
+                    Text('Email: ${data['Email']}'),
+                  ],
+                ),
               );
             }).toList(),
           );

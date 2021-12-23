@@ -24,81 +24,93 @@ class _SideBarContentState extends State<SideBarContent> {
         backgroundColor: Colors.black87,
         iconTheme: IconThemeData(color: Colors.white),
         title: const Text(
-          'Dashboard',
+          'SideBar',
           style: TextStyle(color: Colors.white),
         ),
       ),
       sideBar: _sideBar.sideBarmenus(context, SideBarContent.id),
-      body: ListView(
-        children: [
-          Container(
-            height: 450,
-            width: double.infinity,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Card(
-                elevation: 10,
-                child: AboutUs(),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Text(
+              'Side Bar Content',
+              style: TextStyle(
+                fontWeight: FontWeight.w700,
+                fontSize: 36,
               ),
             ),
-          ),
-          Divider(
-            thickness: 3,
-          ),
-          Container(
-            height: 450,
-            width: double.infinity,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Card(
-                elevation: 10,
-                child: ContactUs(),
+            Divider(
+              thickness: 5,
+            ),
+            Container(
+              height: 450,
+              width: double.infinity,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Card(
+                  elevation: 10,
+                  child: AboutUs(),
+                ),
               ),
             ),
-          ),
-          Divider(
-            thickness: 3,
-          ),
-          Container(
-            height: 450,
-            width: double.infinity,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Card(
-                elevation: 10,
-                child: TermsOfUse(),
+            Divider(
+              thickness: 3,
+            ),
+            Container(
+              height: 450,
+              width: double.infinity,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Card(
+                  elevation: 10,
+                  child: ContactUs(),
+                ),
               ),
             ),
-          ),
-          Divider(
-            thickness: 3,
-          ),
-          Container(
-            height: 450,
-            width: double.infinity,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Card(
-                elevation: 10,
-                child: Cancelation(),
+            Divider(
+              thickness: 3,
+            ),
+            Container(
+              height: 450,
+              width: double.infinity,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Card(
+                  elevation: 10,
+                  child: TermsOfUse(),
+                ),
               ),
             ),
-          ),
-          Divider(
-            thickness: 3,
-          ),
-          Container(
-            height: 450,
-            width: double.infinity,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Card(
-                elevation: 10,
-                child: Conveniencefee(),
+            Divider(
+              thickness: 3,
+            ),
+            Container(
+              height: 450,
+              width: double.infinity,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Card(
+                  elevation: 10,
+                  child: Cancelation(),
+                ),
               ),
             ),
-          ),
-        ],
+            Divider(
+              thickness: 3,
+            ),
+            Container(
+              height: 450,
+              width: double.infinity,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Card(
+                  elevation: 10,
+                  child: Conveniencefee(),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

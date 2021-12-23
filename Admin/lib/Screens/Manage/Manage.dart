@@ -1,34 +1,30 @@
-import 'package:admin/Screens/Home/Ad/Ad.dart';
-import 'package:admin/Screens/Home/NewLocationUser/NewLocationUser.dart';
-import 'package:admin/Screens/Home/Users/User.dart';
+import 'package:admin/Screens/Manage/Coupon/CouponScreenMain.dart';
+import 'package:admin/Screens/Manage/Inventory/Inventory.dart';
+import 'package:admin/Screens/Manage/Location/LocationMain.dart';
 import 'package:admin/Services/sidebar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_admin_scaffold/admin_scaffold.dart';
 
-class HomeScreen extends StatefulWidget {
-  static const String id = 'Home-Screen';
+import '../Notification/notification_screen.dart';
 
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  var defaultscreen = '1';
-
+class Manage extends StatelessWidget {
+  static const String id = 'manage-screen';
+  const Manage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     SidebarWidget _sideBar = SidebarWidget();
+
     return AdminScaffold(
       backgroundColor: Colors.grey[100],
       appBar: AppBar(
         backgroundColor: Colors.black87,
         iconTheme: IconThemeData(
-          color: Colors.white
+            color: Colors.white
         ),
-        title: const Text('Dashboard' ,style: TextStyle(color: Colors.white),),
+        title: const Text('Manage' ,style: TextStyle(color: Colors.white),),
       ),
-      sideBar: _sideBar.sideBarmenus(context,HomeScreen.id),
+      sideBar: _sideBar.sideBarmenus(context,NotificationScreen.id),
       body: SingleChildScrollView(
         child: Container(
           alignment: Alignment.topLeft,
@@ -36,7 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             children: [
               Text(
-                'Dashboard',
+                'Manage',
                 style: TextStyle(
                   fontWeight: FontWeight.w700,
                   fontSize: 36,
@@ -50,7 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   padding: const EdgeInsets.all(8.0),
                   child: Card(
                     elevation: 10,
-                    child: Users(),
+                    child: Inventory(),
                   ),
                 ),
               ),
@@ -62,7 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   padding: const EdgeInsets.all(8.0),
                   child: Card(
                     elevation: 10,
-                    child: NewLocationUser(),
+                    child: CouponScreenMain(),
                   ),
                 ),
               ),
@@ -74,7 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   padding: const EdgeInsets.all(8.0),
                   child: Card(
                     elevation: 10,
-                    child: Ad(),
+                    child: LocationScreenMain(),
                   ),
                 ),
               ),

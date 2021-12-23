@@ -1,23 +1,21 @@
-import 'dart:html';
-import 'package:admin/Screens/Banner/manage_banners.dart';
-import 'package:admin/Screens/MilkScreen/MilkWidget.dart';
+import 'package:admin/Screens/Home/Ad/AdWidget.dart';
 import 'package:admin/Services/Firebase_Services.dart';
 import 'package:admin/Services/sidebar.dart';
 import 'package:ars_progress_dialog/ars_progress_dialog.dart';
 import 'package:firebase/firebase.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_admin_scaffold/admin_scaffold.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'dart:html';
 import 'package:firebase/firebase.dart' as db;
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
-class MilkScreen extends StatefulWidget {
-  static const String id = 'milk-screen';
+class Ad extends StatefulWidget {
+  const Ad({Key? key}) : super(key: key);
 
   @override
-  _MilkScreenState createState() => _MilkScreenState();
+  _AdState createState() => _AdState();
 }
 
-class _MilkScreenState extends State<MilkScreen> {
+class _AdState extends State<Ad> {
   SidebarWidget _sideBar = SidebarWidget();
   var _fileNameTextController = TextEditingController();
   FirebaseServices _services = FirebaseServices();
@@ -34,33 +32,19 @@ class _MilkScreenState extends State<MilkScreen> {
         backgroundColor: Color(0x33000000),
         animationDuration: Duration(milliseconds: 500));
 
-    return AdminScaffold(
+    return Scaffold(
       appBar: AppBar(
+        title: Text('Manage Ad'),
         backgroundColor: Colors.black87,
-        iconTheme: IconThemeData(
-            color: Colors.white
-        ),
-        title: const Text('Milk Screen' ,style: TextStyle(color: Colors.white),),
+        automaticallyImplyLeading: false,
       ),
-      sideBar: _sideBar.sideBarmenus(context, BannerScreen.id),
       body: SingleChildScrollView(
         child: Container(
           alignment: Alignment.topLeft,
           padding: const EdgeInsets.all(10),
           child: Column(
             children: [
-              Text(
-                'Milk Screen',
-                style: TextStyle(
-                  fontWeight: FontWeight.w700,
-                  fontSize: 36,
-                ),
-              ),
-              Text("Add/Delete Gif"),
-              Divider(
-                thickness: 5,
-              ),
-              MilkWidget(),
+              AdWidget(),
               Divider(
                 thickness: 5,
               ),
@@ -93,7 +77,7 @@ class _MilkScreenState extends State<MilkScreen> {
                                                   width: 1)),
                                           filled: true,
                                           fillColor: Colors.white,
-                                          hintText: 'No Gif Selected',
+                                          hintText: 'No Ad Selected',
                                           border: OutlineInputBorder(),
                                           contentPadding:
                                           EdgeInsets.only(left: 20)),
@@ -101,7 +85,7 @@ class _MilkScreenState extends State<MilkScreen> {
                               ),
                               FlatButton(
                                 child: Text(
-                                  "Upload Gif",
+                                  "Upload Ad",
                                   style: TextStyle(color: Colors.white),
                                 ),
                                 onPressed: () {
@@ -121,12 +105,12 @@ class _MilkScreenState extends State<MilkScreen> {
                                         onPressed: () {
                                           progressDialog.show();
                                           _services
-                                              .uploadMilkImageToDb(_url)
+                                              .uploadAdImageToDb(_url)
                                               .then((downloadUrl) {
                                             if (downloadUrl != null) {
                                               progressDialog.dismiss();
                                               _services.showMyDialog(
-                                                  title: 'New Gif Image',
+                                                  title: 'New Ad Image',
                                                   message: "Savd Successfully",
                                                   context: context);
                                               _fileNameTextController.clear();
@@ -159,7 +143,7 @@ class _MilkScreenState extends State<MilkScreen> {
                                 _visible = true;
                               });
                             },
-                            child: Text("Add Gif",
+                            child: Text("Add Ad",
                                 style: TextStyle(color: Colors.white)),
                             color: Colors.black54),
                       )
@@ -190,7 +174,7 @@ class _MilkScreenState extends State<MilkScreen> {
 
   uploadStorage(context) async{
     final dateTime = DateTime.now();
-    final path = 'MilkScreen/$dateTime';
+    final path = 'Ad/$dateTime';
     uploadImage(onSelected: (file) async {
       if (file != null) {
         setState(() {

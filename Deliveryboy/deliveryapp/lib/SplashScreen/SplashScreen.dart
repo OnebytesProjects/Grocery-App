@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:deliveryapp/HomeScreen/HomeScreen.dart';
+import 'package:deliveryapp/services/UpdateAvaliable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -10,10 +12,26 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  String version = '1.0.0';
   @override
   void initState() {
     Timer(Duration(seconds: 3), () {
-      Navigator.pushReplacementNamed(context, HomeScreen.id);
+
+      FirebaseFirestore.instance
+          .collection('version')
+          .doc('DeliveryBoyAppVersion')
+          .get()
+          .then((DocumentSnapshot documentSnapshot) {
+        if (documentSnapshot.exists) {
+         if(version == documentSnapshot['Version']){
+           Navigator.pushReplacementNamed(context, HomeScreen.id);
+         }else{
+           Navigator.pushReplacementNamed(context, UpdateAvailable.id);
+         }
+        }
+      });
+
+
     });
     super.initState();
   }

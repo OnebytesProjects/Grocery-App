@@ -1,4 +1,4 @@
-import 'package:admin/Screens/Home/Coupon/CouponScreen.dart';
+import 'package:admin/Screens/Manage/Coupon/CouponScreen.dart';
 import 'package:admin/Services/Firebase_Services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';

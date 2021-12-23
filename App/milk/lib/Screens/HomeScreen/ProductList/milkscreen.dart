@@ -3,6 +3,7 @@ import 'package:expandable_text/expandable_text.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:intl/intl.dart';
 import 'package:milk/models/product_model.dart';
@@ -25,6 +26,7 @@ class _MilkDisplayState extends State<MilkDisplay> {
   bool isChecked1sub = false;
   bool isChecked2sub = false;
   bool incdisplay = false;
+  bool subdisplay = false;
   String subscriptionType = '';
   int _qty = 0;
   String volume = 'nil';
@@ -32,36 +34,30 @@ class _MilkDisplayState extends State<MilkDisplay> {
   String gif = '';
   double chosenPrice = 0.0;
   var total;
+  var cp;
 
   CartService _cart = CartService();
   User? user = FirebaseAuth.instance.currentUser;
   FirebaseAuth _auth = FirebaseAuth.instance;
 
-  //check vip
-  @override
-  void initState() {
-    FirebaseFirestore.instance
+  Future checksubscription() async{
+    await FirebaseFirestore.instance
         .collection('users')
         .doc(_auth.currentUser?.uid)
         .get()
         .then((DocumentSnapshot documentSnapshot) =>
     {this.vip = documentSnapshot['vip']});
+  }
+
+  //check vip
+  @override
+  void initState() {
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    
-    //check vip
-    // setState(() {
-    //   FirebaseFirestore.instance
-    //       .collection('users')
-    //       .doc(_auth.currentUser?.uid)
-    //       .get()
-    //       .then((DocumentSnapshot documentSnapshot) =>
-    //   {this.vip = documentSnapshot['vip']});
-    // });
-
+    checksubscription();
 
     //get milkgif
     FirebaseFirestore.instance
@@ -220,18 +216,24 @@ class _MilkDisplayState extends State<MilkDisplay> {
                                                   isChecked2 = false;
                                                   isChecked3 = false;
                                                   isChecked4 = false;
-                                                  incdisplay = true;
                                                   volume = data['v1'];
                                                   chosenPrice = double.parse(
                                                       data['p1']);
+                                                  subdisplay = true;
                                                 });
                                                 if (value == false) {
                                                   setState(() {
-                                                    incdisplay = false;
                                                     volume = 'nil';
                                                     chosenPrice = 0.0;
+                                                    subdisplay = false;
                                                   });
                                                 }
+                                                //check
+                                                setState(() {
+                                                  isChecked1sub = false;
+                                                  isChecked2sub = false;
+                                                  _qty = 0;
+                                                });
                                               }),
                                           Text(
                                               "${data['v1']} - ₹ ${data['p1']}")
@@ -254,17 +256,23 @@ class _MilkDisplayState extends State<MilkDisplay> {
                                                   isChecked3 = false;
                                                   isChecked4 = false;
                                                   volume = data['v3'];
-                                                  incdisplay = true;
                                                   chosenPrice = double.parse(
                                                       data['p3']);
+                                                  subdisplay = true;
                                                 });
                                                 if (value == false) {
                                                   setState(() {
-                                                    incdisplay = false;
                                                     volume = 'nil';
                                                     chosenPrice = 0.0;
+                                                    subdisplay = false;
                                                   });
                                                 }
+                                                //check
+                                                setState(() {
+                                                  isChecked1sub = false;
+                                                  isChecked2sub = false;
+                                                  _qty = 0;
+                                                });
                                               }),
                                           Text(
                                               "${data['v3']} - ₹ ${data['p3']}")
@@ -291,19 +299,25 @@ class _MilkDisplayState extends State<MilkDisplay> {
                                                   isChecked2 = false;
                                                   isChecked3 = value!;
                                                   isChecked4 = false;
-                                                  incdisplay = true;
                                                   volume = data['v2'];
                                                   chosenPrice =
                                                       double.parse(
                                                           data['p2']);
+                                                  subdisplay = true;
                                                 });
                                                 if (value == false) {
                                                   setState(() {
-                                                    incdisplay = false;
                                                     volume = 'nil';
                                                     chosenPrice = 0.0;
+                                                    subdisplay = false;
                                                   });
                                                 }
+                                                //check
+                                                setState(() {
+                                                  isChecked1sub = false;
+                                                  isChecked2sub = false;
+                                                  _qty = 0;
+                                                });
                                               }),
                                           Text(
                                               "${data['v2']} - ₹ ${data['p2']}")
@@ -327,19 +341,25 @@ class _MilkDisplayState extends State<MilkDisplay> {
                                                   isChecked2 = false;
                                                   isChecked3 = false;
                                                   isChecked4 = value!;
-                                                  incdisplay = true;
                                                   volume = data['v4'];
                                                   chosenPrice =
                                                       double.parse(
                                                           data['p4']);
+                                                  subdisplay = true;
                                                 });
                                                 if (value == false) {
                                                   setState(() {
-                                                    incdisplay = false;
+                                                    subdisplay = false;
                                                     volume = 'nil';
                                                     chosenPrice = 0.0;
                                                   });
                                                 }
+                                                //check
+                                                setState(() {
+                                                  isChecked1sub = false;
+                                                  isChecked2sub = false;
+                                                  _qty = 0;
+                                                });
                                               }),
                                           Text(
                                               "${data['v4']} - ₹ ${data['p4']}")
@@ -365,6 +385,8 @@ class _MilkDisplayState extends State<MilkDisplay> {
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 20)),
+                            SizedBox(height: 5,),
+                            subdisplay ?
                             Container(
                               height: 50,
                               padding: EdgeInsets.only(left: 20, right: 50),
@@ -381,15 +403,27 @@ class _MilkDisplayState extends State<MilkDisplay> {
                                           value: isChecked1sub,
                                           onChanged: (value) {
                                             setState(() {
+                                              cp = chosenPrice;
                                               isChecked1sub = value!;
                                               isChecked2sub = false;
                                               subscriptionType = 'Monthly';
+                                              cp = cp * 30;
+                                              incdisplay = true;
                                             });
                                             if (value == false) {
                                               setState(() {
                                                 subscriptionType = '';
+                                                cp = 0;
+                                                incdisplay = false;
                                               });
                                             }
+                                            //check
+                                            setState(() {
+                                              _qty = 0;
+                                              total = 0;
+                                            });
+                                            print(total);
+                                            print(chosenPrice);
                                           }),
                                       Text("Monthly")
                                     ],
@@ -403,22 +437,33 @@ class _MilkDisplayState extends State<MilkDisplay> {
                                           value: isChecked2sub,
                                           onChanged: (value) {
                                             setState(() {
+                                              cp = chosenPrice;
                                               isChecked1sub = false;
                                               isChecked2sub = value!;
                                               subscriptionType = 'Yearly';
+                                              incdisplay = true;
+                                              cp = cp * 365;
                                             });
                                             if (value == false) {
                                               setState(() {
                                                 subscriptionType = '';
+                                                incdisplay = false;
                                               });
                                             }
+                                            //check
+                                            setState(() {
+                                              _qty = 0;
+                                              total = 0;
+                                            });
+                                            print(total);
+                                            print(chosenPrice);
                                           }),
                                       Text("Yearly")
                                     ],
                                   ),
                                 ],
                               ),
-                            ),
+                            ):Text('Select Volume'),
                           ],
                         ),
                       ),
@@ -448,7 +493,7 @@ class _MilkDisplayState extends State<MilkDisplay> {
                                                 _qty -= 1;
                                               });
 
-                                              total = _qty * chosenPrice;
+                                              total = _qty * cp;
                                             }
                                           },
                                           child: Container(
@@ -478,7 +523,7 @@ class _MilkDisplayState extends State<MilkDisplay> {
                                               setState(() {
                                                 _qty += 1;
                                               });
-                                              total = _qty * chosenPrice;
+                                              total = _qty * cp;
                                             }
                                           },
                                           child: Container(
@@ -501,73 +546,92 @@ class _MilkDisplayState extends State<MilkDisplay> {
                               ),
                             ),
                             //SizedBox(height: 2,),
-                            vip =='Yes'?Text('Already Subscribed.'):Row(
-                              mainAxisAlignment:
-                                  MainAxisAlignment.spaceAround,
-                              children: [
-                                RaisedButton(
-                                  onPressed: _cartbutton
-                                      ? () {
-                                          EasyLoading.show(
-                                              status: 'Adding to Cart...');
-                                          _cart
-                                              .addToCartSubscription(
-                                                  data: data,
-                                                  volume: volume,
-                                                  qty: _qty,
-                                                  total: total,
-                                                  subscription:
-                                                      subscriptionType)
-                                              .then((value) {
-                                            EasyLoading.showSuccess(
-                                                'Added to Cart');
-                                          });
-                                          setState(() {
-                                            isChecked1 = false;
-                                            isChecked2 = false;
-                                            isChecked3 = false;
-                                            isChecked4 = false;
-                                            _cartbutton = false;
-                                            isChecked1sub = false;
-                                            isChecked2sub = false;
-                                            subscriptionType = '';
-                                            _qty = 0;
-                                            volume = 'nil';
-                                          });
-                                        }
-                                      : () {
-                                          showDialog<String>(
-                                            context: context,
-                                            builder: (BuildContext context) =>
-                                                AlertDialog(
-                                              content: const Text(
-                                                  'Please select the required details'),
-                                              actions: <Widget>[
-                                                TextButton(
-                                                  onPressed: () =>
-                                                      Navigator.pop(
-                                                          context, 'OK'),
-                                                  child: const Text('OK'),
-                                                ),
-                                              ],
-                                            ),
-                                          );
-                                        },
-                                  color: _cartbutton
-                                      ? Colors.orange[300]
-                                      : Colors.grey,
-                                  padding:
-                                      EdgeInsets.symmetric(horizontal: 50),
-                                  elevation: 2,
-                                  child: Text(
-                                    "Add to Cart",
-                                    style: TextStyle(
-                                        fontSize: 14,
-                                        letterSpacing: 2.2,
-                                        color: Colors.black),
-                                  ),
+                            vip =='Yes'?Container(
+                              width: double.infinity,
+                              child: RaisedButton(
+                              onPressed: (){
+                                showDialog<String>(
+                                  context: context,
+                                  builder: (BuildContext context) =>
+                                      AlertDialog(
+                                        content: const Text(
+                                            'Please Contact us to cancel the Subscription.'),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () =>
+                                                Navigator.pop(
+                                                    context, 'OK'),
+                                            child: const Text('OK'),
+                                          ),
+                                        ],
+                                      ),
+                                );
+                              },
+                              child: Text('Already Subscribed. Cancel Subscription?'),),)
+                                :Container(
+                              width: double.infinity,
+                              child: RaisedButton(
+                                onPressed: _cartbutton
+                                    ? () {
+                                        EasyLoading.show(
+                                            status: 'Adding to Cart...');
+                                        _cart
+                                            .addToCartSubscription(
+                                                data: data,
+                                                volume: volume,
+                                                qty: _qty,
+                                                total: total,
+                                                subscription:
+                                                    subscriptionType)
+                                            .then((value) {
+                                          EasyLoading.showSuccess(
+                                              'Added to Cart');
+                                        });
+                                        setState(() {
+                                          isChecked1 = false;
+                                          isChecked2 = false;
+                                          isChecked3 = false;
+                                          isChecked4 = false;
+                                          _cartbutton = false;
+                                          isChecked1sub = false;
+                                          isChecked2sub = false;
+                                          subscriptionType = '';
+                                          _qty = 0;
+                                          volume = 'nil';
+                                        });
+                                      }
+                                    : () {
+                                        showDialog<String>(
+                                          context: context,
+                                          builder: (BuildContext context) =>
+                                              AlertDialog(
+                                            content: const Text(
+                                                'Please select the required details'),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                onPressed: () =>
+                                                    Navigator.pop(
+                                                        context, 'OK'),
+                                                child: const Text('OK'),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      },
+                                color: _cartbutton
+                                    ? Colors.orange[300]
+                                    : Colors.grey,
+                                padding:
+                                    EdgeInsets.symmetric(horizontal: 50),
+                                elevation: 2,
+                                child: Text(
+                                  "Add to Cart",
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      letterSpacing: 2.2,
+                                      color: Colors.black),
                                 ),
-                              ],
+                              ),
                             ),
                           ],
                         ),

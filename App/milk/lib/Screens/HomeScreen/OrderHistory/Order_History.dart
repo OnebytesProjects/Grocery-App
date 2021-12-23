@@ -4,6 +4,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:milk/services/order_service.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+import '../../../services/cart_services.dart';
 
 class OrderHistory extends StatefulWidget {
   const OrderHistory({Key? key}) : super(key: key);
@@ -13,6 +16,8 @@ class OrderHistory extends StatefulWidget {
 }
 
 class _OrderHistoryState extends State<OrderHistory> {
+
+
   CollectionReference orders = FirebaseFirestore.instance.collection('orders');
   @override
   Widget build(BuildContext context) {
@@ -79,7 +84,7 @@ class _OrderHistoryState extends State<OrderHistory> {
                                       child: Image.network(data['products'][index]['productImage']),
                                     ),
                                     title: Text(data['products'][index]['productName']),
-                                    subtitle: Text('Quantity: ${data['products'][index]['qty'].toString()}   Price:₹ ${data['products'][index]['sellingPrice'].toString()}',
+                                    subtitle: Text('Quantity: ${data['products'][index]['qty'].toString()}   Price:₹ ${data['products'][index]['sellingPrice'].toString()} Quantity: ${data['products'][index]['productVolume'].toString()}',
                                       style: TextStyle(fontSize: 12,color: Colors.grey),),
                                   ),
                                 ],
@@ -88,10 +93,12 @@ class _OrderHistoryState extends State<OrderHistory> {
                             itemCount: data['products'].length,
                           ),
                           data['orderStatus'] =='Pending'?RaisedButton(onPressed: (){
-                            showDialog('Are you Sure?', context,document.id);
+                            showDialog('Are you Sure?', context,document.id,data);
                           },child: Text('Cancel Order'),color: Colors.orange,):Container(),
                         ],),
-                      Divider(height: 3,)
+                      Divider(height: 3,),
+                      tasks(data['orderStatus'], document, document.id,data['deliverBoy']['name'],data['deliverBoy']['phone'],data,context),
+                      Divider(height: 3,),
                     ],
                   ),
                 );
@@ -106,7 +113,8 @@ class _OrderHistoryState extends State<OrderHistory> {
     );
   }
 
-  showDialog(message,context,docid){
+  showDialog(message,context,docid,data){
+    CartService _cart = CartService();
     showCupertinoDialog(context: context, builder: (BuildContext context){
       return CupertinoAlertDialog(
         content: Text('$message'),
@@ -117,8 +125,11 @@ class _OrderHistoryState extends State<OrderHistory> {
           FlatButton(onPressed: (){
             Navigator.pop(context);
             //changestatus
-            orders.doc(docid)
-                .update({'orderStatus': 'Cancelled'});
+             orders.doc(docid)
+                 .update({'orderStatus': 'Cancelled'});
+            //update inventory
+            //print('${data['qty']},${data['productid']}');
+            //_cart.removeFromCart(docId: docid,qty: data['qty'],productid: data['productid']);
           }, child: Text('Ok'))
         ],
       );
@@ -145,4 +156,54 @@ class _OrderHistoryState extends State<OrderHistory> {
       return Colors.orange;
     }
   }
+  tasks(data,document,documentId,name,number,docdata,context){
+    if(data == 'Accepted'){
+      return Container();
+    }
+    if(data == 'Pending'){
+      return Container();
+    }if(data == 'Delivery Man Assigned'){
+      return ListTile(
+        leading: CircleAvatar(
+          backgroundColor: Colors.white,
+          child: Container(color: Colors.grey,),
+        ),
+        title: Text(name),
+        subtitle: Text(number),
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            IconButton(onPressed: (){
+              launch('tel:${number}');
+            }, icon: Icon(Icons.call))
+          ],
+        ),
+      );
+    }
+    if(data == 'On The Way'){
+      return ListTile(
+        leading: CircleAvatar(
+          backgroundColor: Colors.white,
+          child: Container(color: Colors.grey,),
+        ),
+        title: Text(name),
+        subtitle: Text(number),
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            IconButton(onPressed: (){
+              launch('tel:${number}');
+            }, icon: Icon(Icons.call))
+          ],
+        ),
+      );
+    }
+    if(data == 'Delivered'){
+      return Container();
+    }
+    if(data == 'Cancelled'){
+      return Container();
+    }
+  }
+
 }

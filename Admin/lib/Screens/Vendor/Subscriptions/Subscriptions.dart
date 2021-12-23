@@ -190,7 +190,7 @@ class _SubscriptionState extends State<Subscription> {
                                   child: Image.network(data['products'][index]['productImage']),
                                 ),
                                 title: Text(data['products'][index]['productName']),
-                                subtitle: Text('Quantity: ${data['products'][index]['qty'].toString()}   Price:₹ ${data['products'][index]['sellingPrice'].toString()}',
+                                subtitle: Text('Quantity: ${data['products'][index]['qty'].toString()}    Price:₹${data['products'][index]['sellingPrice'].toString() }  Volume:${data['products'][index]['productVolume'].toString()}  Delivery Period:${data['products'][index]['subscription'].toString()}',
                                   style: TextStyle(fontSize: 12,color: Colors.grey),),
                               );
                             },

@@ -84,7 +84,7 @@ class PublishedProducts extends StatelessWidget {
           if(value == 'un-published'){
             _services.unPublishProduct(id: data['productid']);
           }
-          if(value == 'preview'){
+          if(value == 'preview/Edit'){
             print(value);
             Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>EditViewProduct(productId: data['productid'],productImage: data['productImage'],)));
           }
@@ -98,10 +98,10 @@ class PublishedProducts extends StatelessWidget {
               title: Text('Un-Publish'),
             ),),
           const PopupMenuItem(
-            value: 'preview',
+            value: 'preview/Edit',
             child: ListTile(
               leading: Icon(Icons.info_outline),
-              title: Text('Preview'),
+              title: Text('Preview/Edit'),
             ),),
         ]);
   }

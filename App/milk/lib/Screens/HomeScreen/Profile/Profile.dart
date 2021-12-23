@@ -35,7 +35,10 @@ class _ProfileState extends State<Profile> {
   TextEditingController _name = TextEditingController();
   TextEditingController _mobile = TextEditingController();
   TextEditingController _address = TextEditingController();
+  TextEditingController _pincode = TextEditingController();
   TextEditingController _email = TextEditingController();
+  String unknownloc = '';
+  String address = '';
 
   File? image;
   var profileimgpath = 'images/profile.jpg';
@@ -72,8 +75,30 @@ class _ProfileState extends State<Profile> {
   //   }
   // }
 
+  checkPincode() async{
+    setState(() {
+      unknownloc = 'NewLocation: '+_pincode.text;
+    });
+    //check pincode
+    return FirebaseFirestore.instance
+        .collection('pincode')
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((doc) {
+        print(doc['pincode']);
+        print('to check: ${_pincode.text}');
+        if(_pincode.text == doc['pincode']){
+          setState(() {
+            unknownloc = '';
+          });
+        }
+        print(unknownloc);
+      });
+    });
+  }
+
   updateProfile() {
-    String address = "${_address.text} - ${dropdownValue}";
+    String address = "${_address.text} - ${_pincode.text}";
     if (_fomrKey.currentState!.validate()) {
       return FirebaseFirestore.instance
           .collection('users')
@@ -82,8 +107,10 @@ class _ProfileState extends State<Profile> {
         'name': _name.text,
         'gender': dropdownValueGender,
         'address': address,
-        'zip': dropdownValue,
+        'zip': _pincode.text,
         'mail': _email.text,
+        'pincode':_pincode.text,
+        'NewLocation': unknownloc,
       });
     }
   }
@@ -114,8 +141,10 @@ class _ProfileState extends State<Profile> {
       querySnapshot.docs.forEach((doc) {
         _name.text = doc['name'];
         _mobile.text = doc['number'];
-        _address.text = doc['address'];
+        address = doc['address'];
+        _address.text = address.substring(0,address.indexOf('-'));
         _email.text = doc['mail'];
+        _pincode.text = doc['pincode'];
          dropdownValue = doc['pincode'];
          dropdownValueGender = doc['gender'];
       });
@@ -234,26 +263,30 @@ class _ProfileState extends State<Profile> {
                           buildTextField(
                               "Address", "Enter here", true, _address),
                           //dropdown-pincode
-                          SizedBox(
-                              width: double.infinity,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Enter Pincode",
-                                    style: TextStyle(
-                                        fontSize: 13, color: Colors.grey),
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  Row(
-                                    children: [
-                                      DropDownField1(),
-                                    ],
-                                  ),
-                                ],
-                              )),
+                          // SizedBox(
+                          //     width: double.infinity,
+                          //     child: Column(
+                          //       crossAxisAlignment: CrossAxisAlignment.start,
+                          //       children: [
+                          //         Text(
+                          //           "Enter Pincode",
+                          //           style: TextStyle(
+                          //               fontSize: 13, color: Colors.grey),
+                          //         ),
+                          //         SizedBox(
+                          //           height: 10,
+                          //         ),
+                          //         Row(
+                          //           children: [
+                          //             DropDownField1(),
+                          //           ],
+                          //         ),
+                          //       ],
+                          //     )),
+                          // SizedBox(
+                          //   height: 20,
+                          // ),
+                          buildTextField("Pincode", "Enter here", true, _pincode),
                           SizedBox(
                             height: 20,
                           ),
@@ -264,11 +297,14 @@ class _ProfileState extends State<Profile> {
                           RaisedButton(
                             onPressed: () {
                               EasyLoading.show(status: 'Updating profile');
-                              updateProfile().then((value) {
-                                EasyLoading.showSuccess("");
-                                Navigator.pushReplacementNamed(
-                                    context, MainScreen.id);
+                              checkPincode().then((value){
+                                updateProfile().then((value) {
+                                  EasyLoading.showSuccess("");
+                                  Navigator.pushReplacementNamed(
+                                      context, MainScreen.id);
+                                });
                               });
+
                             },
                             color: Colors.orange[300],
                             padding: EdgeInsets.symmetric(horizontal: 50),

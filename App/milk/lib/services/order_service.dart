@@ -1,44 +1,41 @@
-
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class OrderService{
+class OrderService {
   CollectionReference order = FirebaseFirestore.instance.collection('orders');
   CollectionReference cart = FirebaseFirestore.instance.collection('cart');
-  CollectionReference subscription = FirebaseFirestore.instance.collection('subscription');
+  CollectionReference subscription =
+      FirebaseFirestore.instance.collection('subscription');
+  CollectionReference subscription2 =
+      FirebaseFirestore.instance.collection('Activesubscription');
   User? user = FirebaseAuth.instance.currentUser;
   CollectionReference users = FirebaseFirestore.instance.collection('users');
+  FirebaseAuth _auth = FirebaseAuth.instance;
 
-  Future<DocumentReference> saveorder(Map<String,dynamic>data){
-    var result = order.add(
-      data
-    );
+  Future<DocumentReference> saveorder(Map<String, dynamic> data) {
+    var result = order.add(data);
     return result;
   }
 
-  Future<DocumentReference> saveSubscription(Map<String,dynamic>data){
-    var result = subscription.add(
-        data
-    );
-    users
-        .doc(user?.uid)
-        .update({'vip': 'Yes'});
+  Future<void> saveSubscription(Map<String, dynamic> data) {
+    var result = subscription.doc(_auth.currentUser?.uid).set(data);
+    subscription2.doc(_auth.currentUser?.uid).set(data);
+    users.doc(user?.uid).update({'vip': 'Yes'});
     return result;
   }
-  Future<void>deleteCart()async{
-    cart.doc(user?.uid).collection('products').get().then((snapshot){
-      for(DocumentSnapshot ds in snapshot.docs){
+
+  Future<void> deleteCart() async {
+    cart.doc(user?.uid).collection('products').get().then((snapshot) {
+      for (DocumentSnapshot ds in snapshot.docs) {
         ds.reference.delete();
       }
     });
   }
 
-  Future<void>checkData()async{
+  Future<void> checkData() async {
     final snapshot = await cart.doc(user?.uid).collection('products').get();
-    if(snapshot.docs.isEmpty){
+    if (snapshot.docs.isEmpty) {
       cart.doc(user?.uid).delete();
     }
   }
-
 }

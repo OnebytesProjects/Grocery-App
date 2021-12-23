@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:milk/services/order_service.dart';
 import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Subscription extends StatefulWidget {
   @override
@@ -15,6 +16,7 @@ class _SubscriptionState extends State<Subscription> {
   CollectionReference subscription = FirebaseFirestore.instance.collection('subscription');
   FirebaseAuth _auth = FirebaseAuth.instance;
   CollectionReference users = FirebaseFirestore.instance.collection('users');
+
 
   @override
   void initState() {
@@ -136,7 +138,7 @@ class _SubscriptionState extends State<Subscription> {
                                       child: Image.network(data['products'][index]['productImage']),
                                     ),
                                     title: Text(data['products'][index]['productName']),
-                                    subtitle: Text('Quantity: ${data['products'][index]['qty'].toString()}   Price:₹ ${data['products'][index]['sellingPrice'].toString()}',
+                                    subtitle: Text('Quantity: ${data['products'][index]['qty'].toString()}   Price:₹ ${data['products'][index]['sellingPrice'].toString()}  Period:₹ ${data['products'][index]['subscription'].toString()}',
                                       style: TextStyle(fontSize: 12,color: Colors.grey),),
                                   ),
                                   data['orderStatus'] =='Pending'?RaisedButton(onPressed: (){
@@ -148,7 +150,9 @@ class _SubscriptionState extends State<Subscription> {
                             itemCount: data['products'].length,
                           )
                         ],),
-                      Divider(height: 3,)
+                      Divider(height: 3,),
+                      tasks(data['orderStatus'], document, document.id,data['deliverBoy']['name'],data['deliverBoy']['phone'],data,context),
+                      Divider(height: 5,),
                     ],
                   ),
                 );
@@ -197,6 +201,34 @@ class _SubscriptionState extends State<Subscription> {
         ],
       );
     });
+  }
+  tasks(data,document,documentId,name,number,docdata,context){
+    if(data == 'SubScription Ended'){
+      return Container();
+    }
+    if(data == 'Pending'){
+      return Container();
+    }if(data == 'SubScription Started'){
+      return ListTile(
+        leading: CircleAvatar(
+          backgroundColor: Colors.white,
+          child: Container(color: Colors.grey,),
+        ),
+        title: Text(name),
+        subtitle: Text(number),
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            IconButton(onPressed: (){
+              launch('tel:${number}');
+            }, icon: Icon(Icons.call))
+          ],
+        ),
+      );
+    }
+    if(data == 'Cancelled'){
+      return Container();
+    }
   }
 }
 

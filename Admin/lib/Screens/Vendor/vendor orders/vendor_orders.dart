@@ -18,10 +18,6 @@ class _VendorsOrdersState extends State<VendorsOrders> {
   OrderService orderService = OrderService();
 
 
-  void _launchURL(number) async =>
-      await canLaunch(number) ? await launch(number) : throw 'Could not call to $number';
-
-
   @override
   Widget build(BuildContext context){
     return Scaffold(
@@ -92,7 +88,7 @@ class _VendorsOrdersState extends State<VendorsOrders> {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             IconButton(onPressed: (){
-                              _launchURL('tel:${data['number']}');
+                              launch('tel:${data['number']}');
                             }, icon: Icon(Icons.call))
                           ],
                         ),
@@ -112,7 +108,7 @@ class _VendorsOrdersState extends State<VendorsOrders> {
                                   child: Image.network(data['products'][index]['productImage']),
                                 ),
                                 title: Text(data['products'][index]['productName']),
-                                subtitle: Text('Quantity: ${data['products'][index]['qty'].toString()}   Price:₹ ${data['products'][index]['sellingPrice'].toString()}',
+                                subtitle: Text('Quantity: ${data['products'][index]['qty'].toString()}   Price:₹ ${data['products'][index]['sellingPrice'].toString()} Volume: ${data['products'][index]['productVolume'].toString()}',
                                   style: TextStyle(fontSize: 12,color: Colors.grey),),
                               );
                             },
@@ -225,7 +221,7 @@ class _VendorsOrdersState extends State<VendorsOrders> {
           mainAxisSize: MainAxisSize.min,
           children: [
             IconButton(onPressed: (){
-              _launchURL('tel:${number}');
+              launch('tel:${number}');
             }, icon: Icon(Icons.call))
           ],
         ),
@@ -243,7 +239,7 @@ class _VendorsOrdersState extends State<VendorsOrders> {
           mainAxisSize: MainAxisSize.min,
           children: [
             IconButton(onPressed: (){
-              _launchURL('tel:${number}');
+              launch('tel:${number}');
             }, icon: Icon(Icons.call))
           ],
         ),
@@ -261,7 +257,7 @@ class _VendorsOrdersState extends State<VendorsOrders> {
           mainAxisSize: MainAxisSize.min,
           children: [
             IconButton(onPressed: (){
-              _launchURL('tel:${number}');
+              launch('tel:${number}');
             }, icon: Icon(Icons.call))
           ],
         ),
