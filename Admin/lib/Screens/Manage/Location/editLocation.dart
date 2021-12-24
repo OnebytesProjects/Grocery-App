@@ -82,7 +82,7 @@ class _EditLocationState extends State<EditLocation> {
                             _services.updatePincode(
                               code: _pincode.text,
                               charge: int.parse(_deliverycharge.text),
-                              data: widget.dataid
+                              data: _pincode.text
                             ).then((value) {
                               Navigator.pop(context);
                               EasyLoading.showSuccess('Updated Pincode Successfully');

@@ -102,8 +102,8 @@ class _UpdateInventoryState extends State<UpdateInventory> {
                                 EasyLoading.show(status: 'Please wait..');
                                 _services.updateInventory(
                                   data: widget.dataid,
-                                  minqty: minqtyText.text,
-                                  maxqty: maxqtyText.text,
+                                  minqty: int.parse(minqtyText.text),
+                                  maxqty: int.parse(maxqtyText.text),
                                 ).then((value) {
                                   EasyLoading.showSuccess('Updated coupon Successfully');
                                   Navigator.pop(context);

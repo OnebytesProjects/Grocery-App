@@ -12,14 +12,14 @@ class OrderService {
   CollectionReference users = FirebaseFirestore.instance.collection('users');
   FirebaseAuth _auth = FirebaseAuth.instance;
 
-  Future<DocumentReference> saveorder(Map<String, dynamic> data) {
-    var result = order.add(data);
+  Future<void> saveorder(Map<String, dynamic> data) {
+    var result = order.doc(data['timestamp']).set(data);
     return result;
   }
 
   Future<void> saveSubscription(Map<String, dynamic> data) {
-    var result = subscription.doc(_auth.currentUser?.uid).set(data);
-    subscription2.doc(_auth.currentUser?.uid).set(data);
+    var result = subscription.doc(data['timestamp']).set(data);
+    subscription2.doc(data['timestamp']).set(data);
     users.doc(user?.uid).update({'vip': 'Yes'});
     return result;
   }

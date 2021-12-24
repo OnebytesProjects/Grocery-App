@@ -1,4 +1,5 @@
 import 'package:admin/Screens/Manage/Location/LocationAdd.dart';
+import 'package:admin/Screens/Manage/Location/editLocation.dart';
 import 'package:admin/Services/Firebase_Services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -145,23 +146,23 @@ class _LocationScreenMainState extends State<LocationScreenMain> {
     FirebaseServices _services = FirebaseServices();
     return PopupMenuButton<String>(
         onSelected: (String value){
-          // if(value == 'edit'){
-          //   Navigator.push(
-          //       context,
-          //       MaterialPageRoute(
-          //           builder: (context) => EditLocation(code: data['pincode'],charge: data['deliverycharge'].toString(),dataid: docid,)));
-          // }
+          if(value == 'edit'){
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => EditLocation(code: data['pincode'],charge: data['deliverycharge'].toString(),dataid: docid,)));
+          }
           if(value == 'delete'){
             _services.deletePincode(id: data['pincode']);
           }
         },
         itemBuilder: (BuildContext context)=><PopupMenuEntry<String>>[
-          // const PopupMenuItem(
-          //   value: 'edit',
-          //   child: ListTile(
-          //     leading: Icon(Icons.info_outline),
-          //     title: Text('Preview/Edit'),
-          //   ),),
+          const PopupMenuItem(
+            value: 'edit',
+            child: ListTile(
+              leading: Icon(Icons.info_outline),
+              title: Text('Preview/Edit'),
+            ),),
           const PopupMenuItem(
             value: 'delete',
             child: ListTile(

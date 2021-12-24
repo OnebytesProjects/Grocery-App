@@ -244,10 +244,13 @@ class _MainScreenState extends State<MainScreen> {
                       Icons.notifications,
                       color: Colors.white,
                     ),
-                    onPressed: () => showDialog<String>(
-                      context: context,
-                      builder: (BuildContext context) => Notifications(),
-                    ),
+                    // onPressed: () => showDialog<String>(
+                    //   context: context,
+                    //   builder: (BuildContext context) => Notifications(),
+                    // ),
+                    onPressed: (){
+                      Navigator.push(context,MaterialPageRoute(builder: (context) =>Notifications()));
+                    },
                   ),
 
                   IconButton(

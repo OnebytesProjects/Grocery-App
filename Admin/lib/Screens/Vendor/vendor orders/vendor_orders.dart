@@ -39,6 +39,8 @@ class _VendorsOrdersState extends State<VendorsOrders> {
             }
 
             return ListView(
+              shrinkWrap: true,
+              reverse: true,
               children: snapshot.data!.docs.map((DocumentSnapshot document) {
                 Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
                 return Container(

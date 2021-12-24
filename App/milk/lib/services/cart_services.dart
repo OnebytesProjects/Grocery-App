@@ -96,5 +96,19 @@ class CartService{
     });
   }
 
+  Future<void> CancelorderUpdateInventory({docId,qty,productid})async{
+    FirebaseFirestore.instance
+        .collection('products')
+        .doc(productid)
+        .get()
+        .then((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists) {
+        products.doc(productid).update({
+          'Inventory_max_qty': documentSnapshot['Inventory_max_qty'] + qty,
+        });
+      }
+    });
+  }
+
 
 }

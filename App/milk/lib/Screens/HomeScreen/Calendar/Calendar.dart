@@ -54,13 +54,14 @@ class _CalendarState extends State<Calendar> {
 
 
       FirebaseFirestore.instance
-          .collection('subscription').where('userId',isEqualTo: _auth.currentUser?.uid)
+          .collection('Activesubscription').where('userId',isEqualTo: _auth.currentUser?.uid)
           .get()
           .then((QuerySnapshot querySnapshot) {
         querySnapshot.docs.forEach((doc) {
           //startdate = (doc['startdate'] as Timestamp).toString();
           enddate = doc['endDate'];
           todayDelivery = DateFormat('yyyy,MM,dd').format(DateTime.parse(doc['DeliveryDate']));
+          print(todayDelivery);
         });
       });
     });
@@ -295,12 +296,12 @@ class _CalendarState extends State<Calendar> {
           FlatButton(onPressed: (){
             Navigator.pop(context);
             //SkipOrder
-            subscription.doc(_auth.currentUser?.uid)
+            subscription.doc(docid)
                 .update({
               'DeliveryDate': DateTime.now().add(Duration(days: _qty)).toString(),
               'endDate':DateTime.parse(enddate!).add(Duration(days: _qty)).toString(),
             });
-            subscription2.doc(_auth.currentUser?.uid)
+            subscription2.doc(docid)
                 .update({
               'DeliveryDate': DateTime.now().add(Duration(days: _qty)).toString(),
               'endDate':DateTime.parse(enddate!).add(Duration(days: _qty)).toString(),

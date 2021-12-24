@@ -34,7 +34,7 @@ class _CarouselSliderViewState extends State<CarouselSliderView> {
         items: imagesList
             .map(
               (item) => Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(2.0),
                 child: Container(
                   width: double.infinity,
             child: Image.network(

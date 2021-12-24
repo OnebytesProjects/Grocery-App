@@ -45,6 +45,11 @@ class _SplashScreenState extends State<SplashScreen> {
           child: Image.asset("images/splscrn.png"),
         ),
       ),
+      bottomSheet: Container(
+        height: 50,
+        width: double.infinity,
+        child: Center(child: Text('Developed By OneBytes'),),
+      ),
     );
   }
 }

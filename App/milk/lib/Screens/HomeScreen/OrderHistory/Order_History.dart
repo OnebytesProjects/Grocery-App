@@ -39,6 +39,8 @@ class _OrderHistoryState extends State<OrderHistory> {
 
           if(snapshot.hasData){
             return ListView(
+              reverse: true,
+              shrinkWrap: true,
               children: snapshot.data!.docs.map((DocumentSnapshot document) {
                 Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
                 return Container(
@@ -128,12 +130,29 @@ class _OrderHistoryState extends State<OrderHistory> {
              orders.doc(docid)
                  .update({'orderStatus': 'Cancelled'});
             //update inventory
-            //print('${data['qty']},${data['productid']}');
-            //_cart.removeFromCart(docId: docid,qty: data['qty'],productid: data['productid']);
+            UpdateInventory(data);
           }, child: Text('Ok'))
         ],
       );
     });
+  }
+
+  UpdateInventory(data){
+    CollectionReference products = FirebaseFirestore.instance.collection('products');
+    for (var s in data['products']){
+      //updateInventory
+      FirebaseFirestore.instance
+          .collection('products')
+          .doc(s['productid'])
+          .get()
+          .then((DocumentSnapshot documentSnapshot) {
+        if (documentSnapshot.exists) {
+          products.doc(s['productid']).update({
+            'Inventory_max_qty': documentSnapshot['Inventory_max_qty'] + s['qty'],
+          });
+        }
+      });
+    }
   }
 
   statusColor(data){

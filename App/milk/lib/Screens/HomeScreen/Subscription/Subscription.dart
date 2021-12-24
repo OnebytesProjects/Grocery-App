@@ -45,6 +45,8 @@ class _SubscriptionState extends State<Subscription> {
 
           if(snapshot.hasData){
             return ListView(
+              shrinkWrap: true,
+              reverse: true,
               children: snapshot.data!.docs.map((DocumentSnapshot document) {
                 Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
                 return Container(
@@ -151,8 +153,8 @@ class _SubscriptionState extends State<Subscription> {
                           )
                         ],),
                       Divider(height: 3,),
-                      tasks(data['orderStatus'], document, document.id,data['deliverBoy']['name'],data['deliverBoy']['phone'],data,context),
-                      Divider(height: 5,),
+                      tasks(data['orderStatus'], document, document.id,data['deliverBoy']['name'],data['deliverBoy']['phone'],data,context,data['deliveryboystatus']),
+                      Divider(height: 10,),
                     ],
                   ),
                 );
@@ -202,29 +204,33 @@ class _SubscriptionState extends State<Subscription> {
       );
     });
   }
-  tasks(data,document,documentId,name,number,docdata,context){
+  tasks(data,document,documentId,name,number,docdata,context,dbstatus){
     if(data == 'SubScription Ended'){
       return Container();
     }
     if(data == 'Pending'){
       return Container();
     }if(data == 'SubScription Started'){
-      return ListTile(
-        leading: CircleAvatar(
-          backgroundColor: Colors.white,
-          child: Container(color: Colors.grey,),
-        ),
-        title: Text(name),
-        subtitle: Text(number),
-        trailing: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            IconButton(onPressed: (){
-              launch('tel:${number}');
-            }, icon: Icon(Icons.call))
-          ],
-        ),
-      );
+      if(dbstatus == 'Assigned'){
+        return ListTile(
+          leading: CircleAvatar(
+            backgroundColor: Colors.white,
+            child: Container(color: Colors.grey,),
+          ),
+          title: Text(name),
+          subtitle: Text(number),
+          trailing: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              IconButton(onPressed: (){
+                launch('tel:${number}');
+              }, icon: Icon(Icons.call))
+            ],
+          ),
+        );
+      }else{
+        return Container();
+      }
     }
     if(data == 'Cancelled'){
       return Container();
