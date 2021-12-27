@@ -50,6 +50,7 @@ class AuthProvider with ChangeNotifier {
   Future<dynamic> smsOtpDialog(BuildContext context, String number) {
     EasyLoading.dismiss();
     return showDialog(
+      barrierDismissible: false,
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
