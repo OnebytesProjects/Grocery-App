@@ -388,45 +388,47 @@ class _MilkDisplayState extends State<MilkDisplay> {
                             SizedBox(height: 5,),
                             subdisplay ?
                             Container(
-                              height: 60,
-                              padding: EdgeInsets.only(left: 20, right: 50),
+                              height: 50,
+                              padding: EdgeInsets.only(left: 20, right: 50,),
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  Row(
-                                    children: [
-                                      Checkbox(
-                                          checkColor: Colors.white,
-                                          fillColor: MaterialStateProperty
-                                              .resolveWith(getColor),
-                                          value: isChecked1sub,
-                                          onChanged: (value) {
-                                            setState(() {
-                                              cp = chosenPrice;
-                                              isChecked1sub = value!;
-                                              isChecked2sub = false;
-                                              subscriptionType = 'Monthly';
-                                              cp = cp * 30;
-                                              incdisplay = true;
-                                            });
-                                            if (value == false) {
+                                  Container(
+                                    child: Row(
+                                      children: [
+                                        Checkbox(
+                                            checkColor: Colors.white,
+                                            fillColor: MaterialStateProperty
+                                                .resolveWith(getColor),
+                                            value: isChecked1sub,
+                                            onChanged: (value) {
                                               setState(() {
-                                                subscriptionType = '';
-                                                cp = 0;
-                                                incdisplay = false;
+                                                cp = chosenPrice;
+                                                isChecked1sub = value!;
+                                                isChecked2sub = false;
+                                                subscriptionType = 'Monthly';
+                                                cp = cp * 30;
+                                                incdisplay = true;
                                               });
-                                            }
-                                            //check
-                                            setState(() {
-                                              _qty = 0;
-                                              total = 0;
-                                            });
-                                            print(total);
-                                            print(chosenPrice);
-                                          }),
-                                      Text("Monthly")
-                                    ],
+                                              if (value == false) {
+                                                setState(() {
+                                                  subscriptionType = '';
+                                                  cp = 0;
+                                                  incdisplay = false;
+                                                });
+                                              }
+                                              //check
+                                              setState(() {
+                                                _qty = 0;
+                                                total = 0;
+                                              });
+                                              print(total);
+                                              print(chosenPrice);
+                                            }),
+                                        Text("Monthly")
+                                      ],
+                                    ),
                                   ),
                                   Row(
                                     children: [
