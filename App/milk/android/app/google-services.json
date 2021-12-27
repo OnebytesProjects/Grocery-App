@@ -14,6 +14,80 @@
       },
       "oauth_client": [
         {
+          "client_id": "271687998097-nofe7ki46opva8g28h6jafgjc4dlh2bp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.milk",
+            "certificate_hash": "502acc5ff6eb17b667a165354b7dd011521bdca5"
+          }
+        },
+        {
+          "client_id": "271687998097-ume0sttf711j42qeg94fttemgb61c4po.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCfxWSXatt_WO4b8zMW8Ot57UlbrVaFJ98"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "271687998097-ume0sttf711j42qeg94fttemgb61c4po.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:271687998097:android:1ff45adcea8b7d0939fd30",
+        "android_client_info": {
+          "package_name": "com.grocery.deliveryapp.deliveryapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "271687998097-81lgdjhm7bj538pamcjf3espa6tfv7n5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.grocery.deliveryapp.deliveryapp",
+            "certificate_hash": "502acc5ff6eb17b667a165354b7dd011521bdca5"
+          }
+        },
+        {
+          "client_id": "271687998097-ume0sttf711j42qeg94fttemgb61c4po.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCfxWSXatt_WO4b8zMW8Ot57UlbrVaFJ98"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "271687998097-ume0sttf711j42qeg94fttemgb61c4po.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:271687998097:android:4002e7f6970b06f539fd30",
+        "android_client_info": {
+          "package_name": "com.onebytes.milk"
+        }
+      },
+      "oauth_client": [
+        {
           "client_id": "271687998097-ume0sttf711j42qeg94fttemgb61c4po.apps.googleusercontent.com",
           "client_type": 3
         }

@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:271687998097:android:5f5f941ae40c697d39fd30",
+        "mobilesdk_app_id": "1:271687998097:android:4002e7f6970b06f539fd30",
         "android_client_info": {
-          "package_name": "com.example.milk"
+          "package_name": "com.onebytes.milk"
         }
       },
       "oauth_client": [
@@ -36,9 +36,9 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:271687998097:android:1ff45adcea8b7d0939fd30",
+        "mobilesdk_app_id": "1:271687998097:android:36233683be61fff739fd30",
         "android_client_info": {
-          "package_name": "com.grocery.deliveryapp.deliveryapp"
+          "package_name": "com.onebytes.milk.deliveryapp"
         }
       },
       "oauth_client": [
