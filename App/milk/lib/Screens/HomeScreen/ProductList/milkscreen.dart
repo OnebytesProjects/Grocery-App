@@ -377,7 +377,7 @@ class _MilkDisplayState extends State<MilkDisplay> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: SizedBox(
-                        height: 80,
+                        height: 90,
                         width: double.infinity,
                         child: Column(
                           children: [
@@ -388,7 +388,7 @@ class _MilkDisplayState extends State<MilkDisplay> {
                             SizedBox(height: 5,),
                             subdisplay ?
                             Container(
-                              height: 50,
+                              height: 60,
                               padding: EdgeInsets.only(left: 20, right: 50),
                               child: Row(
                                 mainAxisAlignment:

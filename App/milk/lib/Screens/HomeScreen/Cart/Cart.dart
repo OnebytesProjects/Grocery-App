@@ -241,7 +241,7 @@ class _CartState extends State<Cart> {
         ),
       ),
       width: double.infinity,
-      height: 80,
+      height: 90,
       padding: const EdgeInsets.all(8),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
