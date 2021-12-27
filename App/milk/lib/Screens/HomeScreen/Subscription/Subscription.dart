@@ -14,6 +14,7 @@ class Subscription extends StatefulWidget {
 class _SubscriptionState extends State<Subscription> {
   String vip = '';
   CollectionReference subscription = FirebaseFirestore.instance.collection('subscription');
+  CollectionReference subscription2 = FirebaseFirestore.instance.collection('Activesubscription');
   FirebaseAuth _auth = FirebaseAuth.instance;
   CollectionReference users = FirebaseFirestore.instance.collection('users');
 
@@ -196,6 +197,8 @@ class _SubscriptionState extends State<Subscription> {
             //changestatus
             subscription.doc(docid)
                 .update({'orderStatus': 'Cancelled'});
+            //update active subs
+            subscription2.doc(docid).delete();
             //user subscription cancel
             users.doc(_auth.currentUser?.uid)
                 .update({'vip': 'no'});
