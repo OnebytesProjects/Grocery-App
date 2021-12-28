@@ -46,14 +46,24 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return Padding(
-          padding: const EdgeInsets.fromLTRB(8, 50, 8, 215),
+          padding: const EdgeInsets.fromLTRB(150, 400, 8, 10),
           child: Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15.0),
+            ),
             child: Stack(
               children: [
-                Container(
-                  child: AdImage(),
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Container(
+                    height: double.infinity,
+                    width: double.infinity,
+                    child: AdImage(),
+                  ),
                 ),
-                Positioned(top:10,right: 10,
+                //Expanded(child: AdImage()),
+                //AdImage(),
+                Positioned(top:5,right: 5,
                     child:IconButton(
                       icon: Icon(Icons.close),
                       onPressed: (){
@@ -251,9 +261,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
           physics: const NeverScrollableScrollPhysics(),
           children: snapshot.data!.docs.map((DocumentSnapshot document) {
             Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
-            return Container(
-              child: Image.network(data['image'],fit: BoxFit.fill,),
-            );
+            return Image.network(data['image']);
           }).toList(),
         );
       },

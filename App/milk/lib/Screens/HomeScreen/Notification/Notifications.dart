@@ -43,21 +43,26 @@ class _NotificationsState extends State<Notifications> {
             return ListView(
               children: snapshot.data!.docs.map((DocumentSnapshot document) {
                 Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
-                return Container(
-                  decoration: BoxDecoration(
-                    border: Border(
-                      bottom:BorderSide(width: 2.0, color: Colors.black45),
+                return GestureDetector(
+                  onTap: (){
+                    Navigator.pop(context);
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom:BorderSide(width: 2.0, color: Colors.black45),
+                      ),
                     ),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ListTile(
-                      title: Text(data['content']),
-                      trailing: IconButton(
-                        icon: Icon(Icons.delete),
-                        onPressed: (){
-                          DeleteNotification(_auth.currentUser?.uid,document.id);
-                        },
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ListTile(
+                        title: Text(data['content']),
+                        trailing: IconButton(
+                          icon: Icon(Icons.delete),
+                          onPressed: (){
+                            DeleteNotification(_auth.currentUser?.uid,document.id);
+                          },
+                        ),
                       ),
                     ),
                   ),

@@ -66,16 +66,13 @@ class AuthProvider with ChangeNotifier {
                 ),
               ],
             ),
-            content: SizedBox(
-              height: 85,
-              child: TextField(
-                textAlign: TextAlign.center,
-                keyboardType: TextInputType.number,
-                maxLength: 6,
-                onChanged: (value) {
-                  smsOtp = value;
-                },
-              ),
+            content: TextField(
+              textAlign: TextAlign.center,
+              keyboardType: TextInputType.number,
+              maxLength: 6,
+              onChanged: (value) {
+                smsOtp = value;
+              },
             ),
             actions: [
               FlatButton(
