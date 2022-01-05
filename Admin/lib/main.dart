@@ -1,4 +1,5 @@
 // @dart=2.9
+import 'package:admin/Screens/Ad/AdScreen.dart';
 import 'package:admin/Screens/Home/HomeScreen.dart';
 import 'package:admin/Screens/Category/category_screen.dart';
 import 'package:admin/Screens/Banner/manage_banners.dart';
@@ -43,11 +44,11 @@ class MyApp extends StatelessWidget {
         HomeScreen.id:(context)=>HomeScreen(),
         LoginScreen.id:(context)=>LoginScreen(),
         BannerScreen.id:(context)=>BannerScreen(),
+        AdScreen.id:(context)=>AdScreen(),
         CategoryScreen.id:(context)=>CategoryScreen(),
         NotificationScreen.id:(context)=>NotificationScreen(),
         VendorScreen.id:(context)=>VendorScreen(),
         AddNewProduct.id:(context)=>AddNewProduct(),
-        Subscription.id:(context)=>Subscription(),
         MilkScreen.id:(context)=>MilkScreen(),
         SideBarContent.id:(context)=>SideBarContent(),
         Manage.id:(context)=>Manage(),

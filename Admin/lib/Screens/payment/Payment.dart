@@ -1,4 +1,5 @@
-import 'package:admin/Screens/payment/Details.dart';
+import 'package:admin/Screens/payment/OrderDetails.dart';
+import 'package:admin/Screens/payment/SubscriptionDetails.dart';
 import 'package:admin/Services/sidebar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_admin_scaffold/admin_scaffold.dart';
@@ -44,7 +45,18 @@ class Payment extends StatelessWidget {
                   padding: const EdgeInsets.all(8.0),
                   child: Card(
                     elevation: 10,
-                    child: Details(),
+                    child: OrderDetails(),
+                  ),
+                ),
+              ),
+              Container(
+                height: 500,
+                width: double.infinity,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Card(
+                    elevation: 10,
+                    child: SubscriptionDetails(),
                   ),
                 ),
               ),

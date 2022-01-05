@@ -1,21 +1,25 @@
-import 'package:admin/Screens/Ad/AdWidget.dart';
 import 'package:admin/Services/Firebase_Services.dart';
 import 'package:admin/Services/sidebar.dart';
 import 'package:ars_progress_dialog/ars_progress_dialog.dart';
-import 'package:firebase/firebase.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_admin_scaffold/admin_scaffold.dart';
+import '../Notification/notification_screen.dart';
+import 'package:admin/Screens/Ad/AdWidget.dart';
+import 'package:firebase/firebase.dart';
 import 'dart:html';
 import 'package:firebase/firebase.dart' as db;
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
-class Ad extends StatefulWidget {
-  const Ad({Key? key}) : super(key: key);
+class AdScreen extends StatefulWidget {
+  static const String id = 'Ad-screen';
+  const AdScreen({Key? key}) : super(key: key);
 
   @override
-  _AdState createState() => _AdState();
+  State<AdScreen> createState() => _AdScreenState();
 }
 
-class _AdState extends State<Ad> {
+class _AdScreenState extends State<AdScreen> {
+
   SidebarWidget _sideBar = SidebarWidget();
   var _fileNameTextController = TextEditingController();
   FirebaseServices _services = FirebaseServices();
@@ -23,6 +27,7 @@ class _AdState extends State<Ad> {
   bool _imageSelected = true;
   late String _url;
   bool _enable = false;
+
 
   @override
   Widget build(BuildContext context) {
@@ -32,18 +37,35 @@ class _AdState extends State<Ad> {
         backgroundColor: Color(0x33000000),
         animationDuration: Duration(milliseconds: 500));
 
-    return Scaffold(
+    SidebarWidget _sideBar = SidebarWidget();
+
+    return AdminScaffold(
+      backgroundColor: Colors.grey[100],
       appBar: AppBar(
-        title: Text('Manage Ad'),
         backgroundColor: Colors.black87,
-        automaticallyImplyLeading: false,
+        iconTheme: IconThemeData(
+            color: Colors.white
+        ),
+        title: const Text('Ad Screen' ,style: TextStyle(color: Colors.white),),
       ),
+      sideBar: _sideBar.sideBarmenus(context,NotificationScreen.id),
       body: SingleChildScrollView(
         child: Container(
           alignment: Alignment.topLeft,
           padding: const EdgeInsets.all(10),
           child: Column(
             children: [
+              Text(
+                'Ad-Screen',
+                style: TextStyle(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 36,
+                ),
+              ),
+              Text("Add/Delete Advertisment"),
+              Divider(
+                thickness: 5,
+              ),
               AdWidget(),
               Divider(
                 thickness: 5,

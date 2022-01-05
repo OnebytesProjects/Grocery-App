@@ -40,29 +40,29 @@ class _UserRegistrationState extends State<UserRegistration> {
   TextEditingController _referral = TextEditingController();
   TextEditingController _email = TextEditingController();
   String unknownloc = '';
+  bool unknownlocation = true;
 
   File? image;
   var profileimgpath = 'images/profile.jpg';
 
   checkPincode() async{
-    setState(() {
-      unknownloc = 'NewLocation: '+_pincode.text;
-    });
+     unknownloc = 'NewLocation: '+_pincode.text;
     //check pincode
-    FirebaseFirestore.instance
+    await FirebaseFirestore.instance
         .collection('pincode')
         .get()
         .then((QuerySnapshot querySnapshot) {
       querySnapshot.docs.forEach((doc) {
-        print(doc['pincode']);
-        print('to check: ${_pincode.text}');
         if(_pincode.text == doc['pincode']){
+          print('checked');
           setState(() {
             unknownloc = '';
           });
         }
       });
     });
+
+    print('unknown loc : ${unknownloc}');
 
     return unknownloc;
   }

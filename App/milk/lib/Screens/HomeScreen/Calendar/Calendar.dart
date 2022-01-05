@@ -60,28 +60,32 @@ class _CalendarState extends State<Calendar> {
         querySnapshot.docs.forEach((doc) {
           //startdate = (doc['startdate'] as Timestamp).toString();
           enddate = doc['endDate'];
-          todayDelivery = DateFormat('yyyy,MM,dd').format(DateTime.parse(doc['DeliveryDate']));
+          setState(() {
+            todayDelivery = DateFormat('yyyy,MM,dd').format(DateTime.parse(doc['DeliveryDate']));
+          });
           print(todayDelivery);
         });
       });
     });
 
     return Scaffold(
-        body: ListView(
+        body: SingleChildScrollView(
+          child: Column(
       children: [
-        calendar(),
-        SizedBox(
-          height: 5,
-        ),
-        Container(
-            padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
-            child: Text(
-              "Details",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-            )),
-        cardVeiw("Milk"),
+          calendar(),
+          SizedBox(
+            height: 5,
+          ),
+          Container(
+              padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+              child: Text(
+                "Details",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+              )),
+          cardVeiw("Milk"),
       ],
-    ));
+    ),
+        ));
   }
 
   Widget calendar() {
@@ -129,13 +133,13 @@ class _CalendarState extends State<Calendar> {
 
   Widget cardVeiw(String title) {
     OrderService orderService = OrderService();
-    User? user = FirebaseAuth.instance.currentUser;
+    //User? user = FirebaseAuth.instance.currentUser;
 
     return DateFormat('yyyy,MM,dd').format(_focusedDay) == todayDelivery ?SizedBox(
       height: MediaQuery.of(context).size.height,
       width: double.infinity,
       child: StreamBuilder<QuerySnapshot>(
-        stream: orderService.subscription2.where('userId',isEqualTo: user?.uid).snapshots(),
+        stream: orderService.subscription2.where('userId',isEqualTo: _auth.currentUser?.uid).snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
             return Text('Something went wrong');
@@ -187,79 +191,78 @@ class _CalendarState extends State<Calendar> {
                                   ),
                                   DateFormat('yyyy,MM,dd').format(_focusedDay) == DateFormat('yyyy,MM,dd').format(_today) ?
                                   Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                     children: [
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            InkWell(
-                                              onTap: () {
-                                                if (_qty >= 1) {
-                                                  setState(() {
-                                                    _qty -= 1;
-                                                  });
-                                                }
-                                                if(_qty == 0){
-                                                  setState(() {
-                                                    _skipenable = false;
-                                                  });
-                                                }
-                                              },
-                                              child: Container(
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                    BorderRadius.circular(50),
-                                                    border: Border.all(
-                                                      color: Colors.orange,
-                                                    )),
-                                                child: Padding(
-                                                  padding: EdgeInsets.all(8.0),
-                                                  child: Icon(Icons.remove),
-                                                ),
+                                      Text('Days: '),
+                                      Row(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          InkWell(
+                                            onTap: () {
+                                              if (_qty >= 1) {
+                                                setState(() {
+                                                  _qty -= 1;
+                                                });
+                                              }
+                                              if(_qty == 0){
+                                                setState(() {
+                                                  _skipenable = false;
+                                                });
+                                              }
+                                            },
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                  BorderRadius.circular(50),
+                                                  border: Border.all(
+                                                    color: Colors.orange,
+                                                  )),
+                                              child: Padding(
+                                                padding: EdgeInsets.all(8.0),
+                                                child: Icon(Icons.remove),
                                               ),
                                             ),
-                                            Padding(
-                                              padding: EdgeInsets.only(
-                                                  left: 20,
-                                                  right: 20,
-                                                  top: 8,
-                                                  bottom: 8),
-                                              child: Text(_qty.toString()),
-                                            ),
-                                            InkWell(
-                                              onTap: () {
-                                                if (_qty >= 0) {
-                                                  setState(() {
-                                                    _qty += 1;
-                                                  });
-                                                }
-                                                if(_qty > 0){
-                                                  setState(() {
-                                                    _skipenable = true;
-                                                  });
-                                                }
-                                              },
-                                              child: Container(
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                    BorderRadius.circular(50),
-                                                    border: Border.all(
-                                                      color: Colors.orange,
-                                                    )),
-                                                child: Padding(
-                                                  padding: EdgeInsets.all(8.0),
-                                                  child: Icon(Icons.add),
-                                                ),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                                left: 20,
+                                                right: 20,
+                                                top: 8,
+                                                bottom: 8),
+                                            child: Text(_qty.toString()),
+                                          ),
+                                          InkWell(
+                                            onTap: () {
+                                              if (_qty >= 0) {
+                                                setState(() {
+                                                  _qty += 1;
+                                                });
+                                              }
+                                              if(_qty > 0){
+                                                setState(() {
+                                                  _skipenable = true;
+                                                });
+                                              }
+                                            },
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                  BorderRadius.circular(50),
+                                                  border: Border.all(
+                                                    color: Colors.orange,
+                                                  )),
+                                              child: Padding(
+                                                padding: EdgeInsets.all(8.0),
+                                                child: Icon(Icons.add),
                                               ),
                                             ),
-                                          ],
-                                        ),
+                                          ),
+                                        ],
                                       ),
                                       RaisedButton(
                                         onPressed: _skipenable?(){
-                                        showDialog('Are you Sure?', context,document.id);
+                                        showDialog('Are you sure to skip ${_qty} delivery day?', context,document.id);
 
                                       }:null,child: Text('Skip Delivery'),
                                         color: _skipenable?Colors.orange:Colors.grey,),
@@ -281,7 +284,7 @@ class _CalendarState extends State<Calendar> {
           return Center(child: Text('No Delivery Today'),);
         },
       ),
-    ):Center(child: Text('Select Delivery Date.'),);
+    ):Center(child: Text('Select Delivery Date'),);
   }
 
 

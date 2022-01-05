@@ -168,6 +168,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                                 _services.showMyDialog(title: 'Alert',message: 'Invalid Credentials.Please Try Again',context: context);
                                               }
                                             }else{
+                                              progressDialog.dismiss();
                                               _services.showMyDialog(title: 'Alert',message: 'Invalid Credentials.Please Try Again',context: context);
                                             }
                                           });

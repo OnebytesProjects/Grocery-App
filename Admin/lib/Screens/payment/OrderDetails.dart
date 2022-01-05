@@ -1,22 +1,24 @@
 import 'package:admin/Services/order_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase/firebase.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:intl/intl.dart';
 
-class Details extends StatefulWidget {
-  const Details({Key? key}) : super(key: key);
+class OrderDetails extends StatefulWidget {
+  const OrderDetails({Key? key}) : super(key: key);
 
   @override
-  _DetailsState createState() => _DetailsState();
+  _OrderDetailsState createState() => _OrderDetailsState();
 }
 
-class _DetailsState extends State<Details> {
+class _OrderDetailsState extends State<OrderDetails> {
   OrderService orderService = OrderService();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title: Text('Order Payment'),backgroundColor: Colors.black87,),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Container(

@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-import '../../../Services/Firebase_Services.dart';
+import '../../Services/Firebase_Services.dart';
 
 class AdWidget extends StatelessWidget {
   const AdWidget({Key? key}) : super(key: key);

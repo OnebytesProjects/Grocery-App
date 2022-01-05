@@ -40,93 +40,46 @@ class _NotificationsState extends State<Notifications> {
           }
 
           if(snapshot.hasData){
-            return ListView(
-              children: snapshot.data!.docs.map((DocumentSnapshot document) {
-                Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
+            return ListView.builder(
+              itemCount: snapshot.data!.docs.length,
+              itemBuilder: (context,index){
+                DocumentSnapshot documentSnapshot = snapshot.data!.docs[index];
+                final list = snapshot.data!.docs;
                 return GestureDetector(
-                  onTap: (){
-                    Navigator.pop(context);
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border(
-                        bottom:BorderSide(width: 2.0, color: Colors.black45),
-                      ),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ListTile(
-                        title: Text(data['content']),
-                        trailing: IconButton(
-                          icon: Icon(Icons.delete),
-                          onPressed: (){
-                            DeleteNotification(_auth.currentUser?.uid,document.id);
-                          },
+                  child: Dismissible(
+                    key: Key(documentSnapshot['content']),
+                    onDismissed: (direction){
+                      DeleteNotification(_auth.currentUser?.uid,documentSnapshot.id);
+                    },
+                    background: Container(color: Colors.grey,),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border(
+                          top: BorderSide(width: 2.0, color: Colors.black45),
+                          bottom:BorderSide(width: 2.0, color: Colors.black45),
+                          right: BorderSide(width: 2.0, color: Colors.black45),
+                          left: BorderSide(width: 2.0, color: Colors.black45),
+
                         ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ListTile(title: Text(documentSnapshot['content']),),
                       ),
                     ),
                   ),
                 );
-              }).toList(),
+              },
             );
           }
-
           return Center(child: Text('No Notifications'),);
-
         },
       ),
     );
   }
-  DeleteNotification(userId,docId){
-    users.doc(userId).collection('notifications').doc(docId).delete();
+  DeleteNotification(userId,docId)async{
+    await users.doc(userId).collection('notifications').doc(docId).delete();
   }
 
 
 }
-// StreamBuilder<QuerySnapshot>(
-// stream: users.doc(_auth.currentUser?.uid).collection('notifications').snapshots(),
-// builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-// _notificationProvider.getsize();
-// if (snapshot.hasError) {
-// return Text('Something went wrong');
-// }
-//
-// if(!snapshot.hasData){
-// return Center(child: Text('No Notifications'),);
-// }
-//
-// if(snapshot.hasData){
-// return ListView(
-// children: snapshot.data!.docs.map((DocumentSnapshot document) {
-// Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
-// return Container(
-// decoration: BoxDecoration(
-// border: Border(
-// bottom:BorderSide(width: 2.0, color: Colors.black45),
-// ),
-// ),
-// child: Padding(
-// padding: const EdgeInsets.all(8.0),
-// child: ListTile(
-// title: Text(data['content']),
-// trailing: IconButton(
-// icon: Icon(Icons.delete),
-// onPressed: (){
-// DeleteNotification(_auth.currentUser?.uid,document.id);
-// },
-// ),
-// ),
-// ),
-// );
-// }).toList(),
-// );
-// }
-//
-// return Center(child: Text('No Notifications'),);
-//
-// },
-// )
-
-// DeleteNotification(userId,docId){
-//   users.doc(userId).collection('notifications').doc(docId).delete();
-// }

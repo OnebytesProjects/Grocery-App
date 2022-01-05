@@ -1,3 +1,4 @@
+import 'package:admin/Screens/Ad/AdScreen.dart';
 import 'package:admin/Screens/Home/HomeScreen.dart';
 import 'package:admin/Screens/Category/category_screen.dart';
 import 'package:admin/Screens/Banner/manage_banners.dart';
@@ -29,6 +30,11 @@ class SidebarWidget {
         MenuItem(
           title: 'Banners',
           route: BannerScreen.id,
+          icon: CupertinoIcons.photo,
+        ),
+        MenuItem(
+          title: 'Ad',
+          route: AdScreen.id,
           icon: CupertinoIcons.photo,
         ),
         MenuItem(
