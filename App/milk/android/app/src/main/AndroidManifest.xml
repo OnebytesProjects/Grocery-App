@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.onebytes.milk">
+    package="com.onebytes.milkemoo">
     <uses-permission android:name="android.permission.INTERNET" />
     <queries>
         <!-- If your app opens https URLs -->
@@ -19,9 +19,9 @@
         </intent>
     </queries>
    <application
-        android:label="milk"
+        android:label="Milke Moo"
         android:usesCleartextTraffic="true"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

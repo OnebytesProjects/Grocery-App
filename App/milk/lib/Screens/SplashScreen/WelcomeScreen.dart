@@ -93,6 +93,7 @@ class WelcomeScreen extends StatelessWidget {
     // }
 
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
@@ -100,7 +101,7 @@ class WelcomeScreen extends StatelessWidget {
             Expanded(
                 child: Container(
                   margin: EdgeInsets.fromLTRB(50, 10, 50, 100),
-                  child: Image.asset("images/splscrn.png"),
+                  child: Image.asset("images/splscrn.jpg"),
                 )),
             Text("Your Content"),
           ],

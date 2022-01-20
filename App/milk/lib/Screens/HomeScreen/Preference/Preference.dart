@@ -31,8 +31,8 @@ class _PreferenceState extends State<Preference> {
           children: [
             Row(
               children: [
-                cardVeiw("Ring Door Bell", "prf1.png"),
-                cardVeiw("Drop At The Door", "prf2.png"),
+                cardVeiw("Ring Door Bell", "prf1.jpg"),
+                cardVeiw("Drop At The Door", "prf2.jpg"),
               ],
             ),
             SizedBox(
@@ -40,8 +40,8 @@ class _PreferenceState extends State<Preference> {
             ),
             Row(
               children: [
-                cardVeiw("In Hand Delivery", "prf3.png"),
-                cardVeiw("Keep In The Bag", "prf4.png"),
+                cardVeiw("In Hand Delivery", "prf3.jpg"),
+                cardVeiw("Keep In The Bag", "prf4.jpg"),
               ],
             ),
             SizedBox(

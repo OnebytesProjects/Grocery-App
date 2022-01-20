@@ -47,17 +47,32 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Container(
-          margin: EdgeInsets.all(50),
-          child: Image.asset("images/splscrn.png"),
-        ),
-      ),
-      bottomSheet: Container(
-        height: 50,
-        width: double.infinity,
-        child: Center(child: Text('Developed By OneBytes'),),
-      ),
+      body: Stack(
+        children: [
+          Container(
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage("images/SplashScreen.png")
+                  )
+              )
+            // margin: EdgeInsets.all(50),
+            // child: Image.asset("images/SplashScreen.png"),
+          ),
+          Positioned(
+              bottom: 20,
+              right: 100,
+              child: Text('Developed By OneBytes',style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),)),
+        ],
+      )
+      // bottomSheet: Stack(
+      //   children: [
+      //     Container(
+      //       height: 50,
+      //       width: double.infinity,
+      //       child: Center(child: Text('Developed By OneBytes',style: TextStyle(color: Colors.white),),),
+      //     ),
+      //   ],
+      // )
     );
   }
 }

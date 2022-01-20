@@ -17,7 +17,7 @@ List<Widget> _pages = [
       Expanded(
           child: Container(
         margin: EdgeInsets.all(50),
-        child: Image.asset("images/splscrn.png"),
+        child: Image.asset("images/splscrn.jpg"),
       )),
       Text("Your Content"),
     ],

@@ -306,7 +306,7 @@ class _MainScreenState extends State<MainScreen> {
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       image: DecorationImage(
-                          image: AssetImage("images/splscrn.png"),
+                          image: AssetImage("images/splscrn.jpg"),
                           fit: BoxFit.fill),
                     ),
                   )

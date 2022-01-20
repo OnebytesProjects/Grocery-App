@@ -1,4 +1,4 @@
-package com.onebytes.milk
+package com.onebytes.milkemoo
 
 import io.flutter.embedding.android.FlutterActivity
 
