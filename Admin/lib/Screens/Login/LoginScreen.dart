@@ -1,9 +1,12 @@
 import 'package:admin/Screens/Home/HomeScreen.dart';
+import 'package:admin/Screens/Login/reset.dart';
 import 'package:admin/Services/Firebase_Services.dart';
 import 'package:ars_progress_dialog/ars_progress_dialog.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 
 class LoginScreen extends StatefulWidget {
@@ -137,42 +140,47 @@ class _LoginScreenState extends State<LoginScreen> {
                                               width: 2)),
                                     ),
                                   ),
+
                                 ],
                               ),
                             ),
+                            SizedBox(height: 30,),
                             Row(
                               children: [
                                 Expanded(
                                   child: FlatButton(
                                     onPressed: () async {
                                       if (_formKey.currentState!.validate()) {
-                                        UserCredential usercredentials = await FirebaseAuth.instance.signInAnonymously();
-                                        progressDialog.show();
-                                        _services.getAdminCredentials().then((value){
-                                          value.docs.forEach((doc) {
-                                            if(doc.get('username')==_username){
-                                              if(doc.get('password')==_password){
-                                                if(usercredentials.user!.uid!=null){
-                                                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context)=>HomeScreen()));
-                                                  return;
-                                                }else{
-                                                  progressDialog.dismiss();
-                                                  _services.showMyDialog(
-                                                    title: 'Login',
-                                                    message: 'Login Failed',
-                                                    context:context,
-                                                  );
-                                                }
-                                              }else{
-                                                progressDialog.dismiss();
-                                                _services.showMyDialog(title: 'Alert',message: 'Invalid Credentials.Please Try Again',context: context);
-                                              }
-                                            }else{
-                                              progressDialog.dismiss();
-                                              _services.showMyDialog(title: 'Alert',message: 'Invalid Credentials.Please Try Again',context: context);
-                                            }
-                                          });
-                                        });
+                                        //email login
+                                        EasyLoading.show(status: 'Please Wait');
+                                        Login();
+                                        // UserCredential usercredentials = await FirebaseAuth.instance.signInAnonymously();
+                                        // progressDialog.show();
+                                        // _services.getAdminCredentials().then((value){
+                                        //   value.docs.forEach((doc) {
+                                        //     if(doc.get('username')==_username){
+                                        //       if(doc.get('password')==_password){
+                                        //         if(usercredentials.user!.uid!=null){
+                                        //           Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context)=>HomeScreen()));
+                                        //           return;
+                                        //         }else{
+                                        //           progressDialog.dismiss();
+                                        //           _services.showMyDialog(
+                                        //             title: 'Login',
+                                        //             message: 'Login Failed',
+                                        //             context:context,
+                                        //           );
+                                        //         }
+                                        //       }else{
+                                        //         progressDialog.dismiss();
+                                        //         _services.showMyDialog(title: 'Alert',message: 'Invalid Credentials.Please Try Again',context: context);
+                                        //       }
+                                        //     }else{
+                                        //       progressDialog.dismiss();
+                                        //       _services.showMyDialog(title: 'Alert',message: 'Invalid Credentials.Please Try Again',context: context);
+                                        //     }
+                                        //   });
+                                        // });
                                       }
                                     },
                                     color: Theme.of(context).primaryColor,
@@ -184,6 +192,18 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                               ],
                             ),
+                            Expanded(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                InkWell(
+                                  onTap:(){
+                                    Navigator.pushNamed(context, Reset.id);
+                                  },
+                                  child: Text("Forgot Password",style: TextStyle(color: Colors.grey),),
+                                )
+                              ],
+                            )),
                           ],
                         ),
                       ),
@@ -207,6 +227,34 @@ class _LoginScreenState extends State<LoginScreen> {
       )
       ,);
   }
+  Future Login() async{
+    UserCredential userCredential;
+    try {
+       userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: _username.trim(),
+        password: _password.trim(),
+      );
+       if(userCredential.user!.uid!=null){
+         Verifyuser(_username.trim());
+       }
+    } on FirebaseAuthException catch (e) {
+      EasyLoading.showError('Check Your Login Details');
+    }
 
+  }
+  Future<void> Verifyuser(email) async {
+    FirebaseFirestore.instance
+        .collection('Admin')
+        .doc(email)
+        .get()
+        .then((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists) {
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context)=>HomeScreen()));
+        EasyLoading.showSuccess("Welcome!");
+      }else{
+        EasyLoading.showError('Check Your Login Details');
+      }
+    });
+  }
 
 }

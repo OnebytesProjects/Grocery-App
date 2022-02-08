@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class OrderService{
   CollectionReference product = FirebaseFirestore.instance.collection('products');
@@ -6,6 +7,7 @@ class OrderService{
   CollectionReference subscription = FirebaseFirestore.instance.collection('subscription');
   CollectionReference subscription2 = FirebaseFirestore.instance.collection('Activesubscription');
   CollectionReference users = FirebaseFirestore.instance.collection('users');
+  String error = '';
 
   Future<void>updateOrderStatus(documentId,status){
     var result = order.doc(documentId).update({
@@ -56,5 +58,7 @@ class OrderService{
     });
     return result;
   }
+
+
 
 }

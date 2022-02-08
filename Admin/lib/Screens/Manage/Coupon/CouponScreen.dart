@@ -21,6 +21,8 @@ class _CouponScreenState extends State<CouponScreen> {
 
 
   bool _active = false;
+  bool _type = false;
+
 
   _selectDate(context)async{
     final DateTime? picked = await showDatePicker(
@@ -76,7 +78,7 @@ class _CouponScreenState extends State<CouponScreen> {
                   },
                   decoration: InputDecoration(
                     contentPadding: EdgeInsets.zero,
-                    labelText: 'Discount %',
+                    labelText: 'Amount/Discount %',
                     labelStyle: TextStyle(color: Colors.grey),
                   ),
                 ),
@@ -125,6 +127,17 @@ class _CouponScreenState extends State<CouponScreen> {
                     });
                   },
                 ),
+                SwitchListTile(
+                  activeColor: Theme.of(context).primaryColor,
+                  contentPadding: EdgeInsets.zero,
+                  title: Text('Discount'),
+                  value: _type,
+                  onChanged: (bool newValue){
+                    setState(() {
+                      _type = !_type;
+                    });
+                  },
+                ),
                 SizedBox(
                   height: 20,
                 ),
@@ -142,6 +155,7 @@ class _CouponScreenState extends State<CouponScreen> {
                               discountRate: int.parse(discountRate.text),
                               expiry: _selectedDate,
                               active: _active,
+                              discount: _type,
                             ).then((value) {
                               Navigator.pop(context);
                               EasyLoading.showSuccess('Saved coupon Successfully');

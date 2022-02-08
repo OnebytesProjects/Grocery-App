@@ -1,8 +1,10 @@
 // @dart=2.9
 import 'package:admin/Screens/Ad/AdScreen.dart';
+import 'package:admin/Screens/Deliveryboy/Deliveryboy.dart';
 import 'package:admin/Screens/Home/HomeScreen.dart';
 import 'package:admin/Screens/Category/category_screen.dart';
 import 'package:admin/Screens/Banner/manage_banners.dart';
+import 'package:admin/Screens/Login/reset.dart';
 import 'package:admin/Screens/Manage/Manage.dart';
 import 'package:admin/Screens/MilkScreen/MilkScreen.dart';
 import 'package:admin/Screens/Notification/notification_screen.dart';
@@ -53,6 +55,8 @@ class MyApp extends StatelessWidget {
         SideBarContent.id:(context)=>SideBarContent(),
         Manage.id:(context)=>Manage(),
         Payment.id:(context)=>Payment(),
+        Deliveryboy.id:(context)=>Deliveryboy(),
+        Reset.id:(context)=>Reset(),
       },
     );
   }

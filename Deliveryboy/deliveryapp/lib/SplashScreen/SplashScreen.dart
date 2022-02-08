@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:deliveryapp/HomeScreen/HomeScreen.dart';
+import 'package:deliveryapp/Login/Login.dart';
 import 'package:deliveryapp/services/UpdateAvaliable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +25,7 @@ class _SplashScreenState extends State<SplashScreen> {
           .then((DocumentSnapshot documentSnapshot) {
         if (documentSnapshot.exists) {
          if(version == documentSnapshot['Version']){
-           Navigator.pushReplacementNamed(context, HomeScreen.id);
+           Navigator.pushReplacementNamed(context, Login.id);
          }else{
            Navigator.pushReplacementNamed(context, UpdateAvailable.id);
          }
@@ -39,10 +40,11 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Center(
         child: Container(
           margin: EdgeInsets.all(50),
-          child: Image.asset("images/splscrn.png"),
+          child: Image.asset("images/splscrn.jpg"),
         ),
       ),
       bottomSheet: Container(

@@ -72,6 +72,9 @@ class _CouponScreenMainState extends State<CouponScreenMain> {
                           'Expiry Date',
                         ),
                         Text(
+                          'Type',
+                        ),
+                        Text(
                           'Options',
                         ),
                       ],
@@ -129,7 +132,8 @@ class _CouponScreenMainState extends State<CouponScreenMain> {
                             ),
                             Container(
                               child: Text(
-                                '₹ '+data['discountRate'].toString(),
+                                data['type'].toString() == 'true'? '% '+data['discountRate'].toString():'₹ '+data['discountRate'].toString()
+                                ,
                               ),
                             ),
                             Container(
@@ -145,6 +149,11 @@ class _CouponScreenMainState extends State<CouponScreenMain> {
                             Container(
                               child: Text(
                                 expiry.toString(),
+                              ),
+                            ),
+                            Container(
+                              child: Text(
+                                data['type'].toString() == 'true'? 'Discount':'Amount',
                               ),
                             ),
                             popUpButton(data,context,expiry),
@@ -178,6 +187,7 @@ class _CouponScreenMainState extends State<CouponScreenMain> {
                       coupondetail: data['details'],
                       expdate: expiry.toString(),
                       status: data['active'],
+                      type:data['type'],
                     )));
           }
           if(value == 'delete'){

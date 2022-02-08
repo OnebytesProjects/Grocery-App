@@ -1,4 +1,5 @@
 import 'package:admin/Screens/Ad/AdScreen.dart';
+import 'package:admin/Screens/Deliveryboy/Deliveryboy.dart';
 import 'package:admin/Screens/Home/HomeScreen.dart';
 import 'package:admin/Screens/Category/category_screen.dart';
 import 'package:admin/Screens/Banner/manage_banners.dart';
@@ -61,6 +62,11 @@ class SidebarWidget {
           title: 'Payment',
           route: Payment.id,
           icon: CupertinoIcons.money_pound,
+        ),
+        MenuItem(
+          title: 'DeliveryBoy',
+          route: Deliveryboy.id,
+          icon: CupertinoIcons.car_detailed,
         ),
         MenuItem(
           title: 'Send Notification',

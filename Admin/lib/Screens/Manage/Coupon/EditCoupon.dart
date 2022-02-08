@@ -10,13 +10,15 @@ class EditCoupon extends StatefulWidget {
   String discount;
   String coupondetail;
   bool status;
+  bool type;
 
   EditCoupon(
       {required this.title,
         required this.discount,
         required this.expdate,
         required this.coupondetail,
-      required this.status});
+      required this.status,
+        required this.type});
 
   @override
   _EditCouponState createState() => _EditCouponState();
@@ -31,6 +33,7 @@ class _EditCouponState extends State<EditCoupon> {
   var detailsText = TextEditingController();
   var discountRate = TextEditingController();
   bool _active = false;
+  bool _type = false;
 
   _selectDate(context)async{
     final DateTime? picked = await showDatePicker(
@@ -54,6 +57,7 @@ class _EditCouponState extends State<EditCoupon> {
     this.discountRate.text = widget.discount;
     this.dateText.text = widget.expdate;
     this._active = widget.status;
+    this._type = widget.type;
     super.initState();
   }
 
@@ -146,6 +150,17 @@ class _EditCouponState extends State<EditCoupon> {
                     });
                   },
                 ),
+                SwitchListTile(
+                  activeColor: Theme.of(context).primaryColor,
+                  contentPadding: EdgeInsets.zero,
+                  title: Text('Discount'),
+                  value: _type,
+                  onChanged: (bool newValue){
+                    setState(() {
+                      _type = !_type;
+                    });
+                  },
+                ),
                 SizedBox(
                   height: 20,
                 ),
@@ -163,6 +178,7 @@ class _EditCouponState extends State<EditCoupon> {
                               discountRate: int.parse(discountRate.text),
                               expiry: _selectedDate,
                               active: _active,
+                              type: _type
                             ).then((value) {
                               EasyLoading.showSuccess('Updated coupon Successfully');
                               Navigator.pop(context);

@@ -42,6 +42,7 @@ dependencies:
   tabbar: ^0.1.1
   shifting_tabbar: ^1.0.2
   url_launcher:
+  email_validator:
 
 dev_dependencies:
   flutter_test:
