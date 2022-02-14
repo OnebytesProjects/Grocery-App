@@ -76,6 +76,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  final sound = 'notification.mp3';
   @override
   void initState() {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
@@ -92,6 +93,8 @@ class _MyAppState extends State<MyApp> {
                 channel!.name,
                 channel!.description,
                 icon: 'launch_background',
+                playSound: true,
+                sound: RawResourceAndroidNotificationSound(sound.split('.').first),
               ),
             ));
       }

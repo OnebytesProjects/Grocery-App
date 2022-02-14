@@ -10,6 +10,7 @@ import 'package:milk/providers/coupon_provider.dart';
 import 'package:milk/services/cart_services.dart';
 import 'package:milk/services/order_service.dart';
 import 'package:provider/provider.dart';
+import 'package:pay/pay.dart';
 
 enum SingingCharacter { Googlepay, CashOnDelivery }
 
@@ -38,12 +39,25 @@ class _CheckoutState extends State<Checkout> {
   String _number = '';
   int delivryCharge = 0;
   String subStatus = '';
+  late bool type ;
 
   @override
   Widget build(BuildContext context) {
+    final _paymentItems = [
+      PaymentItem(
+        label: 'Total',
+        amount: '99.99',
+        status: PaymentItemStatus.final_price,
+      )
+    ];
+    void onGooglePayResult(paymentResult) {
+      debugPrint(paymentResult.toString());
+    }
+
     var _coupon = Provider.of<CouponProvider>(context);
     var cartProvider = Provider.of<CartProvider>(context);
     discountrate = _coupon.discountrate;
+    type = _coupon.type;
 
     FirebaseFirestore.instance
         .collection('users')
@@ -73,10 +87,16 @@ class _CheckoutState extends State<Checkout> {
           }
         });
 
-        setState(() {
-          total = (widget.cartValue+delivryCharge)-discountrate;
-        });
-
+        if(type == true){
+          setState(() {
+            //calculate discount
+            total = (widget.cartValue+delivryCharge)-(widget.cartValue+delivryCharge*discountrate/100);
+          });
+        }if(type == false){
+          setState(() {
+            total = (widget.cartValue+delivryCharge)-discountrate;
+          });
+        }
       }
     });
 
@@ -190,59 +210,48 @@ class _CheckoutState extends State<Checkout> {
                           style:
                               TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
                         ),
-                        ListTile(
-                          title: const Text('Google Pay'),
-                          leading: Radio<SingingCharacter>(
-                            value: SingingCharacter.Googlepay,
-                            groupValue: _paymentmode,
-                            onChanged: (SingingCharacter? value) {
-                              setState(() {
-                                _paymentmode = value;
-                                payment = 'GooglePay';
-                              });
+                        // Container(
+                        //   padding: EdgeInsets.all(8),
+                        //   height: 80,
+                        //   width: double.infinity,
+                        //   child: GooglePayButton(
+                        //
+                        //     paymentConfigurationAsset: 'gpay.json',
+                        //     paymentItems: _paymentItems,
+                        //     style: GooglePayButtonStyle.black,
+                        //     type: GooglePayButtonType.pay,
+                        //     margin: const EdgeInsets.only(top: 15.0),
+                        //     onPaymentResult: (data){
+                        //       print(data);
+                        //     },
+                        //     loadingIndicator: const Center(
+                        //       child: CircularProgressIndicator(),
+                        //     ),
+                        //   ),
+                        //
+                        // ),
+                        Container(
+                          padding: EdgeInsets.all(8),
+                          height: 50,
+                          width: double.infinity,
+                          child: InkWell(
+                            onTap: (){
+                              EasyLoading.show(status: 'Placing Order');
+                              saveOrder(cartProvider,_coupon);
                             },
-                          ),
-                        ),
-                        ListTile(
-                          title: const Text('Cash On Delivery'),
-                          leading: Radio<SingingCharacter>(
-                            value: SingingCharacter.CashOnDelivery,
-                            groupValue: _paymentmode,
-                            onChanged: (SingingCharacter? value) {
-                              setState(() {
-                                _paymentmode = value;
-                                payment = 'Cod';
-                              });
-                            },
+                            child: Container(
+                              height: 20,
+                              width: 50,
+                              color: Colors.orange,
+                              child: Center(child: Text("Cash on Delivery"),),
+                            ),
                           ),
                         ),
                       ],
                     ),
                   )
                   ),
-                  Container(
-                    padding: EdgeInsets.all(8),
-                    height: 50,
-                    width: double.infinity,
-                    child: InkWell(
-                      onTap: (){
-                        if(payment == 'GooglePay'){
-                          EasyLoading.show(status: 'Placing Order');
-                          saveOrder(cartProvider,_coupon);
-                        }
-                        if(payment == 'Cod'){
-                          EasyLoading.show(status: 'Placing Order');
-                          saveOrder(cartProvider,_coupon);
-                        }
-                      },
-                      child: Container(
-                        height: 20,
-                        width: 50,
-                        color: Colors.orange,
-                        child: Center(child: Text("Proceed to Pay"),),
-                      ),
-                    ),
-                  ),
+
                 ],
               ),
             ),
@@ -251,6 +260,8 @@ class _CheckoutState extends State<Checkout> {
       ),
     );
   }
+
+
   showDialog(code,message){
     showCupertinoDialog(context: context, builder: (BuildContext context){
       return CupertinoAlertDialog(
@@ -286,7 +297,7 @@ class _CheckoutState extends State<Checkout> {
         _orderService.deleteCart().then((value) {
           _orderService.checkData().then((value) {
             _coupon.discountrate = 0;
-            EasyLoading.showSuccess('OrederPlaced');
+            EasyLoading.showSuccess('Order Placed Successfully');
             Navigator.pop(context);
             Navigator.pop(context);
           });
@@ -316,7 +327,7 @@ class _CheckoutState extends State<Checkout> {
         _orderService.deleteCart().then((value) {
           _orderService.checkData().then((value) {
             _coupon.discountrate = 0;
-            EasyLoading.showSuccess('OrederPlaced');
+            EasyLoading.showSuccess('Order Placed Successfully');
             Navigator.pop(context);
             Navigator.pop(context);
           });

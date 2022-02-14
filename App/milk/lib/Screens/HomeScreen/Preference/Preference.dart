@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:milk/Screens/HomeScreen/Home/Mainscreen.dart';
 
 class Preference extends StatefulWidget {
   @override
@@ -22,7 +23,12 @@ class _PreferenceState extends State<Preference> {
         .then((DocumentSnapshot documentSnapshot) =>
             {this._deliveryOption = documentSnapshot['preference']});
 
-    return Scaffold(
+    return WillPopScope(
+        onWillPop: ()async{
+      Navigator.pushReplacementNamed(context, MainScreen.id);
+      return true;
+    },
+    child:Scaffold(
       body: Container(
         margin: EdgeInsets.fromLTRB(35, 35, 0, 0),
         height: double.infinity,
@@ -64,7 +70,7 @@ class _PreferenceState extends State<Preference> {
           ],
         ),
       ),
-    );
+    ));
   }
 
   Widget cardVeiw(String title, String image) {

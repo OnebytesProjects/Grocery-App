@@ -25,7 +25,13 @@ class _SplashScreenState extends State<SplashScreen> {
           .then((DocumentSnapshot documentSnapshot) {
         if (documentSnapshot.exists) {
          if(version == documentSnapshot['Version']){
-           Navigator.pushReplacementNamed(context, Login.id);
+           FirebaseAuth.instance.authStateChanges().listen((User? user) {
+             if (user == null) {
+               Navigator.pushReplacementNamed(context, Login.id);
+             } else {
+               Navigator.pushReplacementNamed(context, HomeScreen.id);
+             }
+           });
          }else{
            Navigator.pushReplacementNamed(context, UpdateAvailable.id);
          }

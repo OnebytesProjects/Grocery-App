@@ -46,6 +46,9 @@ class _NotificationsState extends State<Notifications> {
                 DocumentSnapshot documentSnapshot = snapshot.data!.docs[index];
                 final list = snapshot.data!.docs;
                 return GestureDetector(
+                  onTap: (){
+                    Navigator.pop(context);
+                  },
                   child: Dismissible(
                     key: Key(documentSnapshot['content']),
                     onDismissed: (direction){

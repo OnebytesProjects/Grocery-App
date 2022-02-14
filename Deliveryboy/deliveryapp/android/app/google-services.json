@@ -7,41 +7,20 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:271687998097:android:4002e7f6970b06f539fd30",
+        "mobilesdk_app_id": "1:271687998097:android:e5fff19a5100f4cf39fd30",
         "android_client_info": {
-          "package_name": "com.onebytes.milk"
+          "package_name": "com.onebytes.milkemoo.Delivery"
         }
       },
       "oauth_client": [
         {
-          "client_id": "271687998097-ume0sttf711j42qeg94fttemgb61c4po.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCfxWSXatt_WO4b8zMW8Ot57UlbrVaFJ98"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "271687998097-ume0sttf711j42qeg94fttemgb61c4po.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:271687998097:android:36233683be61fff739fd30",
-        "android_client_info": {
-          "package_name": "com.onebytes.milk.deliveryapp"
-        }
-      },
-      "oauth_client": [
+          "client_id": "271687998097-aiij2qvi9s00pj7ao8qu12hjun0iip9e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.onebytes.milkemoo.Delivery",
+            "certificate_hash": "376a708f8f59fcfce19aa4d5bb43ba61c640c51f"
+          }
+        },
         {
           "client_id": "271687998097-ume0sttf711j42qeg94fttemgb61c4po.apps.googleusercontent.com",
           "client_type": 3

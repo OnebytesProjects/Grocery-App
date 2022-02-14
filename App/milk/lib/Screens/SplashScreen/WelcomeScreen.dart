@@ -110,7 +110,7 @@ class WelcomeScreen extends StatelessWidget {
       ),
       bottomSheet: Card(
         child: SizedBox(
-          height: 260,
+          height: 300,
           child: StatefulBuilder(builder: (context, StateSetter myState) {
             return Padding(
               padding: const EdgeInsets.fromLTRB(20,20,20,0),

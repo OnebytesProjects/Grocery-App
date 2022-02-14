@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:deliveryapp/services/firebase_serice.dart';
 import 'package:deliveryapp/services/order_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -15,6 +16,26 @@ class PickedupOrder extends StatefulWidget {
 }
 
 class _PickedupOrderState extends State<PickedupOrder> {
+  var name = '';
+
+  FirebaseAuth _auth = FirebaseAuth.instance;
+  @override
+  void initState() {
+    FirebaseFirestore.instance
+        .collection('deliveryBoy')
+        .doc(_auth.currentUser?.email)
+        .get()
+        .then((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists) {
+        setState(() {
+          name = documentSnapshot["name"];
+        });
+
+      }
+    });
+    super.initState();
+  }
+
   void _launchURL(number) async => await canLaunch(number)
       ? await launch(number)
       : throw 'Could not call to $number';
@@ -25,7 +46,7 @@ class _PickedupOrderState extends State<PickedupOrder> {
   Widget build(BuildContext context) {
     return Container(
       child: StreamBuilder<QuerySnapshot>(
-        stream: _service.orders
+        stream: _service.orders.where('deliverBoy.name',isEqualTo: name)
             .where('orderStatus', isEqualTo: 'On The Way')
             .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {

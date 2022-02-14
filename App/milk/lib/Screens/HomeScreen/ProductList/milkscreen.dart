@@ -125,8 +125,8 @@ class _MilkDisplayState extends State<MilkDisplay> {
                     document.data()! as Map<String, dynamic>;
                 return Column(
                   children: [
-                    SizedBox(
-                      height: 240,
+                    Container(
+                      height: 300,
                       width: double.infinity,
                       child: MilkGif(),
                       // child: Card(
@@ -668,7 +668,7 @@ class _MilkDisplayState extends State<MilkDisplay> {
             Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
             return Card(
               child: Center(
-                child: Image.network(data['image'],fit: BoxFit.fill,),
+                child: Image.network(data['image'],fit: BoxFit.fitHeight,),
               ),
             );
           }).toList(),

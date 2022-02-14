@@ -7,81 +7,7 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:271687998097:android:4002e7f6970b06f539fd30",
-        "android_client_info": {
-          "package_name": "com.onebytes.milk"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "271687998097-8lg4ghvklsein8n118ol9jb0l9r76ev3.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.onebytes.milk",
-            "certificate_hash": "376a708f8f59fcfce19aa4d5bb43ba61c640c51f"
-          }
-        },
-        {
-          "client_id": "271687998097-k0846m9drjvf00v35m8f2h7tm4u4l2ug.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.onebytes.milk",
-            "certificate_hash": "845900bde0938e8caca6e3dd96a56af8fb848f73"
-          }
-        },
-        {
-          "client_id": "271687998097-ume0sttf711j42qeg94fttemgb61c4po.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCfxWSXatt_WO4b8zMW8Ot57UlbrVaFJ98"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "271687998097-ume0sttf711j42qeg94fttemgb61c4po.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:271687998097:android:36233683be61fff739fd30",
-        "android_client_info": {
-          "package_name": "com.onebytes.milk.deliveryapp"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "271687998097-ume0sttf711j42qeg94fttemgb61c4po.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCfxWSXatt_WO4b8zMW8Ot57UlbrVaFJ98"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "271687998097-ume0sttf711j42qeg94fttemgb61c4po.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:271687998097:android:a4ee8b90ba51e98439fd30",
+        "mobilesdk_app_id": "1:271687998097:android:034601746cfb4f8b39fd30",
         "android_client_info": {
           "package_name": "com.onebytes.milkemoo"
         }
@@ -92,6 +18,51 @@
           "client_type": 1,
           "android_info": {
             "package_name": "com.onebytes.milkemoo",
+            "certificate_hash": "376a708f8f59fcfce19aa4d5bb43ba61c640c51f"
+          }
+        },
+        {
+          "client_id": "271687998097-oquirvul5etcjhcjduq25tkeqgd9lp8t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.onebytes.milkemoo",
+            "certificate_hash": "7e6c624a3087a3f9056d6074c88f25129abbae0e"
+          }
+        },
+        {
+          "client_id": "271687998097-ume0sttf711j42qeg94fttemgb61c4po.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCfxWSXatt_WO4b8zMW8Ot57UlbrVaFJ98"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "271687998097-ume0sttf711j42qeg94fttemgb61c4po.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:271687998097:android:e5fff19a5100f4cf39fd30",
+        "android_client_info": {
+          "package_name": "com.onebytes.milkemoo.Delivery"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "271687998097-aiij2qvi9s00pj7ao8qu12hjun0iip9e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.onebytes.milkemoo.Delivery",
             "certificate_hash": "376a708f8f59fcfce19aa4d5bb43ba61c640c51f"
           }
         },

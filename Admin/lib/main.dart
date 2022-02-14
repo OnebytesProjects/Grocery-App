@@ -36,6 +36,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: 'Milke Moo',
       home: SplashScreen(),
       debugShowCheckedModeBanner: false,
       theme: ThemeData(

@@ -58,7 +58,7 @@ class _EditContactUSState extends State<EditContactUS> {
                   children: [
                     TextFormField(
                       controller: address,
-                      keyboardType: TextInputType.number,
+
                       validator: (value) {
                         if (value!.isEmpty) {
                           return 'Enter Content';
@@ -73,7 +73,6 @@ class _EditContactUSState extends State<EditContactUS> {
                     ),
                     TextFormField(
                       controller: number,
-                      keyboardType: TextInputType.number,
                       validator: (value) {
                         if (value!.isEmpty) {
                           return 'Enter Content';
@@ -88,7 +87,6 @@ class _EditContactUSState extends State<EditContactUS> {
                     ),
                     TextFormField(
                       controller: whatsapp,
-                      keyboardType: TextInputType.number,
                       validator: (value) {
                         if (value!.isEmpty) {
                           return 'Enter Content';
@@ -103,7 +101,6 @@ class _EditContactUSState extends State<EditContactUS> {
                     ),
                     TextFormField(
                       controller: email,
-                      keyboardType: TextInputType.number,
                       validator: (value) {
                         if (value!.isEmpty) {
                           return 'Enter Content';

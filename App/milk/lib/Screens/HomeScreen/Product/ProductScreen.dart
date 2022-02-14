@@ -37,6 +37,8 @@ class _ProductScreenState extends State<ProductScreen> {
   double chosenPrice = 0.0;
   bool _chosenprice = false;
   var total;
+  int i = 0;
+  int j = 0;
 
   CartService _cart = CartService();
   FirebaseAuth _auth = FirebaseAuth.instance;
@@ -70,6 +72,9 @@ class _ProductScreenState extends State<ProductScreen> {
 
       });
     });
+
+
+
     super.initState();
   }
 
@@ -195,23 +200,8 @@ class _ProductScreenState extends State<ProductScreen> {
               );
             },
           ),
-          IconButton(
-            icon: Icon(Icons.notifications,color: Colors.white,),
-            onPressed: () => showDialog<String>(
-              context: context,
-              builder: (BuildContext context) => Notifications(),
-            ),
-          ),
-
-          IconButton(
-            icon: Icon(Icons.shopping_cart,color: Colors.white,),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Cart()),
-              );
-            },
-          ),
+          Notifiicationicon(),
+          Carticon(),
           SizedBox(
             width: 5,
           ),
@@ -224,6 +214,108 @@ class _ProductScreenState extends State<ProductScreen> {
     );
 
   }
+  Widget Notifiicationicon(){
+    final Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance.collection('users').doc(_auth.currentUser?.uid).collection('notifications').snapshots();
+    return StreamBuilder<QuerySnapshot>(
+      stream: _usersStream,
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+
+
+        if(snapshot.hasData){
+          return Stack(
+            children: [
+              IconButton(
+                icon: Icon(
+                  Icons.notifications,
+                  color: Colors.white,
+                ),
+
+                onPressed: (){
+                  Navigator.push(context,MaterialPageRoute(builder: (context) =>Notifications()));
+                },
+              ),
+              snapshot.data!.size==0?Container():Container(
+                decoration: BoxDecoration(
+                    color: Colors.red,
+                    border: Border.all(
+                      color: Colors.red,
+                    ),
+                    borderRadius: BorderRadius.all(Radius.circular(20))
+                ),
+                height: 20,
+                width: 20,
+                child: Center(child: Text(snapshot.data!.size.toString(),style: TextStyle(color: Colors.white),)),
+              )
+            ],
+          );
+        }
+
+        return IconButton(
+          icon: Icon(
+            Icons.notifications,
+            color: Colors.white,
+          ),
+          onPressed: (){
+            Navigator.push(context,MaterialPageRoute(builder: (context) =>Notifications()));
+          },
+        );
+      },
+    );
+  }
+  Widget Carticon(){
+    final Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance.collection('cart').doc(_auth.currentUser?.uid).collection('products').snapshots();
+    return StreamBuilder<QuerySnapshot>(
+      stream: _usersStream,
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+
+
+        if(snapshot.hasData){
+          return Stack(
+            children: [
+              IconButton(
+                icon: Icon(
+                  Icons.shopping_cart,
+                  color: Colors.white,
+                ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Cart()),
+                  );
+                },
+              ),
+              snapshot.data!.size==0?Container():Container(
+                decoration: BoxDecoration(
+                    color: Colors.red,
+                    border: Border.all(
+                      color: Colors.red,
+                    ),
+                    borderRadius: BorderRadius.all(Radius.circular(20))
+                ),
+                height: 20,
+                width: 20,
+                child: Center(child: Text(snapshot.data!.size.toString(),style: TextStyle(color: Colors.white),)),
+              )
+            ],
+          );
+        }
+
+        return IconButton(
+          icon: Icon(
+            Icons.shopping_cart,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => Cart()),
+            );
+          },
+        );
+      },
+    );
+  }
+
   Widget ProductDetails({productname}){
     DateTime now = DateTime.now();
     String todaydate = DateFormat().add_jm().format(now);
@@ -642,6 +734,7 @@ class _ProductScreenState extends State<ProductScreen> {
 
         });
   }
+
 
 }
 

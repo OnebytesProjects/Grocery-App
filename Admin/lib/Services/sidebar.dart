@@ -84,18 +84,19 @@ class SidebarWidget {
         Navigator.of(context).pushNamed(item.route);
       },
       header: Container(
-        height: 50,
+        height: 100,
         width: double.infinity,
         color: Color(0xff444444),
-        child: Center(
-          child: Text(
-            'MENU',
-            style: TextStyle(
-              letterSpacing: 2,
-              color: Colors.white,
-            ),
-          ),
-        ),
+        child: Image.asset('images/1.png'),
+        // child: Center(
+        //   child: Text(
+        //     'Milke Moo',
+        //     style: TextStyle(
+        //       letterSpacing: 2,
+        //       color: Colors.white,
+        //     ),
+        //   ),
+        // ),
       ),
       footer: Container(
         height: 60,

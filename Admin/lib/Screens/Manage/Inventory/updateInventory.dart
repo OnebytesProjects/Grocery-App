@@ -105,7 +105,7 @@ class _UpdateInventoryState extends State<UpdateInventory> {
                                   minqty: int.parse(minqtyText.text),
                                   maxqty: int.parse(maxqtyText.text),
                                 ).then((value) {
-                                  EasyLoading.showSuccess('Updated coupon Successfully');
+                                  EasyLoading.showSuccess('Updated Inventory Successfully');
                                   Navigator.pop(context);
                                 });
                               }

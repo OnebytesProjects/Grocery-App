@@ -156,175 +156,181 @@ class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
 
-    return Scaffold(
-      body: Form(
-        key: _fomrKey,
-        child: GestureDetector(
-          onTap: () {
-            FocusScope.of(context).unfocus();
-          },
-          child: SingleChildScrollView(
-            child: Column(children: [
-              Container(
-                color: Colors.grey[800],
-                height: 150,
-                child: Center(
-                  child: Stack(
-                    children: [
-                      Container(
-                        width: 130,
-                        height: 130,
-                        decoration: BoxDecoration(
-                            border: Border.all(
-                                width: 4,
-                                color: Theme.of(context)
-                                    .scaffoldBackgroundColor),
-                            boxShadow: [
-                              BoxShadow(
-                                  spreadRadius: 2,
-                                  blurRadius: 10,
-                                  color: Colors.black.withOpacity(0.1),
-                                  offset: Offset(0, 10))
-                            ],
-                            shape: BoxShape.circle,
-                            image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: AssetImage("images/profile.jpg"))),
-                      ),
-                      // Positioned(
-                      //     bottom: 0,
-                      //     right: 0,
-                      //     child: Container(
-                      //       height: 45,
-                      //       width: 45,
-                      //       decoration: BoxDecoration(
-                      //         shape: BoxShape.circle,
-                      //         border: Border.all(
-                      //           width: 4,
-                      //           color:
-                      //               Theme.of(context).scaffoldBackgroundColor,
-                      //         ),
-                      //         color: Colors.orange[300],
-                      //       ),
-                      //       child: IconButton(
-                      //         onPressed: () {
-                      //           showModalBottomSheet(
-                      //             context: context,
-                      //             builder: ((builder) => bottomSheet()),
-                      //           );
-                      //         },
-                      //         icon: Icon(Icons.edit),
-                      //         color: Colors.white,
-                      //       ),
-                      //     )),
-                    ],
+    return WillPopScope(
+      onWillPop: ()async{
+        Navigator.pushReplacementNamed(context, MainScreen.id);
+        return true;
+      },
+      child: Scaffold(
+        body: Form(
+          key: _fomrKey,
+          child: GestureDetector(
+            onTap: () {
+              FocusScope.of(context).unfocus();
+            },
+            child: SingleChildScrollView(
+              child: Column(children: [
+                Container(
+                  color: Colors.grey[800],
+                  height: 150,
+                  child: Center(
+                    child: Stack(
+                      children: [
+                        Container(
+                          width: 130,
+                          height: 130,
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                  width: 4,
+                                  color: Theme.of(context)
+                                      .scaffoldBackgroundColor),
+                              boxShadow: [
+                                BoxShadow(
+                                    spreadRadius: 2,
+                                    blurRadius: 10,
+                                    color: Colors.black.withOpacity(0.1),
+                                    offset: Offset(0, 10))
+                              ],
+                              shape: BoxShape.circle,
+                              image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: AssetImage("images/profile.jpg"))),
+                        ),
+                        // Positioned(
+                        //     bottom: 0,
+                        //     right: 0,
+                        //     child: Container(
+                        //       height: 45,
+                        //       width: 45,
+                        //       decoration: BoxDecoration(
+                        //         shape: BoxShape.circle,
+                        //         border: Border.all(
+                        //           width: 4,
+                        //           color:
+                        //               Theme.of(context).scaffoldBackgroundColor,
+                        //         ),
+                        //         color: Colors.orange[300],
+                        //       ),
+                        //       child: IconButton(
+                        //         onPressed: () {
+                        //           showModalBottomSheet(
+                        //             context: context,
+                        //             builder: ((builder) => bottomSheet()),
+                        //           );
+                        //         },
+                        //         icon: Icon(Icons.edit),
+                        //         color: Colors.white,
+                        //       ),
+                        //     )),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              Container(
-                  padding: EdgeInsets.only(left: 16, right: 16),
-                  child: Card(
-                    child: Container(
-                      padding: EdgeInsets.all(8),
-                      child: Column(
-                        children: [
-                          buildTextField(
-                              "Full Name", "Your Name", true, _name),
-                          buildTextField(
-                              "Mobile Number", "number", false, _mobile),
-                          //buildTextField("Gender", "Gender", true, _gender),
-                          //dropdown-gender
-                          SizedBox(
-                              width: double.infinity,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Choose Gender",
-                                    style: TextStyle(
-                                        fontSize: 13, color: Colors.grey),
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  Row(
-                                    children: [
-                                      DropDownField(),
-                                    ],
-                                  ),
-                                ],
-                              )),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          buildTextField(
-                              "Address", "Enter here", true, _address),
-                          //dropdown-pincode
-                          // SizedBox(
-                          //     width: double.infinity,
-                          //     child: Column(
-                          //       crossAxisAlignment: CrossAxisAlignment.start,
-                          //       children: [
-                          //         Text(
-                          //           "Enter Pincode",
-                          //           style: TextStyle(
-                          //               fontSize: 13, color: Colors.grey),
-                          //         ),
-                          //         SizedBox(
-                          //           height: 10,
-                          //         ),
-                          //         Row(
-                          //           children: [
-                          //             DropDownField1(),
-                          //           ],
-                          //         ),
-                          //       ],
-                          //     )),
-                          // SizedBox(
-                          //   height: 20,
-                          // ),
-                          buildTextField("Pincode", "Enter here", true, _pincode),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          buildTextField("Email", "Enter here", true, _email),
-                          SizedBox(
-                            height: 35,
-                          ),
-                          RaisedButton(
-                            onPressed: () {
-                              EasyLoading.show(status: 'Updating profile');
-                              checkPincode().then((value){
-                                updateProfile().then((value) {
-                                  EasyLoading.showSuccess("");
-                                  Navigator.pushReplacementNamed(
-                                      context, MainScreen.id);
-                                });
-                              });
-
-                            },
-                            color: Colors.orange[300],
-                            padding: EdgeInsets.symmetric(horizontal: 50),
-                            elevation: 2,
-                            child: Text(
-                              "SAVE",
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  letterSpacing: 2.2,
-                                  color: Colors.white),
+                SizedBox(
+                  height: 15,
+                ),
+                Container(
+                    padding: EdgeInsets.only(left: 16, right: 16),
+                    child: Card(
+                      child: Container(
+                        padding: EdgeInsets.all(8),
+                        child: Column(
+                          children: [
+                            buildTextField(
+                                "Full Name", "Your Name", true, _name),
+                            buildTextField(
+                                "Mobile Number", "number", false, _mobile),
+                            //buildTextField("Gender", "Gender", true, _gender),
+                            //dropdown-gender
+                            SizedBox(
+                                width: double.infinity,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Choose Gender",
+                                      style: TextStyle(
+                                          fontSize: 13, color: Colors.grey),
+                                    ),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Row(
+                                      children: [
+                                        DropDownField(),
+                                      ],
+                                    ),
+                                  ],
+                                )),
+                            SizedBox(
+                              height: 20,
                             ),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          )
-                        ],
+                            buildTextField(
+                                "Address", "Enter here", true, _address),
+                            //dropdown-pincode
+                            // SizedBox(
+                            //     width: double.infinity,
+                            //     child: Column(
+                            //       crossAxisAlignment: CrossAxisAlignment.start,
+                            //       children: [
+                            //         Text(
+                            //           "Enter Pincode",
+                            //           style: TextStyle(
+                            //               fontSize: 13, color: Colors.grey),
+                            //         ),
+                            //         SizedBox(
+                            //           height: 10,
+                            //         ),
+                            //         Row(
+                            //           children: [
+                            //             DropDownField1(),
+                            //           ],
+                            //         ),
+                            //       ],
+                            //     )),
+                            // SizedBox(
+                            //   height: 20,
+                            // ),
+                            buildTextField("Pincode", "Enter here", true, _pincode),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            buildTextField("Email", "Enter here", true, _email),
+                            SizedBox(
+                              height: 35,
+                            ),
+                            RaisedButton(
+                              onPressed: () {
+                                EasyLoading.show(status: 'Updating profile');
+                                checkPincode().then((value){
+                                  updateProfile().then((value) {
+                                    EasyLoading.showSuccess("");
+                                    Navigator.pushReplacementNamed(
+                                        context, MainScreen.id);
+                                  });
+                                });
+
+                              },
+                              color: Colors.orange[300],
+                              padding: EdgeInsets.symmetric(horizontal: 50),
+                              elevation: 2,
+                              child: Text(
+                                "SAVE",
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    letterSpacing: 2.2,
+                                    color: Colors.white),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 20,
+                            )
+                          ],
+                        ),
                       ),
-                    ),
-                  )),
-            ]),
+                    )),
+              ]),
+            ),
           ),
         ),
       ),

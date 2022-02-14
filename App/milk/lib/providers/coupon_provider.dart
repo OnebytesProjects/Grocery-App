@@ -7,6 +7,7 @@ class CouponProvider with ChangeNotifier{
   late bool expired;
   late DocumentSnapshot document;
   int discountrate = 0;
+  bool type = false;
 
   Future<DocumentSnapshot> getCouponDetails(title)async{
     DocumentSnapshot document = await FirebaseFirestore.instance.collection('coupons').doc(title).get();
@@ -29,6 +30,7 @@ class CouponProvider with ChangeNotifier{
       document = document;
       expired = false;
       discountrate = document['discountRate'];
+      type = document['type'];
       notifyListeners();
     }
   }

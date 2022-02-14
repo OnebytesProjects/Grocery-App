@@ -1,6 +1,8 @@
 import 'package:deliveryapp/HomeScreen/Pending.dart';
 import 'package:deliveryapp/HomeScreen/pendingOrder.dart';
 import 'package:deliveryapp/HomeScreen/pickedupOrder.dart';
+import 'package:deliveryapp/Login/Login.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shifting_tabbar/shifting_tabbar.dart';
@@ -40,6 +42,15 @@ class _HomeScreenState extends State<HomeScreen> {
               Pending(),
               PickedupOrder(),
             ],
+          ),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              FirebaseAuth.instance.signOut().then((value) {
+                Navigator.pushReplacementNamed(context, Login.id);
+              });
+            },
+            backgroundColor: Colors.blue,
+            child: const Icon(Icons.exit_to_app),
           ),
         ),
       ),

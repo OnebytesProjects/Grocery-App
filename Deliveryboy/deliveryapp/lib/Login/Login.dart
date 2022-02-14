@@ -2,6 +2,7 @@ import 'package:deliveryapp/HomeScreen/HomeScreen.dart';
 import 'package:deliveryapp/services/auth_provider.dart';
 import 'package:deliveryapp/services/firebase_serice.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
@@ -140,7 +141,7 @@ class _LoginState extends State<Login> {
                                             });
                                           }else{
                                             EasyLoading.dismiss();
-                                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(_authData.error)));
+                                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Check Your Login Details')));
                                           }
                                         });
                                       }else{
@@ -166,4 +167,24 @@ class _LoginState extends State<Login> {
           ),
         ));
   }
+  // Future Login(_username,_password) async{
+  //   UserCredential userCredential;
+  //   try {
+  //     userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+  //       email: _username.trim(),
+  //       password: _password.trim(),
+  //     );
+  //     if(userCredential.user!.uid!=null){
+  //       EasyLoading.showSuccess('Logged in Successfully').then((value) {
+  //         Navigator.pushReplacementNamed(context, HomeScreen.id);
+  //       });
+  //     }else{
+  //       EasyLoading.dismiss();
+  //       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Check Your Login Details')));
+  //     }
+  //   } on FirebaseAuthException catch (e) {
+  //     EasyLoading.showError('Check Your Login Details');
+  //   }
+  //
+  // }
 }

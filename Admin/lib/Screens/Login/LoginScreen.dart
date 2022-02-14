@@ -54,21 +54,20 @@ class _LoginScreenState extends State<LoginScreen> {
           if (snapshot.connectionState == ConnectionState.done) {
             return Container(
               decoration: BoxDecoration(
-                gradient: LinearGradient(
-                    colors: [Color(0xff444444), Colors.white],
-                    stops: [1.0, 1.0],
-                    begin: Alignment.topCenter,
-                    end: Alignment(0.0, 0.0)),
+                image: DecorationImage(
+                  image: AssetImage("images/2.jpg"),
+                  fit: BoxFit.fill
+                )
               ),
               child: Center(
                 child: Container(
-                  width: 300,
-                  height: 300,
+                  width: 450,
+                  height: 400,
                   child: Card(
                     elevation: 6,
                     shape: Border.all(color: Colors.white, width: 2),
                     child: Padding(
-                      padding: const EdgeInsets.all(20),
+                      padding: const EdgeInsets.all(30),
                       child: Form(
                         key: _formKey,
                         child: Column(
@@ -110,7 +109,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     ),
                                   ),
                                   SizedBox(
-                                    height: 20,
+                                    height: 30,
                                   ),
                                   TextFormField(
                                     validator: (value) {
@@ -144,66 +143,41 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ],
                               ),
                             ),
-                            SizedBox(height: 30,),
+                            SizedBox(height: 10,),
                             Row(
                               children: [
                                 Expanded(
-                                  child: FlatButton(
-                                    onPressed: () async {
-                                      if (_formKey.currentState!.validate()) {
-                                        //email login
-                                        EasyLoading.show(status: 'Please Wait');
-                                        Login();
-                                        // UserCredential usercredentials = await FirebaseAuth.instance.signInAnonymously();
-                                        // progressDialog.show();
-                                        // _services.getAdminCredentials().then((value){
-                                        //   value.docs.forEach((doc) {
-                                        //     if(doc.get('username')==_username){
-                                        //       if(doc.get('password')==_password){
-                                        //         if(usercredentials.user!.uid!=null){
-                                        //           Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context)=>HomeScreen()));
-                                        //           return;
-                                        //         }else{
-                                        //           progressDialog.dismiss();
-                                        //           _services.showMyDialog(
-                                        //             title: 'Login',
-                                        //             message: 'Login Failed',
-                                        //             context:context,
-                                        //           );
-                                        //         }
-                                        //       }else{
-                                        //         progressDialog.dismiss();
-                                        //         _services.showMyDialog(title: 'Alert',message: 'Invalid Credentials.Please Try Again',context: context);
-                                        //       }
-                                        //     }else{
-                                        //       progressDialog.dismiss();
-                                        //       _services.showMyDialog(title: 'Alert',message: 'Invalid Credentials.Please Try Again',context: context);
-                                        //     }
-                                        //   });
-                                        // });
-                                      }
-                                    },
-                                    color: Theme.of(context).primaryColor,
-                                    child: Text(
-                                      'Login',
-                                      style: TextStyle(color: Colors.white),
+                                  child: Container(
+                                    height: 50,
+                                    child: FlatButton(
+                                      onPressed: () async {
+                                        if (_formKey.currentState!.validate()) {
+                                          //email login
+                                          EasyLoading.show(status: 'Please Wait');
+                                          Login();
+                                        }
+                                      },
+                                      color: Theme.of(context).primaryColor,
+                                      child: Text(
+                                        'Login',
+                                        style: TextStyle(color: Colors.white),
+                                      ),
                                     ),
                                   ),
                                 ),
                               ],
                             ),
-                            Expanded(
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
                               children: [
-                                InkWell(
-                                  onTap:(){
-                                    Navigator.pushNamed(context, Reset.id);
-                                  },
-                                  child: Text("Forgot Password",style: TextStyle(color: Colors.grey),),
-                                )
+                            InkWell(
+                              onTap:(){
+                                Navigator.pushNamed(context, Reset.id);
+                              },
+                              child: Text("Forgot Password",style: TextStyle(color: Colors.grey),),
+                            )
                               ],
-                            )),
+                            ),
                           ],
                         ),
                       ),

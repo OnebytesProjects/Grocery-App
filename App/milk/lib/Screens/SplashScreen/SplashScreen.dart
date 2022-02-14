@@ -50,20 +50,25 @@ class _SplashScreenState extends State<SplashScreen> {
       body: Stack(
         children: [
           Container(
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage("images/SplashScreen.png")
-                  )
-              )
+            height: MediaQuery.of(context).size.height,
+            child: FittedBox(
+              child: Image.asset("images/ssplash.jpeg"),
+              fit: BoxFit.fitHeight,
+            ),
+              // decoration: BoxDecoration(
+              //     image: DecorationImage(
+              //         image: AssetImage("images/ssplash.jpeg",)
+              //     )
+              // )
             // margin: EdgeInsets.all(50),
             // child: Image.asset("images/SplashScreen.png"),
           ),
           Positioned(
-              bottom: 20,
+              bottom: 1,
               right: 100,
-              child: Text('Developed By OneBytes',style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),)),
+              child: Text('Developed By OneBytes',style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold,color: Colors.white),)),
         ],
-      )
+      ),
       // bottomSheet: Stack(
       //   children: [
       //     Container(

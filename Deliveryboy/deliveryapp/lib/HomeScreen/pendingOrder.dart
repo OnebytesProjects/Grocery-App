@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:deliveryapp/services/firebase_serice.dart';
 import 'package:deliveryapp/services/order_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -15,6 +16,25 @@ class PendingOrder extends StatefulWidget {
 }
 
 class _PendingOrderState extends State<PendingOrder> {
+  var name = '';
+
+  FirebaseAuth _auth = FirebaseAuth.instance;
+  @override
+  void initState() {
+    FirebaseFirestore.instance
+        .collection('deliveryBoy')
+        .doc(_auth.currentUser?.email)
+        .get()
+        .then((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists) {
+        setState(() {
+          name = documentSnapshot["name"];
+        });
+
+      }
+    });
+    super.initState();
+  }
 
   void _launchURL(number) async =>
       await canLaunch(number) ? await launch(number) : throw 'Could not call to $number';
@@ -26,7 +46,7 @@ class _PendingOrderState extends State<PendingOrder> {
     return
       Container(
       child: StreamBuilder<QuerySnapshot>(
-        stream: _service.orders.where('orderStatus',isEqualTo: 'Delivery Man Assigned').snapshots(),
+        stream: _service.orders.where('deliverBoy.name',isEqualTo: name).where('orderStatus',isEqualTo: 'Delivery Man Assigned').snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
             return Text('Something went wrong');

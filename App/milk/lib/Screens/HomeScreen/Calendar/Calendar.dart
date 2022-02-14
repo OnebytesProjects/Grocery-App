@@ -35,6 +35,7 @@ class _CalendarState extends State<Calendar> {
   FirebaseAuth _auth = FirebaseAuth.instance;
   CollectionReference subscription = FirebaseFirestore.instance.collection('subscription');
   CollectionReference subscription2 = FirebaseFirestore.instance.collection('Activesubscription');
+
   @override
   void initState() {
 
@@ -63,29 +64,35 @@ class _CalendarState extends State<Calendar> {
           setState(() {
             todayDelivery = DateFormat('yyyy,MM,dd').format(DateTime.parse(doc['DeliveryDate']));
           });
-          print(todayDelivery);
+
         });
       });
     });
 
-    return Scaffold(
-        body: SingleChildScrollView(
-          child: Column(
-      children: [
-          calendar(),
-          SizedBox(
-            height: 5,
-          ),
-          Container(
-              padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
-              child: Text(
-                "Details",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-              )),
-          cardVeiw("Milk"),
-      ],
-    ),
-        ));
+    return WillPopScope(
+      onWillPop: ()async{
+        Navigator.pushReplacementNamed(context, MainScreen.id);
+        return true;
+      },
+      child: Scaffold(
+          body: SingleChildScrollView(
+            child: Column(
+        children: [
+            calendar(),
+            SizedBox(
+              height: 5,
+            ),
+            Container(
+                padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                child: Text(
+                  "Details",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+                )),
+            cardVeiw("Milk"),
+        ],
+      ),
+          )),
+    );
   }
 
   Widget calendar() {

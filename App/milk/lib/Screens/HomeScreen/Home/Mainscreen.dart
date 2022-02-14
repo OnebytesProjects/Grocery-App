@@ -36,6 +36,8 @@ class _MainScreenState extends State<MainScreen> {
   var currentPage = DrawerSection.HOME;
   String _username = '';
   String _appbarname = '';
+  int i = 0;
+  int j = 0;
 
   @override
   void initState() {
@@ -74,46 +76,12 @@ class _MainScreenState extends State<MainScreen> {
       });
     });
 
-    //check for notification
-    // FirebaseFirestore.instance
-    //     .collection('users')
-    //     .doc(_auth.currentUser?.uid).collection('notifications').doc()
-    //     .get()
-    //     .then((DocumentSnapshot documentSnapshot) {
-    //   if (documentSnapshot.exists) {
-    //     setState(() {
-    //       _notification = 'Present';
-    //     });
-    //   }
-    //   else{
-    //     _notification = 'Not';
-    //   }
-    // });
-
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    // final Stream<QuerySnapshot> _notificationStream = FirebaseFirestore.instance
-    //     .collection('users')
-    //     .doc(_auth.currentUser?.uid)
-    //     .collection('notifications')
-    //     .snapshots();
-    //
-    // FirebaseFirestore.instance
-    //     .collection('users')
-    //     .doc(_auth.currentUser?.uid)
-    //     .collection('notifications')
-    //     .doc()
-    //     .get()
-    //     .then((DocumentSnapshot documentSnapshot) {
-    //   if (documentSnapshot.exists) {
-    //     print('Notification Document exists on the database');
-    //   } else {
-    //     print('Notification Document does not exists on the database');
-    //   }
-    // });
+
 
     _appbarname = 'Hi,$_username';
 
@@ -238,33 +206,8 @@ class _MainScreenState extends State<MainScreen> {
                       );
                     },
                   ),
-
-                  IconButton(
-                    icon: Icon(
-                      Icons.notifications,
-                      color: Colors.white,
-                    ),
-                    // onPressed: () => showDialog<String>(
-                    //   context: context,
-                    //   builder: (BuildContext context) => Notifications(),
-                    // ),
-                    onPressed: (){
-                      Navigator.push(context,MaterialPageRoute(builder: (context) =>Notifications()));
-                    },
-                  ),
-
-                  IconButton(
-                    icon: Icon(
-                      Icons.shopping_cart,
-                      color: Colors.white,
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => Cart()),
-                      );
-                    },
-                  ),
+                  Notifiicationicon(),
+                  Carticon(),
                   SizedBox(
                     width: 5,
                   ),
@@ -303,12 +246,7 @@ class _MainScreenState extends State<MainScreen> {
                   Container(
                     width: 125,
                     height: 125,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                          image: AssetImage("images/splscrn.jpg"),
-                          fit: BoxFit.fill),
-                    ),
+                    child: Image.asset("images/1.png"),
                   )
                 ],
               ),
@@ -407,8 +345,8 @@ class _MainScreenState extends State<MainScreen> {
             currentPage == DrawerSection.ORDER_HISTORY ? true : false),
         menuItem(5, "PREFERENCE", Icons.settings,
             currentPage == DrawerSection.PREFERENCE ? true : false),
-        menuItem(6, "REFER A FREIND", Icons.group_add_outlined,
-            currentPage == DrawerSection.REFER_A_FREIND ? true : false),
+        // menuItem(6, "REFER A FREIND", Icons.group_add_outlined,
+        //     currentPage == DrawerSection.REFER_A_FREIND ? true : false),
         Divider(
           thickness: 3,
           indent: 10,
@@ -464,6 +402,108 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 
+  Widget Notifiicationicon(){
+    final Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance.collection('users').doc(_auth.currentUser?.uid).collection('notifications').snapshots();
+    return StreamBuilder<QuerySnapshot>(
+      stream: _usersStream,
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+
+
+        if(snapshot.hasData){
+          return Stack(
+            children: [
+              IconButton(
+                icon: Icon(
+                  Icons.notifications,
+                  color: Colors.white,
+                ),
+
+                onPressed: (){
+                  Navigator.push(context,MaterialPageRoute(builder: (context) =>Notifications()));
+                },
+              ),
+              snapshot.data!.size==0?Container():Container(
+                decoration: BoxDecoration(
+                    color: Colors.red,
+                    border: Border.all(
+                      color: Colors.red,
+                    ),
+                    borderRadius: BorderRadius.all(Radius.circular(20))
+                ),
+                height: 20,
+                width: 20,
+                child: Center(child: Text(snapshot.data!.size.toString(),style: TextStyle(color: Colors.white),)),
+              )
+            ],
+          );
+        }
+
+        return IconButton(
+          icon: Icon(
+            Icons.notifications,
+            color: Colors.white,
+          ),
+          onPressed: (){
+            Navigator.push(context,MaterialPageRoute(builder: (context) =>Notifications()));
+          },
+        );
+      },
+    );
+  }
+  Widget Carticon(){
+    final Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance.collection('cart').doc(_auth.currentUser?.uid).collection('products').snapshots();
+    return StreamBuilder<QuerySnapshot>(
+      stream: _usersStream,
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+
+
+        if(snapshot.hasData){
+          return Stack(
+            children: [
+              IconButton(
+                icon: Icon(
+                  Icons.shopping_cart,
+                  color: Colors.white,
+                ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Cart()),
+                  );
+                },
+              ),
+              snapshot.data!.size==0?Container():Container(
+                decoration: BoxDecoration(
+                    color: Colors.red,
+                    border: Border.all(
+                      color: Colors.red,
+                    ),
+                    borderRadius: BorderRadius.all(Radius.circular(20))
+                ),
+                height: 20,
+                width: 20,
+                child: Center(child: Text(snapshot.data!.size.toString(),style: TextStyle(color: Colors.white),)),
+              )
+            ],
+          );
+        }
+
+        return IconButton(
+          icon: Icon(
+            Icons.shopping_cart,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => Cart()),
+            );
+          },
+        );
+      },
+    );
+  }
+
   Widget menuItem(int id, String title, IconData icon, bool selected) {
     return Material(
       color: selected ? Colors.grey[300] : Colors.transparent,
@@ -512,8 +552,12 @@ class _MainScreenState extends State<MainScreen> {
         },
       ),
     );
+
   }
+
 }
+
+
 
 enum DrawerSection {
   PROFILE,

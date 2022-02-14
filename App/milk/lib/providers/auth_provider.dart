@@ -18,7 +18,27 @@ class AuthProvider with ChangeNotifier {
   Future<void> verifyPhone(BuildContext context, String number) async {
     final PhoneVerificationCompleted verificationCompleted =
         (PhoneAuthCredential credential) async {
-      await _auth.signInWithCredential(credential);
+          final User? user =
+              (await _auth.signInWithCredential(credential))
+                  .user;
+
+          FirebaseFirestore.instance
+              .collection('users')
+              .doc(user?.uid)
+              .get()
+              .then((DocumentSnapshot documentSnapshot) {
+            if (documentSnapshot.exists) {
+              //check profile created
+              Navigator.of(context).pop();
+              Navigator.pushReplacementNamed(context, MainScreen.id);
+            }
+            else{
+              //create profile
+              Navigator.of(context).pop();
+              _createUser(id: user!.uid, number: number);
+              Navigator.pushReplacementNamed(context, UserRegistration.id);
+            }
+          });
     };
 
     final PhoneVerificationFailed verificationFailed =
@@ -93,11 +113,11 @@ class AuthProvider with ChangeNotifier {
                         .then((DocumentSnapshot documentSnapshot) {
                       if (documentSnapshot.exists) {
                         //check profile created
-
                         Navigator.of(context).pop();
                         Navigator.pushReplacementNamed(context, MainScreen.id);
                       }
                       else{
+                        //create profile
                         Navigator.of(context).pop();
                         _createUser(id: user!.uid, number: number);
                         Navigator.pushReplacementNamed(context, UserRegistration.id);
